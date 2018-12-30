@@ -27,7 +27,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/main/', methods=['GET'])
+@app.route('/predicoes/', methods=['GET'])
 def login():
 	meses_parameter = request.args.get('meses')
 	valores_parameter = request.args.get('valores')
