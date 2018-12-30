@@ -1,6 +1,4 @@
 function abreGraficoHoras(grafico, pontos, pontosMinimos, pontosMaximos, pontosMediana, pontosMedios, valorDesvioPadrao, valorVariancia, valorErroPadrao){
-	
-	console.log("pontos Y", pontos)
 
 	$("#" + grafico).show();
 	$("#botoes-" + grafico).show();

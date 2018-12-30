@@ -148,10 +148,12 @@ var heatmapcolor = {
 						$("#panel-fullscreen-heatmap").click();
 					}
 
-					abreGraficos(e.point, e, semana_selecionada, data);					
+					if (e.point.value != null) {
+						abreGraficos(e.point, e, semana_selecionada, data);					
 					
-					$('#graficos').show();
-					$(".grupo").show();
+						$('#graficos').show();
+						$(".grupo").show();
+					}
 				}
 			}
 		}
@@ -166,7 +168,13 @@ var heatmapcolor = {
 				return '<b>' + this.series.xAxis.categories[valor_ponto] + ', '+ this.point.y + ':00 hours </b>';
 			}
 			else {
-				return '<b>' + this.series.xAxis.categories[this.point.x] + ', '+ this.point.y + ':00 hours - ' + this.point.value + ' Consumption</b>';
+				if (this.point.value != null) {
+					return '<b>' + this.series.xAxis.categories[this.point.x] + ', '+ this.point.y + ':00 hours - ' + this.point.value + ' Consumption</b>';
+				}
+				else {
+					return "<b>No value to show</b>";
+				}
+				
 			}
 		},
 		followPointer: true

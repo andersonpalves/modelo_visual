@@ -31,8 +31,18 @@
 					<option value="2016">2016</option>
 				</select>
 			</li>
-		  <li><span class="texto">Energy Source: </span><select id="energia"></select></li>
-        </ul>
+		  <li>
+				<span class="texto">Energy Source:</span><select id="energia"></select>
+			</li>
+			<li>
+				<span class="texto">Group Energy Source:</span>
+				<select id="grupo">
+				  <option value="-">-</option>
+					<option value="Eletricidade">Eletricidade</option>
+					<option value="Gas">Gás</option>
+				</select>
+			</li>
+      </ul>
       </div>
     </div>
   </div>

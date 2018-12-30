@@ -1,7 +1,5 @@
 function abreGraficoDias(grafico, pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, valorVariancia, valorErroPadrao){
 
-	console.log("pontos X", pontos)
-
 	$("#" + grafico).show();
 	$("#botoes-" + grafico).show();
 

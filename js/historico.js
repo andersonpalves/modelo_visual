@@ -3,7 +3,7 @@ var valoresMeses = [];
 
 function carregarHistorico() {
     
-    listaObjetos = buscaDadosHistorico();
+    var listaObjetos = listaObjetos = buscaDadosHistorico();
 
     var historico = {
        
@@ -127,17 +127,32 @@ function carregarDados(nomesArquivos){
                     }
 
                     var dataFormato = val[0].split('-');
-            
-                    if (energia == "Média") {
-                        var contadorTotal = 0;
-                        for(var z=0; z<=val[2].length-1; z++){
-                            contadorTotal += parseInt(val[2][z]);
-                        }
-            
-                        valor = contadorTotal / val[2].length;
+
+                    if (selecaoPorGrupo == true) {
+                        var grupo = $("#grupo").val();
+						var valor = 0;
+
+						for(j=0; j<=val[2].length; j++){
+							if (grupo == ELETRICIDADE_TEXTO && verificaGrupoPorEnergia(j) == ELETRICIDADE){
+								valor = valor + val[2][j];
+							}
+							else if (grupo == GAS_TEXTO && verificaGrupoPorEnergia(j) == GAS){
+								valor = valor + val[2][j];
+							}
+						}
                     }
-                    else{
-                        valor = val[2][energia-1];
+                    else {
+                        if (energia == "Média") {
+                            var contadorTotal = 0;
+                            for(var z=0; z<=val[2].length-1; z++){
+                                contadorTotal += parseInt(val[2][z]);
+                            }
+                
+                            valor = contadorTotal / val[2].length;
+                        }
+                        else{
+                            valor = val[2][energia-1];
+                        }
                     }
 
                     switch (dataFormato[1]) {
@@ -224,31 +239,43 @@ function carregarDados(nomesArquivos){
         });
    }
 
-    $.ajax({
-        url: "http://localhost:5000/main/?valores="+valoresMeses+"&meses="+listaMeses,
-        success: function (dadosJson) {
+    var comboEnergia = $("#energia").val() == "-" ? true : false;
+    var comboGrupo = $("#grupo").val() == "-" ? true : false;
+    var realizaPredicao = true;
 
-            console.log("sarima", dadosJson.sarima)
-            console.log("holt", dadosJson.holt)
-            console.log("ar", dadosJson.ar)
+    if (comboEnergia == true && comboGrupo == true) {
+        realizaPredicao = false
+    }
 
-            var objetoSarima = {};
-            objetoSarima.name = parseInt(proximoAnoPrevisao+1) + " Sarima Prediction";
-            objetoSarima.data = dadosJson.sarima;
-            retornoFinal.push(objetoSarima)
+    if (realizaPredicao == true) {
 
-            var objetoHolt = {};
-            objetoHolt.name = parseInt(proximoAnoPrevisao+1) + " Holt Prediction";
-            objetoHolt.data = dadosJson.holt;
-            retornoFinal.push(objetoHolt)
+        $.ajax({
+            url: "http://localhost:5000/predicoes/?valores="+valoresMeses+"&meses="+listaMeses,
+            success: function (dadosJson) {
 
-            var objetoAr = {};
-            objetoAr.name = parseInt(proximoAnoPrevisao+1) + " AR Prediction";
-            objetoAr.data = dadosJson.ar;
-            retornoFinal.push(objetoAr)
-        },
-        async: false
-    });
+                console.log("sarima", dadosJson.sarima)
+                console.log("holt", dadosJson.holt)
+                console.log("ar", dadosJson.ar)
+
+                var objetoSarima = {};
+                objetoSarima.name = parseInt(proximoAnoPrevisao+1) + " Sarima Prediction";
+                objetoSarima.data = dadosJson.sarima;
+                retornoFinal.push(objetoSarima)
+
+                var objetoHolt = {};
+                objetoHolt.name = parseInt(proximoAnoPrevisao+1) + " Holt Prediction";
+                objetoHolt.data = dadosJson.holt;
+                retornoFinal.push(objetoHolt)
+
+                var objetoAr = {};
+                objetoAr.name = parseInt(proximoAnoPrevisao+1) + " AR Prediction";
+                objetoAr.data = dadosJson.ar;
+                retornoFinal.push(objetoAr)
+            },
+            async: false
+        });
+
+    }
 
     valoresMeses = []
     listaMeses = []

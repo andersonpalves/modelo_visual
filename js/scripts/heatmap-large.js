@@ -7,18 +7,38 @@ var lista_series_historico = [];
 var chart_heatmap_large, chart_heatmap_color, chart_dias, chart_horas, app, chart_relogio_tarde, chart_historico, chart_historico_geral;
 var semana_selecionada, lugar_selecionado;
 var maxDenseDisplay = 0;
+var selecaoPorGrupo = false;
+var valoresEletricidade = [0, 1, 2, 3, 4, 5];
+var valoresGas = [6, 7, 8, 9];
+var ELETRICIDADE = 1;
+var GAS = 2;
+var ELETRICIDADE_TEXTO = "Eletricidade";
+var GAS_TEXTO = "Gas";
 
 $(function () {
-	
 	$("#lugar").change(function() {
+		$("#grupo").val('-');
+		$("#energia").val('-');
+		selecaoPorGrupo = false;
 		abreDadosJson();
 	});
 	
 	$("#ano").change(function() {
+		$("#grupo").val('-');
+		$("#energia").val('-');
+		selecaoPorGrupo = false;
 		abreDadosJson();
 	});
 	
 	$("#energia").change(function() {
+		$("#grupo").val('-');
+		selecaoPorGrupo = false;
+		abreDadosJson();
+	});
+
+	$("#grupo").change(function() {
+		$("#energia").val('-');
+		selecaoPorGrupo = true;
 		abreDadosJson();
 	});
 	
@@ -30,16 +50,28 @@ function abreDadosJson(){
 	if ($("#lugar").val() == "teste") {
 		$("#ano").val(2016);
 	}
-	console.log($("#ano").val());
+
 	abreDados($("#ano").val(), $("#lugar").val());
 }
 
+function verificaGrupoPorEnergia(valor) {
+	var retorno = 0;
+	
+	if (valoresEletricidade.indexOf(valor) > -1) {
+		retorno = ELETRICIDADE;
+	}
+	else if (valoresGas.indexOf(valor) > -1) {
+		retorno = GAS;
+	}
+
+	return retorno;
+}
+
 function ajustarTextos(){
-	$("#denseTexto").html("Dense Pixel Display");
-	$("#heatmapTexto").html("Heatmap Weekly");
-	$("#diasHorasTexto").html("Days / Hours");
-	$("#diasHorasTexto").html("Days / Hours");
-	$("#relogioTexto").html("Clock");
+	$("#denseTexto").html("Annual / Monthly View");
+	$("#heatmapTexto").html("Weekly View");
+	$("#diasHorasTexto").html("Days / Hours View");
+	$("#relogioTexto").html("Clock View");
 	$("#heatmapHistoricoGeralTexto").html("All energy sources - <b>Year selected<b>: " + $("#ano").val());
 }
 
@@ -157,7 +189,20 @@ function abreDados(ano, lugar){
 								for(var i=0; i<=6; i++){
 									for(var j=0; j<=23; j++){
 										var item = [];
-										item.push(i, j, parseInt(lista_heatmap[i][j][2]));
+										var valor = 0;
+
+										if (typeof lista_heatmap[i][j] === 'undefined') {
+											valor = null
+										}
+										else {
+											valor = lista_heatmap[i][j][2];
+										}
+
+										if (valor != null) {
+											valor = parseInt(valor);
+										}
+
+										item.push(i, j, valor);
 										lista_itens.push(item);
 									}
 								}
@@ -218,44 +263,70 @@ function abreDados(ano, lugar){
 			
 			lista_datas = [];
 			dados_heat = [];
-
-			var contador_historico = 0, data_historico, valor_historico = 0, contador_anual_historico = 0, contador_diario = 0;
+			lista_global = []
 			
 			$.each(data, function (key, val) {
 				if (key != 0) {
-					var dataFormato = val[0].split('-');
-					var energia = $("#energia").val();
-					var valor = 0;
-					contador_anual_historico++;
+					if (selecaoPorGrupo == true) {
+						var grupo = $("#grupo").val();
+						var valorAgrupado = 0;
 
-					if (energia == "Média") {
-						var contadorTotal = 0;
-						for(var z=0; z<=val[2].length-1; z++){
-							contadorTotal += parseInt(val[2][z]);
+						for(j=0; j<=val[2].length; j++){
+							if (grupo == ELETRICIDADE_TEXTO && verificaGrupoPorEnergia(j) == ELETRICIDADE){
+								valorAgrupado = valorAgrupado + val[2][j];
+							}
+							else if (grupo == GAS_TEXTO && verificaGrupoPorEnergia(j) == GAS){
+								valorAgrupado = valorAgrupado + val[2][j];
+							}
 						}
 
-						valor = contadorTotal / val[2].length;
+						if (valorAgrupado > maxDenseDisplay){
+							maxDenseDisplay = valorAgrupado;
+						}
+						
+						var dataFormato = val[0].split('-');
+						var dataUTC = Date.UTC(dataFormato[0],dataFormato[1]-1,dataFormato[2]);
+						var dataBR  = dataFormato[0]+"-"+dataFormato[1]+"-"+dataFormato[2];
+						var dado = [dataBR,val[1],valorAgrupado];
+						lista_datas.push(dado);
+					
+						var elemento = [dataUTC ,val[1],parseInt(valorAgrupado)];
+						lista_global.push(elemento);
 					}
-					else{
-						valor = val[2][energia-1];
+					else {
+						var dataFormato = val[0].split('-');
+						var energia = $("#energia").val();
+						var valor = 0;
+
+						if (energia == "Média") {
+							var contadorTotal = 0;
+							for(var z=0; z<=val[2].length-1; z++){
+								contadorTotal += parseInt(val[2][z]);
+							}
+	
+							valor = contadorTotal / val[2].length;
+						}
+						else{
+							valor = val[2][energia-1];
+						}
+	
+						if (valor > maxDenseDisplay){
+							maxDenseDisplay = valor;
+						}
+						
+						var dataUTC = Date.UTC(dataFormato[0],dataFormato[1]-1,dataFormato[2]);
+						var dataBR  = dataFormato[0]+"-"+dataFormato[1]+"-"+dataFormato[2];
+						var dado = [dataBR,val[1],valor];
+						lista_datas.push(dado);
+					
+						var elemento = [dataUTC ,val[1],parseInt(valor)];
+						lista_global.push(elemento);
 					}
 
-					if (valor > maxDenseDisplay){
-						maxDenseDisplay = valor;
-					}
-					
-					var dataUTC = Date.UTC(dataFormato[0],dataFormato[1]-1,dataFormato[2]);
-					var dataBR  = dataFormato[0]+"-"+dataFormato[1]+"-"+dataFormato[2];
-					var dado = [dataBR,val[1],valor];
-					lista_datas.push(dado);
-				
-					var elemento = [dataUTC ,val[1],parseInt(valor)];
-					lista_global.push(elemento);
 				}
 				else {
 					// primeira linha
 					if ($("#lugar").val() == "teste") {
-						console.log($('#energia option').size());
 						if ($('#energia option').size() < 20){
 							$('#energia').empty();
 								
@@ -276,7 +347,9 @@ function abreDados(ano, lugar){
 						}
 						
 						if (null == $("#energia").val()){
+							$('#energia').append($("<option>-</option>").attr("value","-").text("-")); 
 							$('#energia').append($("<option></option>").attr("value","Média").text("Average")); 
+							$('#energia').val('Média');
 
 							for(var i=1; i<=val.length; i++){
 								$('#energia').append($("<option></option>").attr("value",i).text(val[i-1])); 
@@ -287,8 +360,21 @@ function abreDados(ano, lugar){
 				}
 			});
 			
-			var fonte = $('#energia option:selected').text();
-			$("#denseTexto").html("Dense Display Pixel - Enery Source: <b>" + fonte + "</b> - Maximum consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
+			var valorEnergia = $('#energia option:selected').text();
+			var valorGrupo   = $('#grupo option:selected').text();
+			var textoHtml 	 = "";
+
+			if (valorEnergia == "-" && valorGrupo == "-") {
+				textoHtml = "";
+			}
+			else if (valorEnergia != "-") {
+				textoHtml = "- Energy selected: <b>" + valorEnergia + "</b>";
+			}
+			else if (valorGrupo != "-") {
+				textoHtml = "- Group selected: <b>" + valorGrupo + "</b>";
+			}
+
+			$("#denseTexto").html("Annual / Monthly View " + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
 			$("#heatmapHistoricoTexto").html("Monthly history : " + $("#energia option:selected").text());
 
 			chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
@@ -329,7 +415,7 @@ function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay){
 	dataInicioSemana = formatarData(lista_dias[0]);
 	dataFimSemana = formatarData(lista_dias[6]);
 	
-	$("#heatmapTexto").html("Heatmap Weekly - Week selected: <b>" + semana_selecionada + "</b> - Start: <b>" + dataInicioSemana + "</b> - End: <b>" + dataFimSemana + "</b>");
+	$("#heatmapTexto").html("Weekly View - Week selected: <b>" + semana_selecionada + "</b> - Start: <b>" + dataInicioSemana + "</b> - End: <b>" + dataFimSemana + "</b>");
 
 	var arrayValorMedioLinha1 = [], arrayValorMedioLinha2 = [], arrayValorMedioLinha3 = [], arrayValorMedioLinha4 = [], arrayValorMedioLinha5 = [], arrayValorMedioLinha6= [], arrayValorMedioLinha7 = [];
 	var arrayValorMedioLinhaX1 = [], arrayValorMedioLinhaX2 = [], arrayValorMedioLinhaX3 = [], arrayValorMedioLinhaX4 = [], arrayValorMedioLinhaX5 = [], arrayValorMedioLinhaX6= [], arrayValorMedioLinhaX7 = [], arrayValorMedioLinhaX8 = [], arrayValorMedioLinhaX9 = [], arrayValorMedioLinhaX10 = [], arrayValorMedioLinhaX11 = [], arrayValorMedioLinhaX12 = [], arrayValorMedioLinhaX13 = [], arrayValorMedioLinhaX14 = [], arrayValorMedioLinhaX15 = [], arrayValorMedioLinhaX16 = [], arrayValorMedioLinhaX17 = [], arrayValorMedioLinhaX18 = [], arrayValorMedioLinhaX19 = [], arrayValorMedioLinhaX20 = [], arrayValorMedioLinhaX21 = [], arrayValorMedioLinhaX22 = [], arrayValorMedioLinhaX23 = [], arrayValorMedioLinhaX24 = [];
@@ -1115,7 +1201,6 @@ function retornaMediaGeometrica(lista){
 }
 
 function round(valor){
-	console.log(valor)
 	var str = valor.toFixed(2); 
 	var number = Number(str);
 	return number;
@@ -1132,11 +1217,8 @@ function retornaMediaHarmonica(lista){
 }
 
 function retornaErroPadrao(lista, desvioPadrao){
-	console.log("lista", lista);
-	console.log("desvioPadrao", desvioPadrao);
 	var tamanhoAmostra = lista.length;
 	var raizQuadrada = Math.sqrt(tamanhoAmostra);
-	console.log("saida",  desvioPadrao / raizQuadrada);
 	return desvioPadrao / raizQuadrada;
 }
 
