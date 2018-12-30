@@ -1,5 +1,5 @@
 function abreRelogioManha(arrayPieManha, dia, dia_semana){
-	$("#relogioTexto").html("Clock View- Consumption of the two shifts of the day <b>" + dia + ' </b>-<b>' + dia_semana +'</b>');
+	$("#relogioTexto").html("Clock View - Consumption of the two shifts of the day <b>" + dia + ' </b>-<b>' + dia_semana +'</b>');
 	
 	var relogio_manha = {
 		chart: {

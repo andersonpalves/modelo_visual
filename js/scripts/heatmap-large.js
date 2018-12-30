@@ -366,16 +366,19 @@ function abreDados(ano, lugar){
 
 			if (valorEnergia == "-" && valorGrupo == "-") {
 				textoHtml = "";
+				tracoHtml = "";
 			}
 			else if (valorEnergia != "-") {
-				textoHtml = "- Energy selected: <b>" + valorEnergia + "</b>";
+				textoHtml = "Energy selected: <b>" + valorEnergia + "</b>";
+				tracoHtml = "- ";
 			}
 			else if (valorGrupo != "-") {
-				textoHtml = "- Group selected: <b>" + valorGrupo + "</b>";
+				textoHtml = "Group selected: <b>" + valorGrupo + "</b>";
+				tracoHtml = "- ";
 			}
 
-			$("#denseTexto").html("Annual / Monthly View " + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
-			$("#heatmapHistoricoTexto").html("Monthly history : " + $("#energia option:selected").text());
+			$("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
+			$("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
 
 			chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
 			

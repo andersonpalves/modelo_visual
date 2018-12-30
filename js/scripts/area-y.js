@@ -74,7 +74,8 @@ function abreGraficoHoras(grafico, pontos, pontosMinimos, pontosMaximos, pontosM
 				marker: {
 					symbol: 'triangle-down',
 					radius: 6
-				}
+				},
+				visible: false
 			},
 			{
 				name: "AVG",
@@ -83,7 +84,8 @@ function abreGraficoHoras(grafico, pontos, pontosMinimos, pontosMaximos, pontosM
 				marker: {
 					symbol: 'diamond',
 					radius: 6
-				}
+				},
+				visible: false
 			},
 			{
 				name: "Median",
@@ -92,7 +94,8 @@ function abreGraficoHoras(grafico, pontos, pontosMinimos, pontosMaximos, pontosM
 				marker: {
 					symbol: 'diamond',
 					radius: 6
-				}
+				},
+				visible: false
 			},
 			{
 				name: "Max.",
@@ -101,7 +104,8 @@ function abreGraficoHoras(grafico, pontos, pontosMinimos, pontosMaximos, pontosM
 				marker: {
 					symbol: 'triangle',
 					radius: 6
-				}
+				},
+				visible: false
 			}
 		],
 		navigation: {

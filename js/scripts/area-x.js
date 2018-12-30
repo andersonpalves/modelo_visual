@@ -87,7 +87,8 @@ function abreGraficoDias(grafico, pontos, pontosMinimos, pontosMedios, pontosMax
 				marker: {
 					symbol: 'triangle-down',
 					radius: 6
-				}
+				},
+				visible: false
 			},
 			{
 				name: "AVG",
@@ -96,7 +97,8 @@ function abreGraficoDias(grafico, pontos, pontosMinimos, pontosMedios, pontosMax
 				marker: {
 					symbol: 'diamond',
 					radius: 6
-				}
+				},
+				visible: false
 			},
 			{
 				name: "Median",
@@ -105,7 +107,8 @@ function abreGraficoDias(grafico, pontos, pontosMinimos, pontosMedios, pontosMax
 				marker: {
 					symbol: 'diamond',
 					radius: 6
-				}
+				},
+				visible: false
 			},
 			{
 				name: "Max.",
@@ -114,7 +117,8 @@ function abreGraficoDias(grafico, pontos, pontosMinimos, pontosMedios, pontosMax
 				marker: {
 					symbol: 'triangle',
 					radius: 6
-				}
+				},
+				visible: false
 			}
 		],
 		navigation: {
