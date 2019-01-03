@@ -4,8 +4,11 @@ var lista_heatmap = [];
 var lista_dados = [];
 var lista_dias = [];
 var lista_series_historico = [];
+var lista_conteudo_dense = [];
 var chart_heatmap_large, chart_heatmap_color, chart_dias, chart_horas, app, chart_relogio_tarde, chart_historico, chart_historico_geral;
+var chart_heatmap_large_init;
 var semana_selecionada, lugar_selecionado;
+var heatmap_large;
 var maxDenseDisplay = 0;
 var selecaoPorGrupo = false;
 var valoresEletricidade = [0, 1, 2, 3, 4, 5];
@@ -14,8 +17,28 @@ var ELETRICIDADE = 1;
 var GAS = 2;
 var ELETRICIDADE_TEXTO = "Eletricidade";
 var GAS_TEXTO = "Gas";
-
+var dados_dense_estado_inicial = []
 $(function () {
+	$('#rangeValuesDense').change(function() { 
+		abreDados($("#ano").val(), $("#lugar").val());
+		$('#heatmapMaximo').html("<b>" + parseInt($('#rangeValuesDense').val()) + "<b>");
+
+		var dados = chart_heatmap_large.series[0].data;
+		var valorRange = parseInt($('#rangeValuesDense').val());
+		var filteredData = dados.map(function(item) {
+			var valorFiltrado = null;
+			if (item.value >= valorRange){
+				valorFiltrado = item.value;
+			}
+
+			return [item.x, item.y, valorFiltrado];
+		});
+		
+
+		heatmap_large.series[0].data = filteredData;
+		chart_heatmap_large = new Highcharts.Chart(heatmap_large);
+	});
+
 	$("#lugar").change(function() {
 		$("#grupo").val('-');
 		$("#energia").val('-');
@@ -76,7 +99,6 @@ function ajustarTextos(){
 }
 
 function abreDados(ano, lugar){
-
 	$(".botoes-graficos").hide();
 	ajustarTextos();
 	
@@ -379,6 +401,8 @@ function abreDados(ano, lugar){
 
 			$("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
 			$("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
+			//$('#heatmapMaximo').html("<b>" + parseInt(maxDenseDisplay) + "</b>");
+			$('#rangeValuesDense').attr('max', parseInt(maxDenseDisplay));
 
 			chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
 			
@@ -396,6 +420,7 @@ function abreDados(ano, lugar){
 			
 			heatmap_large.series[0].data = lista_global;
 			heatmap_large.colorAxis.max = maxDenseDisplay;
+
 			chart_heatmap_large = new Highcharts.Chart(heatmap_large);
 			
 			carregarHistorico();
@@ -977,6 +1002,18 @@ function getLoadDatas(code) {
 		function(lista_datas){
 			if (lista_datas[0] == code){
 				return lista_datas;
+			}	
+		}
+	);
+}
+
+function getEstadoInicial(data, hora) {
+	
+	return dados_dense_estado_inicial.filter(
+		function(valores){
+			if (valores[0] == data && valores[1] == hora){
+				console.log("getEstadoInicial", dados_dense_estado_inicial[2]);
+				return dados_dense_estado_inicial[2];
 			}	
 		}
 	);
