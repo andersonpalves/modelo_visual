@@ -78,7 +78,7 @@
 					<div id="heatmap-color"></div>
 					<div id="rangeHeatmap">
 						<input id="rangeValuesHeatmap" type="range" value="0" name="points" min="0">
-						<span>Values equal or grater than: </span><span id="heatmapMaximo"><b>0</b></span>
+						<span>Values equal or grater than: </span><span id="heatmapRange"><b>0</b></span>
 					</div>
 				</div>
 				</div>

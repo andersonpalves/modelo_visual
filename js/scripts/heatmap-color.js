@@ -1,4 +1,3 @@
-
 var heatmapcolor = {
 	chart: {
 		renderTo: 'heatmap-color',

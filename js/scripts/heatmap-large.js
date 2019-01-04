@@ -5,6 +5,7 @@ var lista_dados = [];
 var lista_dias = [];
 var lista_series_historico = [];
 var lista_conteudo_dense = [];
+var lista_itens = [];
 var chart_heatmap_large, chart_heatmap_color, chart_dias, chart_horas, app, chart_relogio_tarde, chart_historico, chart_historico_geral;
 var chart_heatmap_large_init;
 var semana_selecionada, lugar_selecionado;
@@ -17,7 +18,6 @@ var ELETRICIDADE = 1;
 var GAS = 2;
 var ELETRICIDADE_TEXTO = "Eletricidade";
 var GAS_TEXTO = "Gas";
-var dados_dense_estado_inicial = []
 
 $(function () {
 	$('#rangeValuesDense').change(function() { 
@@ -38,6 +38,18 @@ $(function () {
 		heatmap_large.series[0].data = filteredData;
 		chart_heatmap_large = new Highcharts.Chart(heatmap_large);
 	});
+
+	$('#rangeValuesHeatmap').change(function() {
+		$('#heatmapRange').html("<b>" + parseInt($('#rangeValuesHeatmap').val()) + "<b>");
+		var dados = heatmapcolor.series[0].data;
+		var valorRange = parseInt($('#rangeValuesHeatmap').val());
+		var filteredData = lista_itens.filter(p => {
+			return p[2] >= valorRange;
+		})
+
+		heatmapcolor.series[0].data = filteredData;
+		chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
+	});	
 
 	$("#lugar").change(function() {
 		$('#denseRange').html("<b>0<b>");
@@ -201,7 +213,7 @@ function abreDados(ano, lugar){
 					events: {
 						click: function (e) {
 							var retorno = getWeekNumber(new Date(parseInt(e.point.x)));
-							var lista_itens = [];
+							lista_itens = [];
 							semana_selecionada = retorno[1];
 
 							$.post( "datas_semanais.php", { ano: retorno[0], semana: retorno[1] }, function( data ) {
@@ -228,10 +240,6 @@ function abreDados(ano, lugar){
 											valor = parseInt(valor);
 										}
 
-										if (valor > maxHeatmap){
-											maxHeatmap = valor;
-										}
-
 										item.push(i, j, valor);
 										lista_itens.push(item);
 									}
@@ -249,7 +257,8 @@ function abreDados(ano, lugar){
 
 							$("#heatmap-color-semana").show();
 							$("#heatmap-color").show();
-							console.log(parseInt(maxHeatmap));
+							$('#heatmapRange').html("<b>0</b>");
+							$('#rangeValuesHeatmap').val(0);
 							
 							carregaGraficoDias(null);
 							chart_dias = new Highcharts.Chart(dias);
@@ -412,7 +421,6 @@ function abreDados(ano, lugar){
 	
 				$("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
 				$("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
-				$("#rangeValuesDense").attr("max", parseInt(maxDenseDisplay));
 
 				chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
 				
@@ -687,6 +695,17 @@ function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay){
 								[posicaoMaximoX17,16],[posicaoMaximoX18,17],[posicaoMaximoX19,18],[posicaoMaximoX20,19],
 								[posicaoMaximoX21,20],[posicaoMaximoX22,21],[posicaoMaximoX23,22],[posicaoMaximoX24,23],
 								];
+
+	for (a=0; a<heatmapcolor.series[0].data.length; a++){
+		var valor = heatmapcolor.series[0].data[a][2];
+		if (valor > maxHeatmap){
+			maxHeatmap = valor;
+		}
+	}
+
+	$("#rangeValuesHeatmap").attr("max", parseInt(maxHeatmap));
+
+
 }
 
 function carregaGraficoDias(valores){
