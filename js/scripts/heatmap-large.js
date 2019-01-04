@@ -9,7 +9,7 @@ var chart_heatmap_large, chart_heatmap_color, chart_dias, chart_horas, app, char
 var chart_heatmap_large_init;
 var semana_selecionada, lugar_selecionado;
 var heatmap_large;
-var maxDenseDisplay = 0;
+var maxDenseDisplay = 0, maxHeatmap = 0;
 var selecaoPorGrupo = false;
 var valoresEletricidade = [0, 1, 2, 3, 4, 5];
 var valoresGas = [6, 7, 8, 9];
@@ -18,10 +18,11 @@ var GAS = 2;
 var ELETRICIDADE_TEXTO = "Eletricidade";
 var GAS_TEXTO = "Gas";
 var dados_dense_estado_inicial = []
+
 $(function () {
 	$('#rangeValuesDense').change(function() { 
 		abreDados($("#ano").val(), $("#lugar").val());
-		$('#heatmapMaximo').html("<b>" + parseInt($('#rangeValuesDense').val()) + "<b>");
+		$('#denseRange').html("<b>" + parseInt($('#rangeValuesDense').val()) + "<b>");
 
 		var dados = chart_heatmap_large.series[0].data;
 		var valorRange = parseInt($('#rangeValuesDense').val());
@@ -33,13 +34,13 @@ $(function () {
 
 			return [item.x, item.y, valorFiltrado];
 		});
-		
 
 		heatmap_large.series[0].data = filteredData;
 		chart_heatmap_large = new Highcharts.Chart(heatmap_large);
 	});
 
 	$("#lugar").change(function() {
+		$('#denseRange').html("<b>0<b>");
 		$("#grupo").val('-');
 		$("#energia").val('-');
 		selecaoPorGrupo = false;
@@ -47,6 +48,7 @@ $(function () {
 	});
 	
 	$("#ano").change(function() {
+		$('#denseRange').html("<b>0<b>");
 		$("#grupo").val('-');
 		$("#energia").val('-');
 		selecaoPorGrupo = false;
@@ -54,12 +56,14 @@ $(function () {
 	});
 	
 	$("#energia").change(function() {
+		$('#denseRange').html("<b>0<b>");
 		$("#grupo").val('-');
 		selecaoPorGrupo = false;
 		abreDadosJson();
 	});
 
 	$("#grupo").change(function() {
+		$('#denseRange').html("<b>0<b>");
 		$("#energia").val('-');
 		selecaoPorGrupo = true;
 		abreDadosJson();
@@ -224,6 +228,10 @@ function abreDados(ano, lugar){
 											valor = parseInt(valor);
 										}
 
+										if (valor > maxHeatmap){
+											maxHeatmap = valor;
+										}
+
 										item.push(i, j, valor);
 										lista_itens.push(item);
 									}
@@ -241,6 +249,7 @@ function abreDados(ano, lugar){
 
 							$("#heatmap-color-semana").show();
 							$("#heatmap-color").show();
+							console.log(parseInt(maxHeatmap));
 							
 							carregaGraficoDias(null);
 							chart_dias = new Highcharts.Chart(dias);
@@ -280,152 +289,154 @@ function abreDados(ano, lugar){
 		var file = ano+"_"+lugar+".json";
 		lugar_selecionado = lugar;
 
-		$.getJSON(file, function(data){
-			maxDenseDisplay = 0;
+		$.ajax({
+			url: file,
+			success: function (data) {
+				maxDenseDisplay = 0;
 			
-			lista_datas = [];
-			dados_heat = [];
-			lista_global = []
-			
-			$.each(data, function (key, val) {
-				if (key != 0) {
-					if (selecaoPorGrupo == true) {
-						var grupo = $("#grupo").val();
-						var valorAgrupado = 0;
-
-						for(j=0; j<=val[2].length; j++){
-							if (grupo == ELETRICIDADE_TEXTO && verificaGrupoPorEnergia(j) == ELETRICIDADE){
-								valorAgrupado = valorAgrupado + val[2][j];
+				lista_datas = [];
+				dados_heat = [];
+				lista_global = []
+				
+				$.each(data, function (key, val) {
+					if (key != 0) {
+						if (selecaoPorGrupo == true) {
+							var grupo = $("#grupo").val();
+							var valorAgrupado = 0;
+	
+							for(j=0; j<=val[2].length; j++){
+								if (grupo == ELETRICIDADE_TEXTO && verificaGrupoPorEnergia(j) == ELETRICIDADE){
+									valorAgrupado = valorAgrupado + val[2][j];
+								}
+								else if (grupo == GAS_TEXTO && verificaGrupoPorEnergia(j) == GAS){
+									valorAgrupado = valorAgrupado + val[2][j];
+								}
 							}
-							else if (grupo == GAS_TEXTO && verificaGrupoPorEnergia(j) == GAS){
-								valorAgrupado = valorAgrupado + val[2][j];
+	
+							if (valorAgrupado > maxDenseDisplay){
+								maxDenseDisplay = valorAgrupado;
 							}
-						}
-
-						if (valorAgrupado > maxDenseDisplay){
-							maxDenseDisplay = valorAgrupado;
-						}
+							
+							var dataFormato = val[0].split('-');
+							var dataUTC = Date.UTC(dataFormato[0],dataFormato[1]-1,dataFormato[2]);
+							var dataBR  = dataFormato[0]+"-"+dataFormato[1]+"-"+dataFormato[2];
+							var dado = [dataBR,val[1],valorAgrupado];
+							lista_datas.push(dado);
 						
-						var dataFormato = val[0].split('-');
-						var dataUTC = Date.UTC(dataFormato[0],dataFormato[1]-1,dataFormato[2]);
-						var dataBR  = dataFormato[0]+"-"+dataFormato[1]+"-"+dataFormato[2];
-						var dado = [dataBR,val[1],valorAgrupado];
-						lista_datas.push(dado);
-					
-						var elemento = [dataUTC ,val[1],parseInt(valorAgrupado)];
-						lista_global.push(elemento);
+							var elemento = [dataUTC ,val[1],parseInt(valorAgrupado)];
+							lista_global.push(elemento);
+						}
+						else {
+							var dataFormato = val[0].split('-');
+							var energia = $("#energia").val();
+							var valor = 0;
+	
+							if (energia == "Média") {
+								var contadorTotal = 0;
+								for(var z=0; z<=val[2].length-1; z++){
+									contadorTotal += parseInt(val[2][z]);
+								}
+		
+								valor = contadorTotal / val[2].length;
+							}
+							else{
+								valor = val[2][energia-1];
+							}
+		
+							if (valor > maxDenseDisplay){
+								maxDenseDisplay = valor;
+							}
+							
+							var dataUTC = Date.UTC(dataFormato[0],dataFormato[1]-1,dataFormato[2]);
+							var dataBR  = dataFormato[0]+"-"+dataFormato[1]+"-"+dataFormato[2];
+							var dado = [dataBR,val[1],valor];
+							lista_datas.push(dado);
+						
+							var elemento = [dataUTC ,val[1],parseInt(valor)];
+							lista_global.push(elemento);
+						}
+	
 					}
 					else {
-						var dataFormato = val[0].split('-');
-						var energia = $("#energia").val();
-						var valor = 0;
-
-						if (energia == "Média") {
-							var contadorTotal = 0;
-							for(var z=0; z<=val[2].length-1; z++){
-								contadorTotal += parseInt(val[2][z]);
-							}
+						// primeira linha
+						if ($("#lugar").val() == "teste") {
+							if ($('#energia option').size() < 20){
+								$('#energia').empty();
+									
+								if (null == $("#energia").val()){
+									$('#energia').empty();
+									$('#energia').append($("<option></option>").attr("value","Média").text("Average")); 
 	
-							valor = contadorTotal / val[2].length;
+									for(var i=1; i<=val.length; i++){
+										$('#energia').append($("<option></option>").attr("value",i).text(val[i-1])); 
+									}
+	
+								}
+							}
 						}
 						else{
-							valor = val[2][energia-1];
-						}
-	
-						if (valor > maxDenseDisplay){
-							maxDenseDisplay = valor;
-						}
-						
-						var dataUTC = Date.UTC(dataFormato[0],dataFormato[1]-1,dataFormato[2]);
-						var dataBR  = dataFormato[0]+"-"+dataFormato[1]+"-"+dataFormato[2];
-						var dado = [dataBR,val[1],valor];
-						lista_datas.push(dado);
-					
-						var elemento = [dataUTC ,val[1],parseInt(valor)];
-						lista_global.push(elemento);
-					}
-
-				}
-				else {
-					// primeira linha
-					if ($("#lugar").val() == "teste") {
-						if ($('#energia option').size() < 20){
-							$('#energia').empty();
-								
-							if (null == $("#energia").val()){
+							if ($('#energia option').size() > 20){
 								$('#energia').empty();
+							}
+							
+							if (null == $("#energia").val()){
+								$('#energia').append($("<option>-</option>").attr("value","-").text("-")); 
 								$('#energia').append($("<option></option>").attr("value","Média").text("Average")); 
-
+								$('#energia').val('Média');
+	
 								for(var i=1; i<=val.length; i++){
 									$('#energia').append($("<option></option>").attr("value",i).text(val[i-1])); 
 								}
-
+	
 							}
 						}
 					}
-					else{
-						if ($('#energia option').size() > 20){
-							$('#energia').empty();
-						}
-						
-						if (null == $("#energia").val()){
-							$('#energia').append($("<option>-</option>").attr("value","-").text("-")); 
-							$('#energia').append($("<option></option>").attr("value","Média").text("Average")); 
-							$('#energia').val('Média');
-
-							for(var i=1; i<=val.length; i++){
-								$('#energia').append($("<option></option>").attr("value",i).text(val[i-1])); 
-							}
-
-						}
-					}
+				});
+				
+				var valorEnergia = $('#energia option:selected').text();
+				var valorGrupo   = $('#grupo option:selected').text();
+				var textoHtml 	 = "";
+	
+				if (valorEnergia == "-" && valorGrupo == "-") {
+					textoHtml = "";
+					tracoHtml = "";
 				}
-			});
-			
-			var valorEnergia = $('#energia option:selected').text();
-			var valorGrupo   = $('#grupo option:selected').text();
-			var textoHtml 	 = "";
+				else if (valorEnergia != "-") {
+					textoHtml = "Energy selected: <b>" + valorEnergia + "</b>";
+					tracoHtml = "- ";
+				}
+				else if (valorGrupo != "-") {
+					textoHtml = "Group selected: <b>" + valorGrupo + "</b>";
+					tracoHtml = "- ";
+				}
+	
+				$("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
+				$("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
+				$("#rangeValuesDense").attr("max", parseInt(maxDenseDisplay));
 
-			if (valorEnergia == "-" && valorGrupo == "-") {
-				textoHtml = "";
-				tracoHtml = "";
-			}
-			else if (valorEnergia != "-") {
-				textoHtml = "Energy selected: <b>" + valorEnergia + "</b>";
-				tracoHtml = "- ";
-			}
-			else if (valorGrupo != "-") {
-				textoHtml = "Group selected: <b>" + valorGrupo + "</b>";
-				tracoHtml = "- ";
-			}
+				chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
+				
+				carregaGraficoDias(null);
+				chart_dias = new Highcharts.Chart(dias);
+				
+				carregaGraficoHoras(null);
+				chart_horas = new Highcharts.Chart(horas);
+				
+				carregaRelogioManha();
+				chart_horas = new Highcharts.Chart(relogio_manha);
+				
+				carregaRelogioTarde();
+				chart_horas = new Highcharts.Chart(relogio_tarde);
 
-			$("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
-			$("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
-			//$('#heatmapMaximo').html("<b>" + parseInt(maxDenseDisplay) + "</b>");
-			$('#rangeValuesDense').attr('max', parseInt(maxDenseDisplay));
-
-			chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
-			
-			carregaGraficoDias(null);
-			chart_dias = new Highcharts.Chart(dias);
-			
-			carregaGraficoHoras(null);
-			chart_horas = new Highcharts.Chart(horas);
-			
-			carregaRelogioManha();
-			chart_horas = new Highcharts.Chart(relogio_manha);
-			
-			carregaRelogioTarde();
-			chart_horas = new Highcharts.Chart(relogio_tarde);
-			
-			heatmap_large.series[0].data = lista_global;
-			heatmap_large.colorAxis.max = maxDenseDisplay;
-
-			chart_heatmap_large = new Highcharts.Chart(heatmap_large);
-			
-			carregarHistorico();
-			carregarHistoricoGeral(file);
-		});
+				carregarHistorico();
+				carregarHistoricoGeral(file);
+	
+				heatmap_large.series[0].data = lista_global;
+				heatmap_large.colorAxis.max = maxDenseDisplay;
+				chart_heatmap_large = new Highcharts.Chart(heatmap_large);
+			},
+            async: false
+        });
 }
 
 function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay){

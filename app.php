@@ -61,7 +61,7 @@
 					<div id="ht_large"></div>
 					<div>
 						<input id="rangeValuesDense" type="range" value="0" name="points" min="0">
-						<span>Values equal or grater than: </span><span id="heatmapMaximo"><b>0</b></span>
+						<span>Values equal or grater than: </span><span id="denseRange"><b>0</b></span>
 					</div>
 				</div>
 			</div>
@@ -76,9 +76,9 @@
 				</div>
 				<div class="panel-body">
 					<div id="heatmap-color"></div>
-					<div>
-						<input id="valuesRange" type="range" value="0" name="points" min="0" max="100">
-						<span>Values equal or grater than: </span><span id="heatmapMaximo"></span>
+					<div id="rangeHeatmap">
+						<input id="rangeValuesHeatmap" type="range" value="0" name="points" min="0">
+						<span>Values equal or grater than: </span><span id="heatmapMaximo"><b>0</b></span>
 					</div>
 				</div>
 				</div>
