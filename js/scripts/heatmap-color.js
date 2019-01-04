@@ -197,6 +197,8 @@ var heatmapcolor = {
 
 function abreGraficos(ponto, e, semana_selecionada, data){
 
+	heatmapcolor.series[0].data = lista_itens;
+
 	var arrayValoresX = [], arrayValoresY = [], arrayPieManha = [], arrayPieTarde = [];
 	var arrayValoresMinimosX = [], arrayValoresMediosX = [], arrayValoresMaximosX = [], arrayValoresMedianaX = [];
 	var arrayValoresMinimosY = [], arrayValoresMediosY = [], arrayValoresMaximosY = [], arrayValoresMedianaY = [];

@@ -41,7 +41,6 @@ $(function () {
 
 	$('#rangeValuesHeatmap').change(function() {
 		$('#heatmapRange').html("<b>" + parseInt($('#rangeValuesHeatmap').val()) + "<b>");
-		var dados = heatmapcolor.series[0].data;
 		var valorRange = parseInt($('#rangeValuesHeatmap').val());
 		var filteredData = lista_itens.filter(p => {
 			return p[2] >= valorRange;
@@ -53,6 +52,7 @@ $(function () {
 
 	$("#lugar").change(function() {
 		$('#denseRange').html("<b>0<b>");
+		$("#rangeValuesDense").attr("max", 0);
 		$("#grupo").val('-');
 		$("#energia").val('-');
 		selecaoPorGrupo = false;
@@ -61,24 +61,33 @@ $(function () {
 	
 	$("#ano").change(function() {
 		$('#denseRange').html("<b>0<b>");
+		$("#rangeValuesDense").attr("max", 0);
 		$("#grupo").val('-');
 		$("#energia").val('-');
 		selecaoPorGrupo = false;
 		abreDadosJson();
+		heatmapcolor.series[0].data = [];
+		chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
 	});
 	
 	$("#energia").change(function() {
 		$('#denseRange').html("<b>0<b>");
+		$("#rangeValuesDense").attr("max", 0);
 		$("#grupo").val('-');
 		selecaoPorGrupo = false;
 		abreDadosJson();
+		heatmapcolor.series[0].data = [];
+		chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
 	});
 
 	$("#grupo").change(function() {
 		$('#denseRange').html("<b>0<b>");
+		$("#rangeValuesDense").attr("max", 0);
 		$("#energia").val('-');
 		selecaoPorGrupo = true;
 		abreDadosJson();
+		heatmapcolor.series[0].data = [];
+		chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
 	});
 	
 	abreDados($("#ano").val(), $("#lugar").val());
@@ -421,7 +430,9 @@ function abreDados(ano, lugar){
 	
 				$("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
 				$("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
+				$("#rangeValuesDense").attr("max", parseInt(maxDenseDisplay));
 
+				console.log(99999)
 				chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
 				
 				carregaGraficoDias(null);
@@ -441,6 +452,7 @@ function abreDados(ano, lugar){
 	
 				heatmap_large.series[0].data = lista_global;
 				heatmap_large.colorAxis.max = maxDenseDisplay;
+				
 				chart_heatmap_large = new Highcharts.Chart(heatmap_large);
 			},
             async: false
@@ -448,7 +460,7 @@ function abreDados(ano, lugar){
 }
 
 function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay){
-	
+	console.log(0000);
 	heatmapcolor.series[0].data=lista_itens;
 	heatmapcolor.colorAxis.max = parseInt(maxDenseDisplay);
 	heatmapcolor.xAxis.categories = ['Monday<br><b>' + formatarData(lista_dias[0]), 
@@ -469,8 +481,6 @@ function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay){
 	var mediaX = 0, mediaY = 0;
 	var minimoL1 = 0, minimoL2 = 0, minimoL3 = 0, minimoL4 = 0, minimoL5 = 0, minimoL6 = 0, minimoL7 = 0;
 	var maximoL1 = 0, maximoL2 = 0, maximoL3 = 0, maximoL4 = 0, maximoL5 = 0, maximoL6 = 0, maximoL7 = 0;
-	var mediaL1 = 0, mediaL2 = 0, mediaL3 = 0, mediaL4 = 0, mediaL5 = 0, mediaL6 = 0, mediaL7 = 0;
-	var contador = 0, contandorX = 0;
 
 	for(var l=0; l<=6; l++){
 		if(l == 0){
@@ -686,7 +696,6 @@ function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay){
 								[posicaoMinimoX21,20],[posicaoMinimoX22,21],[posicaoMinimoX23,22],[posicaoMinimoX24,23],
 								];
 
-
 	heatmapcolor.series[4].data=[
 								[posicaoMaximoX1,0],[posicaoMaximoX2,1],[posicaoMaximoX3,2],[posicaoMaximoX4,3],
 								[posicaoMaximoX5,4],[posicaoMaximoX6,5],[posicaoMaximoX7,6],[posicaoMaximoX8,7],
@@ -695,6 +704,8 @@ function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay){
 								[posicaoMaximoX17,16],[posicaoMaximoX18,17],[posicaoMaximoX19,18],[posicaoMaximoX20,19],
 								[posicaoMaximoX21,20],[posicaoMaximoX22,21],[posicaoMaximoX23,22],[posicaoMaximoX24,23],
 								];
+	
+	maxHeatmap = 0;
 
 	for (a=0; a<heatmapcolor.series[0].data.length; a++){
 		var valor = heatmapcolor.series[0].data[a][2];
@@ -704,7 +715,6 @@ function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay){
 	}
 
 	$("#rangeValuesHeatmap").attr("max", parseInt(maxHeatmap));
-
 
 }
 

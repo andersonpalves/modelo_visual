@@ -23,7 +23,7 @@
 					<option value="teste">1140 Energies</option>
 				</select>
 			</li>
-		  <li><span class="texto">Year:</span>
+		  <li><span class="texto">Year: </span>
 				<select id="ano">
 					<option value="2004" selected>2004</option>
 					<option value="2005">2005</option>
@@ -32,10 +32,10 @@
 				</select>
 			</li>
 		  <li>
-				<span class="texto">Energy Source:</span><select id="energia"></select>
+				<span class="texto">Energy Source: </span><select id="energia"></select>
 			</li>
 			<li>
-				<span class="texto">Group Energy Source:</span>
+				<span class="texto">Group Energy Source: </span>
 				<select id="grupo">
 				  <option value="-">-</option>
 					<option value="Eletricidade">Eletricidade</option>
