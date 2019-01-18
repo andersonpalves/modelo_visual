@@ -10,7 +10,7 @@ var chart_heatmap_large, chart_heatmap_color, chart_dias, chart_horas, app, char
 var chart_heatmap_large_init;
 var semana_selecionada, lugar_selecionado;
 var heatmap_large;
-var maxDenseDisplay = 0, maxHeatmap = 0;
+var maxDenseDisplay = 0, maxHeatmap = 0, tamanhoX = 0;
 var selecaoPorGrupo = false;
 var valoresEletricidade = [0, 1, 2, 3, 4, 5];
 var valoresGas = [6, 7, 8, 9];
@@ -21,6 +21,10 @@ var GAS_TEXTO = "Gas";
 
 $(function () {
 	$('#rangeValuesDense').change(function() { 
+		if (tamanhoX == 0) {
+			tamanhoX = chart_heatmap_large.chartWidth;
+		}
+
 		abreDados($("#ano").val(), $("#lugar").val());
 		$('#denseRange').html("<b>" + parseInt($('#rangeValuesDense').val()) + "<b>");
 
@@ -37,6 +41,11 @@ $(function () {
 
 		heatmap_large.series[0].data = filteredData;
 		chart_heatmap_large = new Highcharts.Chart(heatmap_large);
+
+		if (chart_heatmap_large.plotSizeX >= 1200) {
+			chart_heatmap_large.setSize(1300, 580);
+		}
+
 	});
 
 	$('#rangeValuesHeatmap').change(function() {
@@ -432,7 +441,6 @@ function abreDados(ano, lugar){
 				$("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
 				$("#rangeValuesDense").attr("max", parseInt(maxDenseDisplay));
 
-				console.log(99999)
 				chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
 				
 				carregaGraficoDias(null);
@@ -460,7 +468,6 @@ function abreDados(ano, lugar){
 }
 
 function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay){
-	console.log(0000);
 	heatmapcolor.series[0].data=lista_itens;
 	heatmapcolor.colorAxis.max = parseInt(maxDenseDisplay);
 	heatmapcolor.xAxis.categories = ['Monday<br><b>' + formatarData(lista_dias[0]), 
@@ -1273,6 +1280,8 @@ function retornaVariancia(array) {
 }
 
 function retornaDesvioPadrao(array) {
+	console.log("lista - retornaErroPadrao", array);
+	console.log("retornaErroPadrao", Math.sqrt(retornaVariancia(array)));
 	return Math.sqrt(retornaVariancia(array));
 }
 
@@ -1297,8 +1306,10 @@ function retornaMediaHarmonica(lista){
 }
 
 function retornaErroPadrao(lista, desvioPadrao){
+	console.log("lista - retornaErroPadrao", lista);
 	var tamanhoAmostra = lista.length;
 	var raizQuadrada = Math.sqrt(tamanhoAmostra);
+	console.log("retornaErroPadrao", desvioPadrao / raizQuadrada);
 	return desvioPadrao / raizQuadrada;
 }
 

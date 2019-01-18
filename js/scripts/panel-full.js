@@ -8,13 +8,13 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-			chart_heatmap_large.setSize(1300, 580);
+            chart_heatmap_large.setSize(1300, 580);
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
         {
             $this.children('i').removeClass('glyphicon-resize-small');
             $this.children('i').addClass('glyphicon-resize-full');
-			chart_heatmap_large.setSize(chart_heatmap_large.containerWidth, 360);
+			chart_heatmap_large.setSize(636, 360);
         }
         $(this).closest('.panel').toggleClass('panel-fullscreen');		
     });
