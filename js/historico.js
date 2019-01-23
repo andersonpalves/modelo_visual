@@ -99,7 +99,7 @@ function carregarDados(nomesArquivos){
     var energia = $("#energia").val();
     var arquivos = eval(nomesArquivos);
     var retornoFinal =[];
-    var jan = 0, fev = 0, mar = 0, abr = 0, mai = 0, jun = 0, jul = 0, ago = 0, set = 0, out = 0, nov = 0, dez = 0;
+    //var jan = 0, fev = 0, mar = 0, abr = 0, mai = 0, jun = 0, jul = 0, ago = 0, set = 0, out = 0, nov = 0, dez = 0;
 	var janMedia = [], fevMedia = [], marMedia = [], abrMedia = [], maiMedia = [], junMedia = [], 
 		julMedia = [], agoMedia = [], setMedia = [], outMedia = [], novMedia = [], dezMedia = [];
     var totalArquivos = arquivos.length;
@@ -113,6 +113,7 @@ function carregarDados(nomesArquivos){
         var nome = arquivos[i];
         var anoDoArquivo = nome.substring(0,4);
         
+        var jan = 0, fev = 0, mar = 0, abr = 0, mai = 0, jun = 0, jul = 0, ago = 0, set = 0, out = 0, nov = 0, dez = 0;
         proximoAnoPrevisao = parseInt(anoDoArquivo);
         
         x.push(contador++);

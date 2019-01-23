@@ -18,17 +18,21 @@
         <ul class="nav navbar-nav">
 		  <li><span class="texto">Place: </span>
 				<select id="lugar">
-					<option value="restaurante">Restaurant</option>
+					<!--<option value="restaurante">Restaurant</option>
 					<option value="super_mercado">Super Market</option>
-					<option value="teste">1140 Energies</option>
+					<option value="teste">1140 Energies</option>-->
+					<option value="pjm">PJM</option>
 				</select>
 			</li>
 		  <li><span class="texto">Year: </span>
 				<select id="ano">
-					<option value="2004" selected>2004</option>
+					<!--<option value="2004" selected>2004</option>
+					<option value="2005" selected>2005</option>
+					<option value="2006">2006</option>
+					<option value="2016">2016</option> -->
 					<option value="2005">2005</option>
 					<option value="2006">2006</option>
-					<option value="2016">2016</option>
+					<option value="2007" selected>2007</option>
 				</select>
 			</li>
 		  <li>
