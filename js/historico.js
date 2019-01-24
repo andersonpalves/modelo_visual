@@ -243,6 +243,8 @@ function carregarDados(nomesArquivos){
     var comboEnergia = $("#energia").val() == "-" ? true : false;
     var comboGrupo = $("#grupo").val() == "-" ? true : false;
     var realizaPredicao = true;
+    var anoInicio = "2009-01-01";
+    var anoFim = "2018-01";
 
     if (comboEnergia == true && comboGrupo == true) {
         realizaPredicao = false
@@ -251,7 +253,7 @@ function carregarDados(nomesArquivos){
     if (realizaPredicao == true) {
 
         $.ajax({
-            url: "http://localhost:5000/predicoes/?valores="+valoresMeses+"&meses="+listaMeses,
+            url: "http://localhost:5000/predicoes/?valores="+valoresMeses+"&meses="+listaMeses+"&anoInicio="+anoInicio+"&anoFim="+anoFim,
             success: function (dadosJson) {
 
                 console.log("sarima", dadosJson.sarima)
