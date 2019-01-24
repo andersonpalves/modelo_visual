@@ -65,7 +65,9 @@ def login():
 	#mod =  ARIMA(data, order=(6, 1, 0))
 
 	#SARIMA
-	mod = sm.tsa.statespace.SARIMAX(data, trend='n', order=(5, 1, 0), seasonal_order=(0, 0, 0, 12))
+	#mod = sm.tsa.statespace.SARIMAX(data, trend='n', order=(1, 0, 1), seasonal_order=(1, 1, 1, 12)) novo
+	#mod = sm.tsa.statespace.SARIMAX(data, trend='n', order=(5, 1, 0), seasonal_order=(0, 0, 0, 12)) antigo
+	mod = sm.tsa.statespace.SARIMAX(data, order=(1, 0, 1), seasonal_order=(3, 0, 1, 12))
 	results = mod.fit()
 
 	start = datetime.datetime.strptime(ano_fim_parameter, "%Y-%m")

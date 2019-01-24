@@ -243,8 +243,8 @@ function carregarDados(nomesArquivos){
     var comboEnergia = $("#energia").val() == "-" ? true : false;
     var comboGrupo = $("#grupo").val() == "-" ? true : false;
     var realizaPredicao = true;
-    var anoInicio = "2009-01-01";
-    var anoFim = "2018-01";
+    var anoInicio = $("#ano option:first").val() + "-01-01";
+    var anoFim = parseInt($("#ano option:last").val()) + 1 + "-01";
 
     if (comboEnergia == true && comboGrupo == true) {
         realizaPredicao = false
