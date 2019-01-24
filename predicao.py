@@ -18,7 +18,6 @@ from statsmodels.tsa.statespace.varmax import VARMAX
 from statsmodels.tsa.holtwinters import SimpleExpSmoothing
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 
-
 from flask import Flask
 from flask import jsonify
 from flask import request
@@ -46,7 +45,7 @@ def login():
 	df.insert(loc=0,column='index',value=meses_array)
 	df.insert(loc=1,column='values',value=valores)
 
-	start = datetime.datetime.strptime("2004-01-01", "%Y-%m-%d")
+	start = datetime.datetime.strptime("2005-01-01", "%Y-%m-%d")
 	date_list = [start + relativedelta(months=x) for x in range(0,tamanho_lista)]
 	df['index'] = date_list
 
@@ -64,7 +63,7 @@ def login():
 	mod = sm.tsa.statespace.SARIMAX(data, trend='n', order=(5, 1, 0), seasonal_order=(0, 0, 0, 12))
 	results = mod.fit()
 
-	start = datetime.datetime.strptime("2007-01", "%Y-%m")
+	start = datetime.datetime.strptime("2013-01", "%Y-%m")
 	date_list = [start + relativedelta(months=x) for x in range(0,12)]
 	future = pd.DataFrame(index=date_list, columns= df.columns)
 	df = pd.concat([df, future])
@@ -77,7 +76,7 @@ def login():
 	mod = ExponentialSmoothing(data, seasonal_periods=12 ,trend='add', seasonal='add')
 	results = mod.fit()
 
-	start = datetime.datetime.strptime("2007-01", "%Y-%m")
+	start = datetime.datetime.strptime("2013-01", "%Y-%m")
 	date_list = [start + relativedelta(months=x) for x in range(0,12)]
 	future = pd.DataFrame(index=date_list, columns= df.columns)
 	df = pd.concat([df, future])
@@ -90,7 +89,7 @@ def login():
 	mod = AR(data)
 	results = mod.fit()
 
-	start = datetime.datetime.strptime("2007-01", "%Y-%m")
+	start = datetime.datetime.strptime("2013-01", "%Y-%m")
 	date_list = [start + relativedelta(months=x) for x in range(0,12)]
 	future = pd.DataFrame(index=date_list, columns= df.columns)
 	df = pd.concat([df, future])
