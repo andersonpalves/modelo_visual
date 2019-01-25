@@ -193,7 +193,6 @@
 	<script src="js/bootstrap.js" type="text/javascript"></script>
 
 	<script src="js/highchart/highcharts.js"></script>
-	
 	<script src="js/highchart/highcharts-more.js"></script>
 	<script src="js/highchart/heatmap.js"></script>
 	<script src="js/highchart/series-label.js"></script>
@@ -201,15 +200,12 @@
 	<script src="js/highchart/data.js"></script>
 	<script src="js/highchart/boost-canvas.js"></script>
 
-	<script src="js/historico.js"></script>
-	<script src="js/historico-geral.js"></script>
-
+	<script src="js/scripts/historico.js"></script>
+	<script src="js/scripts/historico-geral.js"></script>
 	<script src="js/scripts/heatmap-large.js"></script>
 	<script src="js/scripts/heatmap-color.js"></script>
-	
 	<script src="js/scripts/panel-full.js"></script>
 	<script src="js/scripts/config.js"></script>
-
 	<script src="js/scripts/area-x.js"></script>
 	<script src="js/scripts/area-y.js"></script>
 	<script src="js/scripts/graficos.js"></script>

@@ -87,7 +87,7 @@ function carregarDadosGeral(file){
 	var trocaMes = 0;
 
     $.ajax({
-        url: file,
+        url: "datasets/"+file,
         success: function (dadosJson) {
             $.each(dadosJson, function (chave, val) {
 

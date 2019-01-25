@@ -92,13 +92,13 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-			chart_historico.setSize(chart_historico.containerWidth, 580);
+			chart_historico.setSize(chart_historico.containerWidth, 600);
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
         {
             $this.children('i').removeClass('glyphicon-resize-small');
             $this.children('i').addClass('glyphicon-resize-full');
-			chart_historico.setSize(chart_historico.containerWidth, 500);
+			chart_historico.setSize(chart_historico.containerWidth, 400);
         }
         $(this).closest('.panel').toggleClass('panel-fullscreen');		
     });
@@ -112,13 +112,13 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-			chart_historico_geral.setSize(chart_historico_geral.containerWidth, 580);
+			chart_historico_geral.setSize(chart_historico_geral.containerWidth, 600);
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
         {
             $this.children('i').removeClass('glyphicon-resize-small');
             $this.children('i').addClass('glyphicon-resize-full');
-			chart_historico_geral.setSize(chart_historico_geral.containerWidth, 500);
+			chart_historico_geral.setSize(chart_historico_geral.containerWidth, 400);
         }
         $(this).closest('.panel').toggleClass('panel-fullscreen');		
     });

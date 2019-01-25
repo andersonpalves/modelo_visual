@@ -119,7 +119,7 @@ function carregarDados(nomesArquivos){
         x.push(contador++);
 
         $.ajax({
-            url: nome,
+            url: "datasets/"+nome,
             success: function (dadosJson) {
                 $.each(dadosJson, function (chave, val) {
 

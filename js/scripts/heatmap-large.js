@@ -317,7 +317,7 @@ function abreDados(ano, lugar){
 		lugar_selecionado = lugar;
 
 		$.ajax({
-			url: file,
+			url: "datasets/"+file,
 			success: function (data) {
 				maxDenseDisplay = 0;
 			
