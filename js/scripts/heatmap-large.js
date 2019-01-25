@@ -221,7 +221,7 @@ function abreDados(ano, lugar){
 				colsize: 24 * 36e5, // one day
 				tooltip: {
 					headerFormat: null,
-					pointFormat: '<b>{point.x:%e %b, %Y} {point.y}:00h: {point.value} Consumption</b>'
+					pointFormat: '<b>{point.x:%e %b, %Y, %A} {point.y}:00h: {point.value} Consumption</b>'
 				},
 				turboThreshold: Number.MAX_VALUE
 			}],
