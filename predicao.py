@@ -23,6 +23,9 @@ from flask import jsonify
 from flask import request
 from flask_cors import CORS
 
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
+
 app = Flask(__name__)
 CORS(app)
 
@@ -32,10 +35,6 @@ def login():
 	valores_parameter = request.args.get('valores')
 	ano_inicio_parameter = request.args.get('anoInicio')
 	ano_fim_parameter = request.args.get('anoFim')
-
-	print("ano inicio", ano_inicio_parameter)
-	print("ano fim", ano_fim_parameter)
-
 	meses_array = meses_parameter.split(',')
 	valores_array = valores_parameter.split(',')
 
@@ -67,6 +66,7 @@ def login():
 	#SARIMA
 	#mod = sm.tsa.statespace.SARIMAX(data, trend='n', order=(1, 0, 1), seasonal_order=(1, 1, 1, 12)) novo
 	#mod = sm.tsa.statespace.SARIMAX(data, trend='n', order=(5, 1, 0), seasonal_order=(0, 0, 0, 12)) antigo
+	#mod = sm.tsa.statespace.SARIMAX(data, order=(1, 0, 1), seasonal_order=(3, 0, 1, 12))
 	mod = sm.tsa.statespace.SARIMAX(data, order=(1, 0, 1), seasonal_order=(3, 0, 1, 12))
 	results = mod.fit()
 
@@ -78,6 +78,28 @@ def login():
 	df['sarima'] = results.predict(start = tamanho_lista, end = tamanho_lista + 11, dynamic= True).astype(int)
 	output = df['sarima'].unique()
 	dados_sarima = output[~np.isnan(output)].tolist()
+
+	##SARIMAX METRICAS
+	valores_anteriores = valores[0:72]
+	valores_ano_seguinte = valores[72:]
+	tamanho_predicao = len(valores_anteriores)
+
+	mod = sm.tsa.statespace.SARIMAX(valores_anteriores, order=(1, 0, 1), seasonal_order=(3, 0, 1, 12))
+	resultado = mod.fit()
+	start = datetime.datetime.strptime("2017-01", "%Y-%m")
+	date_list = [start + relativedelta(months=x) for x in range(0,12)]
+	future = pd.DataFrame(index=date_list, columns= df.columns)
+	df = pd.concat([df, future])
+
+	dados_predicao = []
+	dados_predicao = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
+	dados_predicao = dados_predicao.tolist()
+		
+	error_mean_squared_error = mean_squared_error(valores_ano_seguinte, dados_predicao)
+	print('Sarima mean_squared_error', error_mean_squared_error)
+
+	error_mean_absolute_error = mean_absolute_error(valores_ano_seguinte, dados_predicao)
+	print('Sarima mean_absolute_error', error_mean_absolute_error)
 
 	#Holt Winter
 	mod = ExponentialSmoothing(data, seasonal_periods=12 ,trend='add', seasonal='add')
@@ -92,6 +114,28 @@ def login():
 	output = df['holtwinter'].unique()
 	dados_holt = output[~np.isnan(output)].tolist()
 
+	#Holt Winter Metricas
+	valores_anteriores = valores[0:72]
+	valores_ano_seguinte = valores[72:]
+	tamanho_predicao = len(valores_anteriores)
+
+	mod = ExponentialSmoothing(valores_anteriores, seasonal_periods=12 ,trend='add', seasonal='add')
+	resultado = mod.fit()
+	start = datetime.datetime.strptime("2017-01", "%Y-%m")
+	date_list = [start + relativedelta(months=x) for x in range(0,12)]
+	future = pd.DataFrame(index=date_list, columns= df.columns)
+	df = pd.concat([df, future])
+
+	dados_predicao = []
+	dados_predicao = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11).astype(int)
+	dados_predicao = dados_predicao.tolist()
+		
+	error_mean_squared_error = mean_squared_error(valores_ano_seguinte, dados_predicao)
+	print('Holt Winter mean_squared_error', error_mean_squared_error)
+
+	error_mean_absolute_error = mean_absolute_error(valores_ano_seguinte, dados_predicao)
+	print('Holt Winter mean_absolute_error', error_mean_absolute_error)
+
 	#AR
 	mod = AR(data)
 	results = mod.fit()
@@ -104,6 +148,28 @@ def login():
 	df['ar'] = results.predict(start = tamanho_lista, end = tamanho_lista + 11, dynamic=True).astype(int)
 	output = df['ar'].unique()
 	dados_ar = output[~np.isnan(output)].tolist()
+
+	#AR Metricas
+	valores_anteriores = valores[0:72]
+	valores_ano_seguinte = valores[72:]
+	tamanho_predicao = len(valores_anteriores)
+
+	mod = AR(valores_anteriores)
+	resultado = mod.fit()
+	start = datetime.datetime.strptime("2017-01", "%Y-%m")
+	date_list = [start + relativedelta(months=x) for x in range(0,12)]
+	future = pd.DataFrame(index=date_list, columns= df.columns)
+	df = pd.concat([df, future])
+
+	dados_predicao = []
+	dados_predicao = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
+	dados_predicao = dados_predicao.tolist()
+		
+	error_mean_squared_error = mean_squared_error(valores_ano_seguinte, dados_predicao)
+	print('AR mean_squared_error', error_mean_squared_error)
+
+	error_mean_absolute_error = mean_absolute_error(valores_ano_seguinte, dados_predicao)
+	print('AR mean_absolute_error', error_mean_absolute_error)
 
 	return jsonify(
         sarima = dados_sarima,
