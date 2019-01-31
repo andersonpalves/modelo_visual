@@ -24,6 +24,19 @@ function carregarHistorico() {
             dateTimeLabelFormats : {
                 day:"%b %e"
             }
+            ,
+            formatter: function () {
+                var s = '<b>'+ this.x +'</b>';
+
+                $.each(this.points, function(i, point) {
+                    s += '<br/><span style="color:' + point.color + '">\u25CF</span>' + point.series.name + ': <b>' + point.y + '</b>';
+                    if (point.series.name == "2018 Sarima Prediction") {
+                        s += "<br/>TESTE"; 
+                    }
+                });
+
+                return s;
+			}
         },
         xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Set', 'Oct', 'Nov', 'Dec'],
