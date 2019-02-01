@@ -95,11 +95,8 @@ def login():
 	dados_predicao = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
 	dados_predicao = dados_predicao.tolist()
 		
-	error_mean_squared_error = mean_squared_error(valores_ano_seguinte, dados_predicao)
-	print('Sarima mean_squared_error', error_mean_squared_error)
-
-	error_mean_absolute_error = mean_absolute_error(valores_ano_seguinte, dados_predicao)
-	print('Sarima mean_absolute_error', error_mean_absolute_error)
+	sa_mse = mean_squared_error(valores_ano_seguinte, dados_predicao)
+	sa_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao)
 
 	#Holt Winter
 	mod = ExponentialSmoothing(data, seasonal_periods=12 ,trend='add', seasonal='add')
@@ -115,10 +112,6 @@ def login():
 	dados_holt = output[~np.isnan(output)].tolist()
 
 	#Holt Winter Metricas
-	valores_anteriores = valores[0:72]
-	valores_ano_seguinte = valores[72:]
-	tamanho_predicao = len(valores_anteriores)
-
 	mod = ExponentialSmoothing(valores_anteriores, seasonal_periods=12 ,trend='add', seasonal='add')
 	resultado = mod.fit()
 	start = datetime.datetime.strptime("2017-01", "%Y-%m")
@@ -130,11 +123,8 @@ def login():
 	dados_predicao = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11).astype(int)
 	dados_predicao = dados_predicao.tolist()
 		
-	error_mean_squared_error = mean_squared_error(valores_ano_seguinte, dados_predicao)
-	print('Holt Winter mean_squared_error', error_mean_squared_error)
-
-	error_mean_absolute_error = mean_absolute_error(valores_ano_seguinte, dados_predicao)
-	print('Holt Winter mean_absolute_error', error_mean_absolute_error)
+	hw_mse = mean_squared_error(valores_ano_seguinte, dados_predicao)
+	hw_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao)
 
 	#AR
 	mod = AR(data)
@@ -150,10 +140,6 @@ def login():
 	dados_ar = output[~np.isnan(output)].tolist()
 
 	#AR Metricas
-	valores_anteriores = valores[0:72]
-	valores_ano_seguinte = valores[72:]
-	tamanho_predicao = len(valores_anteriores)
-
 	mod = AR(valores_anteriores)
 	resultado = mod.fit()
 	start = datetime.datetime.strptime("2017-01", "%Y-%m")
@@ -165,16 +151,19 @@ def login():
 	dados_predicao = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
 	dados_predicao = dados_predicao.tolist()
 		
-	error_mean_squared_error = mean_squared_error(valores_ano_seguinte, dados_predicao)
-	print('AR mean_squared_error', error_mean_squared_error)
-
-	error_mean_absolute_error = mean_absolute_error(valores_ano_seguinte, dados_predicao)
-	print('AR mean_absolute_error', error_mean_absolute_error)
+	ar_mse = mean_squared_error(valores_ano_seguinte, dados_predicao)
+	ar_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao)
 
 	return jsonify(
-        sarima = dados_sarima,
-		holt = dados_holt,
-		ar = dados_ar
+        sa = dados_sarima,
+		sa_mse = sa_mse,
+		sa_mae = sa_mae,
+		hw = dados_holt,
+		hw_mse = hw_mse,
+		hw_mae = hw_mae,
+		ar = dados_ar,
+		ar_mse = ar_mse,
+		ar_mae = ar_mae
     )
 
 if __name__ == "__main__":

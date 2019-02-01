@@ -3,8 +3,8 @@ var valoresMeses = [];
 
 function carregarHistorico() {
     
-    var listaObjetos = listaObjetos = buscaDadosHistorico();
-
+    var listaObjetos = buscaDadosHistorico();
+    
     var historico = {
        
         title: {
@@ -29,9 +29,18 @@ function carregarHistorico() {
                 var s = '<b>'+ this.x +'</b>';
 
                 $.each(this.points, function(i, point) {
-                    s += '<br/><span style="color:' + point.color + '">\u25CF</span>' + point.series.name + ': <b>' + point.y + '</b>';
+                    s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': <b>' + point.y + '</b>';
+                    
                     if (point.series.name == "2018 Sarima Prediction") {
-                        s += "<br/>TESTE"; 
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[7].mse+'</b><br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>'+listaObjetos[7].mae+'</b>'; 
+                    }
+
+                    if (point.series.name == "2018 Holt Prediction") {
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[8].mse+'</b><br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>'+listaObjetos[8].mae+'</b>'; 
+                    }
+
+                    if (point.series.name == "2018 AR Prediction") {
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[9].mse+'</b><br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>'+listaObjetos[9].mae+'</b>'; 
                     }
                 });
 
@@ -269,23 +278,27 @@ function carregarDados(nomesArquivos){
             url: "http://localhost:5000/predicoes/?valores="+valoresMeses+"&meses="+listaMeses+"&anoInicio="+anoInicio+"&anoFim="+anoFim,
             success: function (dadosJson) {
 
-                console.log("sarima", dadosJson.sarima)
-                console.log("holt", dadosJson.holt)
-                console.log("ar", dadosJson.ar)
+                console.log("retorno predicao", dadosJson)
 
                 var objetoSarima = {};
                 objetoSarima.name = parseInt(proximoAnoPrevisao+1) + " Sarima Prediction";
-                objetoSarima.data = dadosJson.sarima;
+                objetoSarima.data = dadosJson.sa;
+                objetoSarima.mse = dadosJson.sa_mse;
+                objetoSarima.mae = dadosJson.sa_mae;
                 retornoFinal.push(objetoSarima)
 
                 var objetoHolt = {};
                 objetoHolt.name = parseInt(proximoAnoPrevisao+1) + " Holt Prediction";
-                objetoHolt.data = dadosJson.holt;
+                objetoHolt.data = dadosJson.hw;
+                objetoHolt.mse = dadosJson.hw_mse;
+                objetoHolt.mae = dadosJson.hw_mae;
                 retornoFinal.push(objetoHolt)
 
                 var objetoAr = {};
                 objetoAr.name = parseInt(proximoAnoPrevisao+1) + " AR Prediction";
                 objetoAr.data = dadosJson.ar;
+                objetoAr.mse = dadosJson.ar_mse;
+                objetoAr.mae = dadosJson.ar_mae;
                 retornoFinal.push(objetoAr)
             },
             async: false

@@ -20,6 +20,11 @@ function carregarHistoricoGeral(file) {
             crosshairs: true,
             dateTimeLabelFormats : {
                 day:"%b %e"
+            },
+            formatter: function () {
+                var s = '<b>'+ this.x +'</b>';
+                s += '<br/><span style="color:' + this.points[0].color + '">\u25CF</span> Consumption: <b>' + this.y + '</b>';
+                return s;
             }
         },
         xAxis: {
@@ -84,7 +89,7 @@ function carregarDadosGeral(file){
     var valorEnergias =[];
     var jan = [], fev = [], mar = [], abr = [], mai = [], jun = [], jul = [], ago = [], set = [], out = [], nov = [], dez = [];
 	var janMedia = [];
-	var trocaMes = 0;
+	var trocaMes = "01";
 
     $.ajax({
         url: "datasets/"+file,
@@ -104,16 +109,18 @@ function carregarDadosGeral(file){
                     }
 
 					var dataFormato = val[0].split('-');
-					var mes = dataFormato[1];
-					
+                    var mes = dataFormato[1];
+                    var primeiroValor = 0;
 					if (mes != trocaMes) {
-						zeraValoresDoArray(valorEnergias);
+                        zeraValoresDoArray(valorEnergias);
+                        i = 0;
+                        valorEnergias[i] = 0;
 						trocaMes = mes;
 					}
-					
+
                     valor = valorEnergias[i] + val[2][i];
-                    valorEnergias[i] = parseInt(valor);
-                    
+                    valorEnergias[i] = valor;
+
                     switch (mes) {
                         case "01":
                             jan[i] = valorEnergias[i];
