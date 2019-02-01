@@ -25,7 +25,9 @@ $(function () {
 			tamanhoX = chart_heatmap_large.chartWidth;
 		}
 
+		heatmapcolor.series[0].data = [];
 		abreDados($("#ano").val(), $("#lugar").val());
+		
 		$('#denseRange').html("<b>" + parseInt($('#rangeValuesDense').val()) + "<b>");
 
 		var dados = chart_heatmap_large.series[0].data;
@@ -267,6 +269,7 @@ function abreDados(ano, lugar){
 									$("#panel-fullscreen-dense-display").click();
 								}
 								
+
 								carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay);
 
 								lista_heatmap=[];
