@@ -4,7 +4,7 @@ var valoresMeses = [];
 function carregarHistorico() {
     
     var listaObjetos = buscaDadosHistorico();
-    
+
     var historico = {
        
         title: {
@@ -31,7 +31,7 @@ function carregarHistorico() {
                 $.each(this.points, function(i, point) {
                     s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': <b>' + point.y + '</b>';
                     
-                    if (point.series.name == "2018 Sarima Prediction") {
+                    if (point.series.name == "2018 Sarimax Prediction") {
                         s += '<br/><span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[7].mse+'</b><br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>'+listaObjetos[7].mae+'</b>'; 
                     }
 
@@ -281,7 +281,7 @@ function carregarDados(nomesArquivos){
                 console.log("retorno predicao", dadosJson)
 
                 var objetoSarima = {};
-                objetoSarima.name = parseInt(proximoAnoPrevisao+1) + " Sarima Prediction";
+                objetoSarima.name = parseInt(proximoAnoPrevisao+1) + " Sarimax Prediction";
                 objetoSarima.data = dadosJson.sa;
                 objetoSarima.mse = dadosJson.sa_mse;
                 objetoSarima.mae = dadosJson.sa_mae;
