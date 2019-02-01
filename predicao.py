@@ -154,6 +154,25 @@ def login():
 	ar_mse = mean_squared_error(valores_ano_seguinte, dados_predicao)
 	ar_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao)
 
+	pi = 3.1415926
+	precision = 4
+	print( "{:.{}f}".format( pi, precision ) )
+
+	sa_mse = sa_mse / 1000000
+	sa_mse = "{:.{}f}".format(sa_mse, 2)
+	sa_mae = sa_mae / 1000000
+	sa_mae = "{:.{}f}".format(sa_mae, 2)
+
+	hw_mse = hw_mse / 1000000
+	hw_mse = "{:.{}f}".format(hw_mse, 2)
+	hw_mae = hw_mae / 1000000
+	hw_mae = "{:.{}f}".format(hw_mae, 2)
+
+	ar_mse = ar_mse / 1000000
+	ar_mse = "{:.{}f}".format(ar_mse, 2)
+	ar_mae = ar_mae / 1000000
+	ar_mae = "{:.{}f}".format(ar_mae, 2)
+
 	return jsonify(
         sa = dados_sarima,
 		sa_mse = sa_mse,
