@@ -22,8 +22,9 @@ function carregarHistoricoGeral(file) {
                 day:"%b %e"
             },
             formatter: function () {
+                var nf = new Intl.NumberFormat();
                 var s = '<b>'+ this.x +'</b>';
-                s += '<br/><span style="color:' + this.points[0].color + '">\u25CF</span> Consumption: <b>' + this.y + '</b>';
+                s += '<br/><span style="color:' + this.points[0].color + '">\u25CF</span> Consumption: <b>' + nf.format(this.y) + '</b>';
                 return s;
             }
         },

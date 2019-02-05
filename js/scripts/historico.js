@@ -28,27 +28,28 @@ function carregarHistorico() {
             }
             ,
             formatter: function () {
+                var nf = new Intl.NumberFormat();
                 var s = '<b>'+ this.x +'</b>';
 
                 $.each(this.points, function(i, point) {
-                    s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': <b>' + point.y + '</b>';
+                    s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': <b>' + nf.format(point.y) + '</b>';
                     
                     if (point.series.name == "2017 Sarimax Prediction") {
-                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + listaObjetos[7].mae+'</b><br/>' +
-                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[7].mse+'</b><br/>' +
-                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+listaObjetos[7].rmse+'</b>'; 
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[7].mae)+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+nf.format(listaObjetos[7].mse)+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+nf.format(listaObjetos[7].rmse)+'</b>'; 
                     }
 
                     if (point.series.name == "2017 Holt Prediction") {
-                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + listaObjetos[8].mae+'</b><br/>' +
-                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[8].mse+'</b><br/>' +
-                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+listaObjetos[8].rmse+'</b>';
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[8].mae)+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+ nf.format(listaObjetos[8].mse)+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+ nf.format(listaObjetos[8].rmse)+'</b>';
                     }
 
                     if (point.series.name == "2017 AR Prediction") {
-                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + listaObjetos[9].mae+'</b><br/>' +
-                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[9].mse+'</b><br/>' +
-                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+listaObjetos[9].rmse+'</b>';
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[9].mae)+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+nf.format(listaObjetos[9].mse)+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+nf.format(listaObjetos[9].rmse)+'</b>';
                     }
                 });
 
