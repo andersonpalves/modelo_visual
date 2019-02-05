@@ -5,6 +5,8 @@ function carregarHistorico() {
     
     var listaObjetos = buscaDadosHistorico();
 
+    console.log("listaObjetos", listaObjetos);
+
     var historico = {
        
         title: {
@@ -31,16 +33,22 @@ function carregarHistorico() {
                 $.each(this.points, function(i, point) {
                     s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': <b>' + point.y + '</b>';
                     
-                    if (point.series.name == "2018 Sarimax Prediction") {
-                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[7].mse+'</b><br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>'+listaObjetos[7].mae+'</b>'; 
+                    if (point.series.name == "2017 Sarimax Prediction") {
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + listaObjetos[7].mae+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[7].mse+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+listaObjetos[7].rmse+'</b>'; 
                     }
 
-                    if (point.series.name == "2018 Holt Prediction") {
-                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[8].mse+'</b><br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>'+listaObjetos[8].mae+'</b>'; 
+                    if (point.series.name == "2017 Holt Prediction") {
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + listaObjetos[8].mae+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[8].mse+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+listaObjetos[8].rmse+'</b>';
                     }
 
-                    if (point.series.name == "2018 AR Prediction") {
-                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[9].mse+'</b><br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>'+listaObjetos[9].mae+'</b>'; 
+                    if (point.series.name == "2017 AR Prediction") {
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + listaObjetos[9].mae+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+listaObjetos[9].mse+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+listaObjetos[9].rmse+'</b>';
                     }
                 });
 
@@ -280,25 +288,43 @@ function carregarDados(nomesArquivos){
 
                 console.log("retorno predicao", dadosJson)
 
+                var objetoSarimaPredicao = {};
+                objetoSarimaPredicao.name = parseInt(proximoAnoPrevisao) + " Sarimax Prediction";
+                objetoSarimaPredicao.data = dadosJson.sa_predict;
+                objetoSarimaPredicao.rmse = dadosJson.sa_rmse;
+                objetoSarimaPredicao.mse = dadosJson.sa_mse;
+                objetoSarimaPredicao.mae = dadosJson.sa_mae;
+                retornoFinal.push(objetoSarimaPredicao)
+
+                var objetoHoltPredicao = {};
+                objetoHoltPredicao.name = parseInt(proximoAnoPrevisao) + " Holt Prediction";
+                objetoHoltPredicao.data = dadosJson.hw_predict;
+                objetoHoltPredicao.rmse = dadosJson.hw_rmse;
+                objetoHoltPredicao.mse = dadosJson.hw_mse;
+                objetoHoltPredicao.mae = dadosJson.hw_mae;
+                retornoFinal.push(objetoHoltPredicao)
+
+                var objetoArPredicao = {};
+                objetoArPredicao.name = parseInt(proximoAnoPrevisao) + " AR Prediction";
+                objetoArPredicao.data = dadosJson.ar_predict;
+                objetoArPredicao.rmse = dadosJson.ar_rmse;
+                objetoArPredicao.mse = dadosJson.ar_mse;
+                objetoArPredicao.mae = dadosJson.ar_mae;
+                retornoFinal.push(objetoArPredicao)
+
                 var objetoSarima = {};
                 objetoSarima.name = parseInt(proximoAnoPrevisao+1) + " Sarimax Prediction";
                 objetoSarima.data = dadosJson.sa;
-                objetoSarima.mse = dadosJson.sa_mse;
-                objetoSarima.mae = dadosJson.sa_mae;
                 retornoFinal.push(objetoSarima)
 
                 var objetoHolt = {};
                 objetoHolt.name = parseInt(proximoAnoPrevisao+1) + " Holt Prediction";
                 objetoHolt.data = dadosJson.hw;
-                objetoHolt.mse = dadosJson.hw_mse;
-                objetoHolt.mae = dadosJson.hw_mae;
                 retornoFinal.push(objetoHolt)
 
                 var objetoAr = {};
                 objetoAr.name = parseInt(proximoAnoPrevisao+1) + " AR Prediction";
                 objetoAr.data = dadosJson.ar;
-                objetoAr.mse = dadosJson.ar_mse;
-                objetoAr.mae = dadosJson.ar_mae;
                 retornoFinal.push(objetoAr)
             },
             async: false

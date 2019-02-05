@@ -26,6 +26,8 @@ from flask_cors import CORS
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 
+from math import sqrt
+
 app = Flask(__name__)
 CORS(app)
 
@@ -58,15 +60,7 @@ def login():
 
 	data = df.dados
 
-	#mod = AR(data)
-	#mod = ARMA(data)
-	#mod = ARMA(data, order=(0, 1))
-	#mod =  ARIMA(data, order=(6, 1, 0))
-
 	#SARIMA
-	#mod = sm.tsa.statespace.SARIMAX(data, trend='n', order=(1, 0, 1), seasonal_order=(1, 1, 1, 12)) novo
-	#mod = sm.tsa.statespace.SARIMAX(data, trend='n', order=(5, 1, 0), seasonal_order=(0, 0, 0, 12)) antigo
-	#mod = sm.tsa.statespace.SARIMAX(data, order=(1, 0, 1), seasonal_order=(3, 0, 1, 12))
 	mod = sm.tsa.statespace.SARIMAX(data, order=(1, 0, 1), seasonal_order=(3, 0, 1, 12))
 	results = mod.fit()
 
@@ -79,7 +73,7 @@ def login():
 	output = df['sarima'].unique()
 	dados_sarima = output[~np.isnan(output)].tolist()
 
-	##SARIMAX METRICAS
+	##Sarima métricas
 	valores_anteriores = valores[0:72]
 	valores_ano_seguinte = valores[72:]
 	tamanho_predicao = len(valores_anteriores)
@@ -91,12 +85,13 @@ def login():
 	future = pd.DataFrame(index=date_list, columns= df.columns)
 	df = pd.concat([df, future])
 
-	dados_predicao = []
-	dados_predicao = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
-	dados_predicao = dados_predicao.tolist()
+	dados_predicao_sarima = []
+	dados_predicao_sarima = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
+	dados_predicao_sarima = dados_predicao_sarima.tolist()
 		
-	sa_mse = mean_squared_error(valores_ano_seguinte, dados_predicao)
-	sa_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao)
+	sa_mse = mean_squared_error(valores_ano_seguinte, dados_predicao_sarima)
+	sa_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao_sarima)
+	sa_rmse = sqrt(sa_mse)
 
 	#Holt Winter
 	mod = ExponentialSmoothing(data, seasonal_periods=12 ,trend='add', seasonal='add')
@@ -111,7 +106,7 @@ def login():
 	output = df['holtwinter'].unique()
 	dados_holt = output[~np.isnan(output)].tolist()
 
-	#Holt Winter Metricas
+	#Holt Winter métricas
 	mod = ExponentialSmoothing(valores_anteriores, seasonal_periods=12 ,trend='add', seasonal='add')
 	resultado = mod.fit()
 	start = datetime.datetime.strptime("2017-01", "%Y-%m")
@@ -119,12 +114,13 @@ def login():
 	future = pd.DataFrame(index=date_list, columns= df.columns)
 	df = pd.concat([df, future])
 
-	dados_predicao = []
-	dados_predicao = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11).astype(int)
-	dados_predicao = dados_predicao.tolist()
+	dados_predicao_hw = []
+	dados_predicao_hw = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11).astype(int)
+	dados_predicao_hw = dados_predicao_hw.tolist()
 		
-	hw_mse = mean_squared_error(valores_ano_seguinte, dados_predicao)
-	hw_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao)
+	hw_mse = mean_squared_error(valores_ano_seguinte, dados_predicao_hw)
+	hw_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao_hw)
+	hw_rmse = sqrt(hw_mse)
 
 	#AR
 	mod = AR(data)
@@ -139,7 +135,7 @@ def login():
 	output = df['ar'].unique()
 	dados_ar = output[~np.isnan(output)].tolist()
 
-	#AR Metricas
+	#AR métricas
 	mod = AR(valores_anteriores)
 	resultado = mod.fit()
 	start = datetime.datetime.strptime("2017-01", "%Y-%m")
@@ -147,42 +143,30 @@ def login():
 	future = pd.DataFrame(index=date_list, columns= df.columns)
 	df = pd.concat([df, future])
 
-	dados_predicao = []
-	dados_predicao = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
-	dados_predicao = dados_predicao.tolist()
+	dados_predicao_ar = []
+	dados_predicao_ar = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
+	dados_predicao_ar = dados_predicao_ar.tolist()
 		
-	ar_mse = mean_squared_error(valores_ano_seguinte, dados_predicao)
-	ar_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao)
-
-	pi = 3.1415926
-	precision = 4
-	print( "{:.{}f}".format( pi, precision ) )
-
-	sa_mse = sa_mse / 1000000
-	sa_mse = "{:.{}f}".format(sa_mse, 2)
-	sa_mae = sa_mae / 1000000
-	sa_mae = "{:.{}f}".format(sa_mae, 2)
-
-	hw_mse = hw_mse / 1000000
-	hw_mse = "{:.{}f}".format(hw_mse, 2)
-	hw_mae = hw_mae / 1000000
-	hw_mae = "{:.{}f}".format(hw_mae, 2)
-
-	ar_mse = ar_mse / 1000000
-	ar_mse = "{:.{}f}".format(ar_mse, 2)
-	ar_mae = ar_mae / 1000000
-	ar_mae = "{:.{}f}".format(ar_mae, 2)
+	ar_mse = mean_squared_error(valores_ano_seguinte, dados_predicao_ar)
+	ar_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao_ar)
+	ar_rmse = sqrt(ar_mse)
 
 	return jsonify(
+		sa_predict = dados_predicao_sarima,
         sa = dados_sarima,
 		sa_mse = sa_mse,
 		sa_mae = sa_mae,
+		sa_rmse = sa_rmse,
+		hw_predict = dados_predicao_hw,
 		hw = dados_holt,
 		hw_mse = hw_mse,
 		hw_mae = hw_mae,
+		hw_rmse = hw_rmse,
+		ar_predict = dados_predicao_ar,
 		ar = dados_ar,
 		ar_mse = ar_mse,
-		ar_mae = ar_mae
+		ar_mae = ar_mae,
+		ar_rmse = ar_rmse
     )
 
 if __name__ == "__main__":
