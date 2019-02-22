@@ -42,7 +42,7 @@ function abreGraficoHoras(grafico, pontos, pontosMinimos, pontosMaximos, pontosM
 
 				if (this.series.name == "Consumption") {
 					text += '<b>'+ valorVariancia + ' Variance<br>';
-					text += '<b>'+ valorDesvioPadrao + ' Std. deviation<br>';
+					text += '<b>'+ valorDesvioPadrao + ' Std. Deviation<br>';
 					text += '<b>'+ valorErroPadrao + ' Std. Error<br>';
 				}
 

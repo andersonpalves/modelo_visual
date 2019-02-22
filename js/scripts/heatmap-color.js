@@ -80,58 +80,58 @@ var heatmapcolor = {
 			{
 				type: 'scatter',
 				name: 'Smaller<br>Consump.<br>Daily',
-				color: '#FF1493',
+				color: '#00008B',
 				data: [],
 				marker: {
 					symbol: 'triangle-down',
 					lineWidth: 0, //changed
 					radius: 6,
-					lineColor: '#FF1493',
-					fillColor: '#FF1493' //white
+					lineColor: '#FFFFFF',
+					fillColor: '#00008B' //white
 				},
 				visible: false,
 			},
 			{
 				type: 'scatter',
 				name: 'Bigger<br>Consump.<br>Daily',
-				color: '#006400',
+				color: '#CC0000',
 				data: [],
 				marker: {
 					symbol: 'triangle',
 					lineWidth: 0,
 					radius: 6,
-					lineColor: '#006400',
-					fillColor: '#006400' //white
+					lineColor: '#CC0000',
+					fillColor: '#CC0000'
 				},
 				visible: false,
 			},
 			{
 				type: 'scatter',
 				name: 'Smaller<br>Consump.<br>Hours',
-				color: 'brown',
+				color: '#0000CD',
 				data: [],
 				lineWidth: 0,
 				marker: {
 					symbol: 'triangle-down',
 					lineWidth: 0,
 					radius: 6,
-					lineColor: 'brown',
-					fillColor: 'brown',
+					lineColor: '#0000CD',
+					fillColor: '#0000CD',
 				},
 				visible: false,
 			},
 			{
 				type: 'scatter',
 				name: 'Bigger<br>Consump.<br>Hours',
-				color: '#2F4F4F',
+				color: '#B70B2C',
 				data: [],
 				lineWidth: 0,
 				marker: {
 						symbol: 'triangle',
 						lineWidth: 0,
 						radius: 6,
-					lineColor: '#2F4F4F',
-					fillColor: 'black',
+					lineColor: '#B70B2C',
+					fillColor: '#B70B2C',
 					
 				},
 				visible: false
