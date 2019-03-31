@@ -232,6 +232,7 @@ function abreDados(ano, lugar){
 				series: {
 					events: {
 						click: function (e) {
+							console.log("=>", e.point.x);
 							var retorno = getWeekNumber(new Date(parseInt(e.point.x)));
 							lista_itens = [];
 							semana_selecionada = retorno[1];
@@ -286,12 +287,6 @@ function abreDados(ano, lugar){
 							
 							carregaGraficoHoras(null);
 							chart_horas = new Highcharts.Chart(horas);
-							
-							carregaRelogioManha();
-							chart_horas = new Highcharts.Chart(relogio_manha);
-							
-							carregaRelogioTarde();
-							chart_horas = new Highcharts.Chart(relogio_tarde);
 						}
 					}
 				}
@@ -451,12 +446,6 @@ function abreDados(ano, lugar){
 				
 				carregaGraficoHoras(null);
 				chart_horas = new Highcharts.Chart(horas);
-				
-				carregaRelogioManha();
-				chart_horas = new Highcharts.Chart(relogio_manha);
-				
-				carregaRelogioTarde();
-				chart_horas = new Highcharts.Chart(relogio_tarde);
 
 				carregarHistorico();
 				carregarHistoricoGeral(file);
@@ -814,7 +803,7 @@ function carregaGraficoHoras(){
 	horas = {
 		chart: {
 			renderTo: 'area-conjunto-y1',
-			type: 'line'
+			type: 'line',
 		},
 		title: {
 			text: ''

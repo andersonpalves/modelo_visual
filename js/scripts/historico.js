@@ -39,10 +39,10 @@ function carregarHistorico() {
                         ano2017 = point.y;
                     }
 
-                    if (point.series.name == "2017 Sarimax Prediction") {
+                    if (point.series.name == "2017 Sarima Prediction") {
                         var anoAtual = point.y;
                         var resultado = Math.abs((anoAtual - ano2017) / ano2017) * 100;
-                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> Error Sarimax Prediction: <b>' + Math.round(resultado * 100) / 100 + '%';
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> Error Sarima Prediction: <b>' + Math.round(resultado * 100) / 100 + '%';
                     }
 
                     if (point.series.name == "2017 Holt Prediction") {
@@ -314,7 +314,7 @@ function carregarDados(nomesArquivos){
                 console.log("retorno predicao", dadosJson)
 
                 var objetoSarimaPredicao = {};
-                objetoSarimaPredicao.name = parseInt(proximoAnoPrevisao) + " Sarimax Prediction";
+                objetoSarimaPredicao.name = parseInt(proximoAnoPrevisao) + " Sarima Prediction";
                 objetoSarimaPredicao.data = dadosJson.sa_predict;
                 objetoSarimaPredicao.rmse = dadosJson.sa_rmse;
                 objetoSarimaPredicao.mse = dadosJson.sa_mse;
@@ -338,7 +338,7 @@ function carregarDados(nomesArquivos){
                 retornoFinal.push(objetoArPredicao)
 
                 var objetoSarima = {};
-                objetoSarima.name = parseInt(proximoAnoPrevisao+1) + " Sarimax Prediction";
+                objetoSarima.name = parseInt(proximoAnoPrevisao+1) + " Sarima Prediction";
                 objetoSarima.data = dadosJson.sa;
                 retornoFinal.push(objetoSarima)
 

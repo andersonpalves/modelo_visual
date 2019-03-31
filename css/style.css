@@ -61,7 +61,7 @@
 }
 
 .chart-container{
-	top: 20px;
+	top: 35px;
 }
 
 .chart-container-sub{
@@ -95,3 +95,12 @@
 .bottom{
 	margin: 77px;
 }
+
+.blocos_6{
+	height:530px;
+}
+
+.panel-default>.panel-heading {
+    background-color: transparent;
+}
+

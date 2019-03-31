@@ -2,7 +2,7 @@ var heatmapcolor = {
 	chart: {
 		renderTo: 'heatmap-color',
 		type: 'heatmap',
-		height: 360,
+		//height: 360,
 		marginTop: 0
 	},
 	title: {
@@ -353,8 +353,6 @@ function abreGraficos(ponto, e, semana_selecionada, data){
 	valorVarianciaX, valorErroPadraoX);
 	abreGraficoHoras("area-conjunto-y1", arrayValoresY, arrayValoresMinimosY, arrayValoresMaximosY, arrayValoresMedianaY, arrayValoresMediosY, valorDesvioPadraoY,
 	valorVarianciaY, valorErroPadraoY);
-	abreRelogioManha(arrayPieManha, dia, dia_semana);
-	abreRelogioTarde(arrayPieTarde, dia, dia_semana);
 
 }
 
