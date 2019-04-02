@@ -59,46 +59,6 @@ $(function () {
 
 		heatmapcolor.series[0].data = filteredData;
 		chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
-	});	
-
-	$("#lugar").change(function() {
-		$('#denseRange').html("<b>0<b>");
-		$("#rangeValuesDense").attr("max", 0);
-		$("#grupo").val('-');
-		$("#energia").val('-');
-		selecaoPorGrupo = false;
-		abreDadosJson();
-	});
-	
-	$("#ano").change(function() {
-		$('#denseRange').html("<b>0<b>");
-		$("#rangeValuesDense").attr("max", 0);
-		$("#grupo").val('-');
-		$("#energia").val('-');
-		selecaoPorGrupo = false;
-		abreDadosJson();
-		heatmapcolor.series[0].data = [];
-		chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
-	});
-	
-	$("#energia").change(function() {
-		$('#denseRange').html("<b>0<b>");
-		$("#rangeValuesDense").attr("max", 0);
-		$("#grupo").val('-');
-		selecaoPorGrupo = false;
-		abreDadosJson();
-		heatmapcolor.series[0].data = [];
-		chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
-	});
-
-	$("#grupo").change(function() {
-		$('#denseRange').html("<b>0<b>");
-		$("#rangeValuesDense").attr("max", 0);
-		$("#energia").val('-');
-		selecaoPorGrupo = true;
-		abreDadosJson();
-		heatmapcolor.series[0].data = [];
-		chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
 	});
 	
 	abreDados($("#ano").val(), $("#lugar").val());
