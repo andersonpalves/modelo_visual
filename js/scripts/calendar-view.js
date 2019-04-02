@@ -77,8 +77,8 @@ $(function () {
             minTickInterval: 1,
             labels: {
                 style: {
-                fontSize: '9px'
-            }
+                    fontSize: '9px'
+                }
             }
         },
 
@@ -116,18 +116,8 @@ $(function () {
             useHTML: true,
             formatter: function () {
                 if(this.point.value==0) return false;
-                var s = Highcharts.dateFormat('%a %e. %B %Y', this.point.date);
+                var s = Highcharts.dateFormat('<b>%a %e. %B %Y', this.point.date);
                 s +='<br><b>Consumption: ' + this.point.value;
-                if(this.point.publicday != undefined)
-                {
-                    s +='<br>--';
-                    s += '<br><div class="publicday">'+this.point.publicday+'</div>';
-                
-                if(this.point.fedstate != undefined)
-                    s += '<div class="fedstate">'+this.point.fedstate+'</div>';
-                else
-                    s += '<div class="fedstate">Bundesweit</div>';
-                }
                 return s;
             }
         },
@@ -154,10 +144,10 @@ $(function () {
                         return null;
                     },
                     style: {
-                    fontSize: '9px',
-                    color: '#999999',
-                    fontWeight: 'normal',
-                    textOutline: 'none'
+                        fontSize: '9px',
+                        color: '#999999',
+                        fontWeight: 'normal',
+                        textOutline: 'none'
                     }
                 },
                 borderColor: '#ffffff',
@@ -250,7 +240,6 @@ $("#ano").change(function() {
     removeTodosValores();
 
     var lista_dados = loadValuesFromFile();
-    chart_calendar_view.destroy();
 
     calendar_view.series[0].data = lista_dados[0];
     calendar_view.series[1].data = lista_dados[1];
@@ -787,13 +776,6 @@ function semanaDoAno(d) {
     // Calculate full weeks to nearest Thursday
     var week = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
     // Return array of year and week number
-
-    // if (week == 52) {
-    //     week = 1;
-    // }
-    // else {
-    //     week = week + 1;
-    // }
     return week;
 }
 
