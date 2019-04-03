@@ -9,11 +9,9 @@ $(function () {
             renderTo: 'calendar_view',
             type: 'heatmap',
             plotBorderWidth: 0,
-            //height: 500,
-            //width: 800,
             marginTop: 50,
             events: {
-                    // show the month name (series.name) as label of every block
+                // show the month name (series.name) as label of every block
                 // add text element to the BBox - using SVGRenderer
                 load: function() {
                     var series = this.series,
@@ -66,8 +64,8 @@ $(function () {
             type: 'category',
             categories: [ 
                 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.', 'Sun.',
-            ' ', ' ', ' ',
-            'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.', 'Sun.',
+                ' ', ' ', ' ',
+                'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.', 'Sun.',
             ],
             title: null,
             reversed: true,
@@ -130,7 +128,7 @@ $(function () {
                     }
                 },
                 // show the week number under the calendar blocks
-            // use the datas of last block row and move it down
+                // use the datas of last block row and move it down
                 dataLabels: {
                     enabled: true,
                     y: 20,
@@ -139,9 +137,9 @@ $(function () {
                     //zIndex: 20,
                     formatter: function() {
                         if(this.point.y == 6 || this.point.y == 16) 
-                        return this.point.week;
-                    else
-                        return null;
+                            return this.point.week;
+                        else
+                            return null;
                     },
                     style: {
                         fontSize: '9px',
@@ -154,7 +152,6 @@ $(function () {
                 borderWidth: 3
             }
         },
-
         navigation: {
             buttonOptions: {
                 enabled: false
@@ -173,62 +170,52 @@ $(function () {
 
         series: [{
             name: 'January',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'February',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'March',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'April',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'May',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'June',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'July',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'August',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'September',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'October',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'November',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         },{
             name: 'December',
-            keys: ['x', 'y', 'value', 'week', 'date', 'publicday', 'fedstate']
+            keys: ['x', 'y', 'value', 'week', 'date']
         }]
     }
-    var lista_dados = loadValuesFromFile();
-    calendar_view.series[0].data = lista_dados[0];
-    calendar_view.series[1].data = lista_dados[1];
-    calendar_view.series[2].data = lista_dados[2];
-    calendar_view.series[3].data = lista_dados[3];
-    calendar_view.series[4].data = lista_dados[4];
-    calendar_view.series[5].data = lista_dados[5];
-    calendar_view.series[6].data = lista_dados[6];
-    calendar_view.series[7].data = lista_dados[7];
-    calendar_view.series[8].data = lista_dados[8];
-    calendar_view.series[9].data = lista_dados[9];
-    calendar_view.series[10].data = lista_dados[10];
-    calendar_view.series[11].data = lista_dados[11];
-    chart_calendar_view = new Highcharts.Chart(calendar_view);
+    carregaDadosCalendario();
 });
 
 $("#lugar").change(function() {
     $("#rangeValuesDense").attr("max", 0);
     $("#energia").val('Média');
+   
     abreDadosJson();
+    removeTodosValores();
+    carregaDadosCalendario();
 });
 
 $("#ano").change(function() {
@@ -238,22 +225,7 @@ $("#ano").change(function() {
 
     abreDadosJson();
     removeTodosValores();
-
-    var lista_dados = loadValuesFromFile();
-
-    calendar_view.series[0].data = lista_dados[0];
-    calendar_view.series[1].data = lista_dados[1];
-    calendar_view.series[2].data = lista_dados[2];
-    calendar_view.series[3].data = lista_dados[3];
-    calendar_view.series[4].data = lista_dados[4];
-    calendar_view.series[5].data = lista_dados[5];
-    calendar_view.series[6].data = lista_dados[6];
-    calendar_view.series[7].data = lista_dados[7];
-    calendar_view.series[8].data = lista_dados[8];
-    calendar_view.series[9].data = lista_dados[9];
-    calendar_view.series[10].data = lista_dados[10];
-    calendar_view.series[11].data = lista_dados[11];
-    chart_calendar_view = new Highcharts.Chart(calendar_view);
+    carregaDadosCalendario();
 });
 
 $("#energia").change(function() {
@@ -261,6 +233,8 @@ $("#energia").change(function() {
     $("#rangeValuesDense").attr("max", 0);
 
     abreDadosJson();
+    removeTodosValores();
+    carregaDadosCalendario();
 });
 
 function loadValuesFromFile(){
@@ -758,8 +732,24 @@ function loadValuesFromFile(){
     lista_dados.push(lista_nov);
     lista_dados.push(lista_dez);
 
-    console.log("lista_dados", lista_dados)
     return lista_dados;
+}
+
+function carregaDadosCalendario(){
+    var lista_dados = loadValuesFromFile();
+    calendar_view.series[0].data = lista_dados[0];
+    calendar_view.series[1].data = lista_dados[1];
+    calendar_view.series[2].data = lista_dados[2];
+    calendar_view.series[3].data = lista_dados[3];
+    calendar_view.series[4].data = lista_dados[4];
+    calendar_view.series[5].data = lista_dados[5];
+    calendar_view.series[6].data = lista_dados[6];
+    calendar_view.series[7].data = lista_dados[7];
+    calendar_view.series[8].data = lista_dados[8];
+    calendar_view.series[9].data = lista_dados[9];
+    calendar_view.series[10].data = lista_dados[10];
+    calendar_view.series[11].data = lista_dados[11];
+    chart_calendar_view = new Highcharts.Chart(calendar_view);
 }
 
 function diaDaSemana(date){

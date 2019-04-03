@@ -87,6 +87,7 @@ function verificaGrupoPorEnergia(valor) {
 }
 
 function ajustarTextos(){
+	$("#calendarTexto").html("Calendar View");
 	$("#denseTexto").html("Annual / Monthly View");
 	$("#heatmapTexto").html("Weekly View");
 	$("#diasHorasTexto").html("Days / Hours View");
@@ -395,6 +396,7 @@ function abreDados(ano, lugar){
 					tracoHtml = "- ";
 				}
 	
+				$("#calendarTexto").html("Calendar View " + tracoHtml + textoHtml + " - Max consumption: <b> TO DO</br>");
 				$("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
 				$("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
 				$("#rangeValuesDense").attr("max", parseInt(maxDenseDisplay));

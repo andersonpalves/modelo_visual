@@ -62,7 +62,7 @@
         <div class="col-sm-12 chart-container">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h2 class="panel-title"><span id="denseTexto"></span></h2>
+              <h2 class="panel-title"><span id="calendarTexto"></span></h2>
               <ul class="list-inline panel-actions">
                 <li><a href="#" id="panel-fullscreen-calendar-view" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
               </ul>

@@ -1,4 +1,25 @@
 $(document).ready(function () {
+
+    $("#panel-fullscreen-calendar-view").click(function (e) {
+        e.preventDefault();
+        
+        var $this = $(this);
+    
+        if ($this.children('i').hasClass('glyphicon-resize-full'))
+        {
+            $this.children('i').removeClass('glyphicon-resize-full');
+            $this.children('i').addClass('glyphicon-resize-small');
+            chart_calendar_view.setSize(1300, 480);
+        }
+        else if ($this.children('i').hasClass('glyphicon-resize-small'))
+        {
+            $this.children('i').removeClass('glyphicon-resize-small');
+            $this.children('i').addClass('glyphicon-resize-full');
+			chart_calendar_view.setSize(800, 480);
+        }
+        $(this).closest('.panel').toggleClass('panel-fullscreen');		
+    });
+
     $("#panel-fullscreen-dense-display").click(function (e) {
         e.preventDefault();
         
@@ -8,13 +29,13 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-            chart_heatmap_large.setSize(1300, 580);
+            chart_heatmap_large.setSize(800, 500);
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
         {
             $this.children('i').removeClass('glyphicon-resize-small');
             $this.children('i').addClass('glyphicon-resize-full');
-			chart_heatmap_large.setSize(636, 360);
+			chart_heatmap_large.setSize("100%", "100%");
         }
         $(this).closest('.panel').toggleClass('panel-fullscreen');		
     });
@@ -57,28 +78,6 @@ $(document).ready(function () {
             $this.children('i').addClass('glyphicon-resize-full');
 			chart_dias.setSize(chart_dias.containerWidth, 360);
 			chart_horas.setSize(chart_horas.containerWidth, 360);
-        }
-        $(this).closest('.panel').toggleClass('panel-fullscreen');		
-    });
-	
-	$("#panel-fullscreen-relogio").click(function (e) {
-        e.preventDefault();
-        
-        var $this = $(this);
-    
-        if ($this.children('i').hasClass('glyphicon-resize-full'))
-        {
-            $this.children('i').removeClass('glyphicon-resize-full');
-            $this.children('i').addClass('glyphicon-resize-small');
-			chart_relogio_manha.setSize(600, 580);
-			chart_relogio_tarde.setSize(600, 580);
-        }
-        else if ($this.children('i').hasClass('glyphicon-resize-small'))
-        {
-            $this.children('i').removeClass('glyphicon-resize-small');
-            $this.children('i').addClass('glyphicon-resize-full');
-			chart_relogio_manha.setSize(chart_relogio_manha.containerWidth, 400);
-			chart_relogio_tarde.setSize(chart_relogio_tarde.containerWidth, 400);
         }
         $(this).closest('.panel').toggleClass('panel-fullscreen');		
     });
