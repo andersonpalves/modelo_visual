@@ -18,6 +18,7 @@ var ELETRICIDADE = 1;
 var GAS = 2;
 var ELETRICIDADE_TEXTO = "Eletricidade";
 var GAS_TEXTO = "Gas";
+var largura_dense, altura_dense, largura_heatmap, altura_heatmap;
 
 $(function () {
 	$('#rangeValuesDense').change(function() { 
@@ -43,11 +44,9 @@ $(function () {
 
 		heatmap_large.series[0].data = filteredData;
 		chart_heatmap_large = new Highcharts.Chart(heatmap_large);
-
-		if (chart_heatmap_large.plotSizeX >= 1200) {
-			chart_heatmap_large.setSize(1300, 580);
-		}
-
+		largura_dense = chart_heatmap_large.chartWidth;
+		altura_dense = chart_heatmap_large.chartHeight;
+		chart_heatmap_large.setSize(largura_dense, altura_dense);
 	});
 
 	$('#rangeValuesHeatmap').change(function() {
@@ -193,7 +192,6 @@ function abreDados(ano, lugar){
 				series: {
 					events: {
 						click: function (e) {
-							console.log("=>", e.point.x);
 							var retorno = getWeekNumber(new Date(parseInt(e.point.x)));
 							lista_itens = [];
 							semana_selecionada = retorno[1];
@@ -227,15 +225,12 @@ function abreDados(ano, lugar){
 									}
 								}
 
-								if(chart_heatmap_large.chartWidth == "1300"){
-									$("#panel-fullscreen-dense-display").click();
-								}
-								
-
 								carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay);
 
 								lista_heatmap=[];
 								chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
+								largura_heatmap = chart_heatmap_color.chartWidth;
+								altura_heatmap = chart_heatmap_color.chartHeight;
 							}, "json");
 
 							$("#heatmap-color-semana").show();
@@ -248,6 +243,12 @@ function abreDados(ano, lugar){
 							
 							carregaGraficoHoras(null);
 							chart_horas = new Highcharts.Chart(horas);
+							
+							if(chart_heatmap_large.chartHeight > altura_heatmap){
+								$("#panel-fullscreen-dense-display").click();
+							}
+
+							location.href = "http://localhost:8888/MAMP/modelo_visual_v2/app.php#link_heatmap";
 						}
 					}
 				}
@@ -402,7 +403,9 @@ function abreDados(ano, lugar){
 				$("#rangeValuesDense").attr("max", parseInt(maxDenseDisplay));
 
 				chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
-				
+				largura_heatmap = chart_heatmap_color.chartWidth;
+				altura_heatmap = chart_heatmap_color.chartHeight;
+
 				carregaGraficoDias(null);
 				chart_dias = new Highcharts.Chart(dias);
 				
@@ -416,6 +419,8 @@ function abreDados(ano, lugar){
 				heatmap_large.colorAxis.max = maxDenseDisplay;
 				
 				chart_heatmap_large = new Highcharts.Chart(heatmap_large);
+				largura_dense = chart_heatmap_large.chartWidth;
+				altura_dense = chart_heatmap_large.chartHeight;
 			},
             async: false
         });

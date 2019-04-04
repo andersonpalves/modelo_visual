@@ -2,7 +2,7 @@ var calendar_view = {};
 var lista_dados = [];
 var lista_jan = [], lista_fev = [], lista_mar = [], lista_abr = [], lista_mai = [], lista_jun = [], 
     lista_jul = [], lista_ago = [], lista_set = [], lista_out = [], lista_nov = [], lista_dez = [];
-
+var chart_calendar_view, largura_calendario, altura_calendario;
 $(function () {
     calendar_view = {
         chart: {
@@ -124,7 +124,62 @@ $(function () {
             series: {
                 events: {
                     click: function (e) {
-                        console.log(e)
+                        var retorno = getWeekNumber(new Date(parseInt(e.point.date)));
+                        lista_itens = [];
+                        semana_selecionada = retorno[1];
+
+                        $.post( "datas_semanais.php", { ano: retorno[0], semana: retorno[1] }, function( data ) {
+                            lista_dias=[];
+
+                            $.each(data, function (key, val) {
+                                lista_dias.push(val);
+                                lista_heatmap.push(getLoadDatas(val));
+                            });
+
+                            for(var i=0; i<=6; i++){
+                                for(var j=0; j<=23; j++){
+                                    var item = [];
+                                    var valor = 0;
+
+                                    if (typeof lista_heatmap[i][j] === 'undefined') {
+                                        valor = null
+                                    }
+                                    else {
+                                        valor = lista_heatmap[i][j][2];
+                                    }
+
+                                    if (valor != null) {
+                                        valor = parseInt(valor);
+                                    }
+
+                                    item.push(i, j, valor);
+                                    lista_itens.push(item);
+                                }
+                            }
+                            
+
+                            carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay);
+
+                            lista_heatmap=[];
+                            chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
+                        }, "json");
+
+                        $("#heatmap-color-semana").show();
+                        $("#heatmap-color").show();
+                        $('#heatmapRange').html("<b>0</b>");
+                        $('#rangeValuesHeatmap').val(0);
+                        
+                        carregaGraficoDias(null);
+                        chart_dias = new Highcharts.Chart(dias);
+                        
+                        carregaGraficoHoras(null);
+                        chart_horas = new Highcharts.Chart(horas);
+
+                        if(chart_calendar_view.chartHeight > altura_calendario){
+                            $("#panel-fullscreen-calendar-view").click();
+                        }
+
+                        location.href = "http://localhost:8888/MAMP/modelo_visual_v2/app.php#link_heatmap";
                     }
                 },
                 // show the week number under the calendar blocks
@@ -750,6 +805,9 @@ function carregaDadosCalendario(){
     calendar_view.series[10].data = lista_dados[10];
     calendar_view.series[11].data = lista_dados[11];
     chart_calendar_view = new Highcharts.Chart(calendar_view);
+
+    largura_calendario = chart_calendar_view.chartWidth;
+    altura_calendario = chart_calendar_view.chartHeight;
 }
 
 function diaDaSemana(date){

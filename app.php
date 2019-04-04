@@ -98,6 +98,7 @@
 				<div class="col-sm-6 chart-container">
           <div class="panel panel-default blocos_6">
             <div class="panel-heading">
+              <a id="link_heatmap"></a>
               <h2 class="panel-title"><span id="heatmapTexto"></span></h2>
               <ul class="list-inline panel-actions">
                 <li><a href="#" id="panel-fullscreen-heatmap" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>

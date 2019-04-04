@@ -9,13 +9,13 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-            chart_calendar_view.setSize(1300, 480);
+            chart_calendar_view.setSize(largura_calendario, altura_calendario + 290);
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
         {
             $this.children('i').removeClass('glyphicon-resize-small');
             $this.children('i').addClass('glyphicon-resize-full');
-			chart_calendar_view.setSize(800, 480);
+			chart_calendar_view.setSize(largura_calendario, altura_calendario);
         }
         $(this).closest('.panel').toggleClass('panel-fullscreen');		
     });
@@ -29,13 +29,13 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-            chart_heatmap_large.setSize(800, 500);
+            chart_heatmap_large.setSize(largura_dense, altura_dense + 290);
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
         {
             $this.children('i').removeClass('glyphicon-resize-small');
             $this.children('i').addClass('glyphicon-resize-full');
-			chart_heatmap_large.setSize("100%", "100%");
+			chart_heatmap_large.setSize(largura_dense, altura_dense);
         }
         $(this).closest('.panel').toggleClass('panel-fullscreen');		
     });
@@ -49,13 +49,13 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-			chart_heatmap_color.setSize(1300, 580);
+			chart_heatmap_color.setSize(largura_heatmap, altura_heatmap + 290);
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
         {
             $this.children('i').removeClass('glyphicon-resize-small');
             $this.children('i').addClass('glyphicon-resize-full');
-			chart_heatmap_color.setSize(chart_heatmap_large.containerWidth, 360);
+			chart_heatmap_color.setSize(largura_heatmap, altura_heatmap);
         }
         $(this).closest('.panel').toggleClass('panel-fullscreen');		
     });
