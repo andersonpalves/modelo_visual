@@ -5,8 +5,6 @@ function carregarHistorico() {
     
     var listaObjetos = buscaDadosHistorico();
 
-    console.log("listaObjetos", listaObjetos);
-
     var historico = {
        
         title: {
@@ -309,10 +307,6 @@ function carregarDados(nomesArquivos){
         $.ajax({
             url: "http://localhost:5000/predicoes/?valores="+valoresMeses+"&meses="+listaMeses+"&anoInicio="+anoInicio+"&anoFim="+anoFim,
             success: function (dadosJson) {
-
-                console.log("valoresMeses", valoresMeses)
-                console.log("retorno predicao", dadosJson)
-
                 var objetoSarimaPredicao = {};
                 objetoSarimaPredicao.name = parseInt(proximoAnoPrevisao) + " Sarima Prediction";
                 objetoSarimaPredicao.data = dadosJson.sa_predict;

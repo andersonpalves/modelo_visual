@@ -143,9 +143,14 @@ var heatmapcolor = {
 					
 					var data = e.point.series.xAxis.categories[e.point.options.x];
 					
-					if(chart_heatmap_color.chartWidth == "1300"){
+					if(zoomAberto == true){
 						$("#panel-fullscreen-heatmap").click();
 					}
+
+					largura_dias = chart_dias.chartWidth;
+					altura_dias = chart_dias.chartHeight;
+					largura_horas = chart_horas.chartWidth;
+					altura_horas = chart_horas.chartHeight;
 
 					if (e.point.value != null) {
 						abreGraficos(e.point, e, semana_selecionada, data);					
@@ -342,12 +347,11 @@ function abreGraficos(ponto, e, semana_selecionada, data){
 		}
 	}
 
-	//var dia = formatarData(lista_dias[ponto.x]);
-	
 	var dia_semana =  res[0];
 	var dia =  res[1];
 	
-	$("#diasHorasTexto").html("Days / Hours  - Day selected: <b>" + dia +" </b> - <b>" + dia_semana + " </b> - Hour selected: <b>" + hora + "</b> Hours");
+	$("#diasTexto").html("Day View Selected: <b>" + dia +" </b> - <b>" + dia_semana);
+	$("#horasTexto").html("Hour View Selected: <b>" + hora + "</b> Hours");
 	
 	abreGraficoDias("area-conjunto-x1", arrayValoresX, arrayValoresMinimosX, arrayValoresMediosX, arrayValoresMaximosX, arrayValoresMedianaX, valorDesvioPadraoX,
 	valorVarianciaX, valorErroPadraoX);

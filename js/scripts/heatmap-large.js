@@ -18,7 +18,7 @@ var ELETRICIDADE = 1;
 var GAS = 2;
 var ELETRICIDADE_TEXTO = "Eletricidade";
 var GAS_TEXTO = "Gas";
-var largura_dense, altura_dense, largura_heatmap, altura_heatmap;
+var largura_dense, altura_dense, largura_heatmap, altura_heatmap, largura_dias, altura_dias, largura_horas, altura_horas;
 
 $(function () {
 	$('#rangeValuesDense').change(function() { 
@@ -89,7 +89,8 @@ function ajustarTextos(){
 	$("#calendarTexto").html("Calendar View");
 	$("#denseTexto").html("Annual / Monthly View");
 	$("#heatmapTexto").html("Weekly View");
-	$("#diasHorasTexto").html("Days / Hours View");
+	$("#diasTexto").html("Day View");
+	$("#horasTexto").html("Hour View");
 	$("#relogioTexto").html("Clock View");
 	$("#heatmapHistoricoGeralTexto").html("All energy sources - <b>Year selected<b>: " + $("#ano").val());
 }
@@ -244,11 +245,11 @@ function abreDados(ano, lugar){
 							carregaGraficoHoras(null);
 							chart_horas = new Highcharts.Chart(horas);
 							
-							if(chart_heatmap_large.chartHeight > altura_heatmap){
+							if(zoomAberto == true){
 								$("#panel-fullscreen-dense-display").click();
 							}
 
-							location.href = "http://localhost:8888/MAMP/modelo_visual_v2/app.php#link_heatmap";
+							rolarTela("link_heatmap");
 						}
 					}
 				}
@@ -1018,7 +1019,6 @@ function getEstadoInicial(data, hora) {
 	return dados_dense_estado_inicial.filter(
 		function(valores){
 			if (valores[0] == data && valores[1] == hora){
-				console.log("getEstadoInicial", dados_dense_estado_inicial[2]);
 				return dados_dense_estado_inicial[2];
 			}	
 		}
@@ -1239,8 +1239,6 @@ function retornaVariancia(array) {
 }
 
 function retornaDesvioPadrao(array) {
-	console.log("lista - retornaErroPadrao", array);
-	console.log("retornaErroPadrao", Math.sqrt(retornaVariancia(array)));
 	return Math.sqrt(retornaVariancia(array));
 }
 
@@ -1265,10 +1263,8 @@ function retornaMediaHarmonica(lista){
 }
 
 function retornaErroPadrao(lista, desvioPadrao){
-	console.log("lista - retornaErroPadrao", lista);
 	var tamanhoAmostra = lista.length;
 	var raizQuadrada = Math.sqrt(tamanhoAmostra);
-	console.log("retornaErroPadrao", desvioPadrao / raizQuadrada);
 	return desvioPadrao / raizQuadrada;
 }
 

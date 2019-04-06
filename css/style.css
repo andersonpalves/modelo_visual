@@ -104,3 +104,14 @@
     background-color: transparent;
 }
 
+.btn-green{
+	background-color: blueviolet;
+	color: #fff;
+	border-color: #762786;
+}
+
+.btn-green:hover, .btn-green:focus {
+    color: #fff;
+    text-decoration: none;
+}
+

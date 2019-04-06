@@ -3,6 +3,7 @@ var lista_dados = [];
 var lista_jan = [], lista_fev = [], lista_mar = [], lista_abr = [], lista_mai = [], lista_jun = [], 
     lista_jul = [], lista_ago = [], lista_set = [], lista_out = [], lista_nov = [], lista_dez = [];
 var chart_calendar_view, largura_calendario, altura_calendario;
+var zoomAberto = false;
 $(function () {
     calendar_view = {
         chart: {
@@ -65,7 +66,7 @@ $(function () {
             categories: [ 
                 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.', 'Sun.',
                 ' ', ' ', ' ',
-                'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.', 'Sun.',
+                'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.', 'Sun.',' '
             ],
             title: null,
             reversed: true,
@@ -175,11 +176,11 @@ $(function () {
                         carregaGraficoHoras(null);
                         chart_horas = new Highcharts.Chart(horas);
 
-                        if(chart_calendar_view.chartHeight > altura_calendario){
+                        if(zoomAberto == true){
                             $("#panel-fullscreen-calendar-view").click();
                         }
 
-                        location.href = "http://localhost:8888/MAMP/modelo_visual_v2/app.php#link_heatmap";
+                        rolarTela("link_heatmap");
                     }
                 },
                 // show the week number under the calendar blocks
@@ -263,6 +264,11 @@ $(function () {
     }
     carregaDadosCalendario();
 });
+
+function rolarTela(aid){
+    var aTag = $("a[name='"+ aid +"']");
+    $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+}
 
 $("#lugar").change(function() {
     $("#rangeValuesDense").attr("max", 0);

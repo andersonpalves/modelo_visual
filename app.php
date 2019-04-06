@@ -94,18 +94,17 @@
         </div>
       </div>
 			
-			<div class="row">
+			<div class="row"><a name="link_heatmap"></a>
 				<div class="col-sm-6 chart-container">
           <div class="panel panel-default blocos_6">
             <div class="panel-heading">
-              <a id="link_heatmap"></a>
               <h2 class="panel-title"><span id="heatmapTexto"></span></h2>
               <ul class="list-inline panel-actions">
                 <li><a href="#" id="panel-fullscreen-heatmap" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
               </ul>
             </div>
             <div class="panel-body">
-              <div id="heatmap-color"></div>
+              <div id="heatmap-color" align="center"></div>
               <div id="rangeHeatmap">
                 <input id="rangeValuesHeatmap" type="range" value="0" name="points" min="0">
                 <span>Values equal or grater than: </span><span id="heatmapRange"><b>0</b></span>
@@ -114,40 +113,56 @@
           </div>
 				</div>
 				
-        <div class="col-sm-6 chart-container">
+        <div class="col-sm-3 chart-container">
           <div class="panel panel-default blocos_6">
             <div class="panel-heading">
-              <h2 class="panel-title"><span id="diasHorasTexto"></span></h2>
+              <h2 class="panel-title"><span id="diasTexto"></span></h2>
               <ul class="list-inline panel-actions">
-                <li><a href="#" id="panel-fullscreen-dias-horas" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
+                <li><a href="#" id="panel-fullscreen-dias" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
               </ul>
             </div>
             <div class="panel-body">
-              <div class="col-sm-6 chart-container">
-                <div id="area-conjunto-x1"></div>
-                <div id="botoes-area-conjunto-x1" class="botoes-graficos" style="text-align:center;">
+              <div class="col-sm-12">
+                <div id="area-conjunto-x1" align="center"></div>
+                <div id="botoes-area-conjunto-x1" style="text-align:center;">
                   <button id="area-conjunto-x1-coluna" class="btn btn-primary btn-sm">Bar</button>
                   <!--<button id="area-conjunto-x1-pizza" class="btn btn-orange btn-sm">Pie</button>-->
                   <button id="area-conjunto-x1-polar" class="btn btn-success btn-sm">Polar</button>
                   <button id="area-conjunto-x1-plot" class="btn btn-info btn-sm">Plot</button>
                   <button id="area-conjunto-x1-linha" class="btn btn-danger btn-sm">Line</button>
                   <button id="area-conjunto-x1-area" class="btn btn-warning btn-sm">Area</button>
+                  <button id="area-conjunto-x1-box" class="btn btn-green btn-sm">Box</button>
                 </div>
               </div>
-              <div class="col-sm-6 chart-container">
-                <div id="area-conjunto-y1"></div>
-                <div id="botoes-area-conjunto-y1" class="botoes-graficos" style="text-align:center;">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 chart-container">
+          <div class="panel panel-default blocos_6">
+            <div class="panel-heading">
+              <h2 class="panel-title"><span id="horasTexto"></span></h2>
+              <ul class="list-inline panel-actions">
+                <li><a href="#" id="panel-fullscreen-horas" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
+              </ul>
+            </div>
+            <div class="panel-body">
+              <div class="col-sm-12">
+                <div id="area-conjunto-y1" align="center"></div>
+                <div id="botoes-area-conjunto-y1" style="text-align:center;">
                   <button id="area-conjunto-y1-coluna" class="btn btn-primary btn-sm">Bar</button>
                   <!--<button id="area-conjunto-y1-pizza" class="btn btn-orange btn-sm">Pie</button>-->
                   <button id="area-conjunto-y1-polar" class="btn btn-success btn-sm">Polar</button>
                   <button id="area-conjunto-y1-plot" class="btn btn-info btn-sm">Plot</button>
                   <button id="area-conjunto-y1-linha" class="btn btn-danger btn-sm">Line</button>
                   <button id="area-conjunto-y1-area" class="btn btn-warning btn-sm">Area</button>
+                  <button id="area-conjunto-y1-box" class="btn btn-green btn-sm">Box</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
 
 		
@@ -170,7 +185,7 @@
       <div class="col-sm-12 chart-container">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h2 class="panel-title" align="center"><span id="heatmapHistoricoGeralTexto"></span></h2>
+            <h2 class="panel-title" align="center" <span id="heatmapHistoricoGeralTexto"></span></h2>
             <ul class="list-inline panel-actions">
               <li><a href="#" id="panel-fullscreen-historico-geral" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
             </ul>
