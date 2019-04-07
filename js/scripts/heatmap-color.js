@@ -284,7 +284,7 @@ function abreGraficos(ponto, e, semana_selecionada, data){
 		}
 
 		var listaMedias = [];
-		var valorMinimo, valorMedio, valorMaximo;
+		var valorMinimo, valorMaximo;
 
 		for(var a=0; a<valoresX.length; a++){
 			for(var b=0; b<valoresX[a].length; b++){
@@ -303,7 +303,7 @@ function abreGraficos(ponto, e, semana_selecionada, data){
 		
 		var objetoMedia = {
 			"name": z + ":00 horas",
-			"y" : retornaMedia(listaMedias)
+			"y" : parseInt(retornaMedia(listaMedias))
 		}
 		
 		var objetoMaximo = {

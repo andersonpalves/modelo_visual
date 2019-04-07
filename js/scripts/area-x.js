@@ -1,12 +1,33 @@
-function abreGraficoDias(grafico, pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, valorVariancia, valorErroPadrao){
+function abreGraficoDias(grafico, pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, 
+	valorVariancia, valorErroPadrao){
 
 	$("#" + grafico).show();
 	$("#botoes-" + grafico).show();
 
-	var dias = {
+	tipoGrafico = 'line';
+	var dias = criaGraficoDias(pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, 
+		valorVariancia, valorErroPadrao, tipoGrafico, false);
+
+	var dados = [];
+	for(var i=0; i<=23; i++){
+		var seriesBoxplot = [];
+		seriesBoxplot.push(pontosMinimos[i].y, pontosMedios[i].y, pontos[i].y, pontosMediana[i].y,  pontosMaximos[i].y);
+		dados.push(seriesBoxplot);
+	}
+
+	criaGraficoDiasBoxPlot(dados);
+
+	pontos = [];
+	chart_dias = new Highcharts.Chart(dias);
+}
+
+function criaGraficoDias(pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, 
+	valorVariancia, valorErroPadrao, tipoGrafico, booleanPolar){
+	return chart_dias_valores = {
 		chart: {
 			renderTo: 'area-conjunto-x1',
-			type: 'line'
+			type: tipoGrafico,
+			polar: booleanPolar
 		},
 		title: {
 			text: ''
@@ -138,7 +159,99 @@ function abreGraficoDias(grafico, pontos, pontosMinimos, pontosMedios, pontosMax
 			text:null
 		}
 	};
-	pontos = [];
-	
-	chart_dias = new Highcharts.Chart(dias);
+}
+
+function criaGraficoDiasBoxPlot(dados){
+	return chart_dias_valores_boxplot = {
+
+			chart: {
+				renderTo: 'area-conjunto-x1',
+				type: 'boxplot'
+			},
+		
+			title: {
+				text: ''
+			},
+		
+			legend: {
+				enabled: false
+			},
+		
+			xAxis: {
+				labels: {
+					format: '{value}h', //:00
+					rotation: -60
+				},
+				title: {
+					text: 'Schedule'
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickPositions: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+				tickWidth: 1,
+				min: 0,
+				max: 23.5
+			},
+		
+			yAxis: {
+				title: {
+					text: 'Consumption'
+				}
+			},
+
+			plotOptions: {
+				boxplot: {
+					fillColor: '#A63400',
+					lineWidth: 1,
+					medianColor: 'green',
+					medianWidth: 4,
+					stemColor: 'black',
+					stemDashStyle: 'solid',
+					stemWidth: 1,
+					whiskerColor: '#3060CF',
+					whiskerLength: '75%',
+					whiskerWidth: 4
+				}
+			},
+		
+			series: [{
+				showInLegend: false,
+            	name: 'Series',
+				data: dados,
+				fillColor: '#FF8D00',
+				color: '#010916',
+				lineWidth: 1,
+				tooltip: {
+				   // series: q, low: 834, q1: 836, median: 864, q3: 882, …}
+				   //seriesBoxplot.push(pontosMinimos[i].y, pontosMedios[i].y, pontos[i].y, pontosMediana[i].y,  pontosMaximos[i].y);
+					headerFormat: '<b>{point.x}:00 Hour</b><br/>',
+					pointFormat: '<b>Min:</b> {point.low} <br> ' + 
+								 '<b>AVG:</b> {point.q1} <br> ' +  
+								 '<b>Consumption:</b> {point.median}<br> ' + 
+								 '<b>Median:</b> {point.q3}<br> ' + 
+								 '<b>Max:</b> {point.high}'
+				}
+			}],	
+			navigation: {
+				buttonOptions: {
+					enabled: false
+				}
+			},
+			credits: {
+				enabled: false
+			},
+			responsive: {
+				rules: [{
+					condition: {
+						maxWidth: "100%",
+						maxHeight: "100%"
+					}
+				}]
+			},
+			legend: {
+				text:null
+			}
+		}
 }

@@ -8,17 +8,15 @@ var lista_conteudo_dense = [];
 var lista_itens = [];
 var chart_heatmap_large, chart_heatmap_color, chart_dias, chart_horas, app, chart_relogio_tarde, chart_historico, chart_historico_geral;
 var chart_heatmap_large_init;
+var chart_dias_valores, chart_dias_valores_boxplot, chart_horas_valores, chart_horas_valores_boxplot;
 var semana_selecionada, lugar_selecionado;
-var heatmap_large;
-var maxDenseDisplay = 0, maxHeatmap = 0, tamanhoX = 0;
+var heatmap_large, maxDenseDisplay = 0, maxHeatmap = 0, tamanhoX = 0;
+var largura_dense, altura_dense, largura_heatmap, altura_heatmap, largura_dias, altura_dias, largura_horas, altura_horas;
+
 var selecaoPorGrupo = false;
 var valoresEletricidade = [0, 1, 2, 3, 4, 5];
 var valoresGas = [6, 7, 8, 9];
-var ELETRICIDADE = 1;
-var GAS = 2;
-var ELETRICIDADE_TEXTO = "Eletricidade";
-var GAS_TEXTO = "Gas";
-var largura_dense, altura_dense, largura_heatmap, altura_heatmap, largura_dias, altura_dias, largura_horas, altura_horas;
+var ELETRICIDADE = 1,  GAS = 2, ELETRICIDADE_TEXTO = "Eletricidade", GAS_TEXTO = "Gas";
 
 $(function () {
 	$('#rangeValuesDense').change(function() { 
@@ -64,6 +62,8 @@ $(function () {
 });
 
 function abreDadosJson(){
+	lista_dados_semanais = [];
+    lista_dados_consumo = [];
 	
 	if ($("#lugar").val() == "teste") {
 		$("#ano").val(2016);
@@ -86,7 +86,6 @@ function verificaGrupoPorEnergia(valor) {
 }
 
 function ajustarTextos(){
-	$("#calendarTexto").html("Calendar View");
 	$("#denseTexto").html("Annual / Monthly View");
 	$("#heatmapTexto").html("Weekly View");
 	$("#diasTexto").html("Day View");
@@ -398,7 +397,6 @@ function abreDados(ano, lugar){
 					tracoHtml = "- ";
 				}
 	
-				$("#calendarTexto").html("Calendar View " + tracoHtml + textoHtml + " - Max consumption: <b> TO DO</br>");
 				$("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
 				$("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
 				$("#rangeValuesDense").attr("max", parseInt(maxDenseDisplay));

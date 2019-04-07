@@ -31,7 +31,7 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-            chart_heatmap_large.setSize(largura_dense, altura_dense + 5);
+            chart_heatmap_large.setSize(largura_dense, altura_dense + 1);
             zoomAberto = true;
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
@@ -76,7 +76,7 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-            chart_dias.setSize(600, 600);
+            chart_dias.setSize(chart_heatmap_large.chartWidth, 600);
             $(".blocos_6").height("100%");
             zoomAberto = true;
         }
@@ -100,7 +100,7 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-            chart_horas.setSize(600, 600);
+            chart_horas.setSize(chart_heatmap_large.chartWidth, 600);
             $(".blocos_6").height("100%");
             zoomAberto = true;
         }
