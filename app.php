@@ -213,8 +213,8 @@
     <script src="js/scripts/heatmap-color.js"></script>
     <script src="js/scripts/panel-full.js"></script>
     <script src="js/scripts/config.js"></script>
-    <script src="js/scripts/area-x.js"></script>
-    <script src="js/scripts/area-y.js"></script>
+    <script src="js/scripts/horas.js"></script>
+    <script src="js/scripts/dias.js"></script>
     <script src="js/scripts/graficos.js"></script>
   </body>
 </html>

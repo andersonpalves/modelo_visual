@@ -11,8 +11,10 @@ function abreGraficoHoras(grafico, pontos, pontosMinimos, pontosMaximos, pontosM
 	var dados = [];
 	for(var i=0; i<=6; i++){
 		var seriesBoxplot = [];
-		console.log(pontosMinimos[i].y, pontosMedios[i].y, pontos[i].y, pontosMediana[i].y,  pontosMaximos[i].y);
-		seriesBoxplot.push(pontosMinimos[i].y, pontosMedios[i].y, pontos[i].y, pontosMediana[i].y,  pontosMaximos[i].y);
+		var primeiroQuartil = parseInt(Quartile_25(new Array(pontosMinimos[i].y, pontosMaximos[i].y)));
+		var ultimoQuartil = parseInt(Quartile_75(new Array(pontosMinimos[i].y, pontosMaximos[i].y)));
+
+		seriesBoxplot.push(pontosMinimos[i].y, primeiroQuartil, pontosMediana[i].y, ultimoQuartil,  pontosMaximos[i].y);
 		dados.push(seriesBoxplot);
 	}
 
@@ -191,32 +193,26 @@ function criaGraficoHorasBoxPlot(dados){
 			boxplot: {
 				fillColor: '#A63400',
 				lineWidth: 1,
-				medianColor: 'green',
+				medianColor: '#3060CF',
+				medianBorderColor: '#FFFFFF',
 				medianWidth: 4,
 				stemColor: 'black',
 				stemDashStyle: 'solid',
 				stemWidth: 1,
-				whiskerColor: '#3060CF',
+				whiskerColor: 'blueviolet',
 				whiskerLength: '75%',
-				whiskerWidth: 4                 
+				whiskerWidth: 4
 			}
 		},
 		series: [{
+			name: 'Consumption',
 			showInLegend: false,
-			name: 'Series',
 			data: dados,
-			fillColor: '#FF8D00',
+			fillColor: '#5cb85c',
 			color: '#010916',
 			lineWidth: 1,
 			tooltip: {
-			   // series: q, low: 834, q1: 836, median: 864, q3: 882, …}
-			   //seriesBoxplot.push(pontosMinimos[i].y, pontosMedios[i].y, pontos[i].y, pontosMediana[i].y,  pontosMaximos[i].y);
-				headerFormat: '<b>Day of week: {point.x}</b><br/>',
-				pointFormat: '<b>Min:</b> {point.low} <br> ' + 
-							 '<b>AVG:</b> {point.q1} <br> ' +  
-							 '<b>Consumption:</b> {point.median}<br> ' + 
-							 '<b>Median:</b> {point.q3}<br> ' + 
-							 '<b>Max:</b> {point.high}'
+				headerFormat: '<b>{point.x}:00 Hour</b><br/>'
 			}
 		}],	
 		navigation: {
