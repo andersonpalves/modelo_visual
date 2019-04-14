@@ -137,6 +137,28 @@ $(document).ready(function () {
         $(this).closest('.panel').toggleClass('panel-fullscreen');		
     });
 
+    $("#panel-fullscreen-boxplot").click(function (e) {
+        e.preventDefault();
+        
+        var $this = $(this);
+    
+        if ($this.children('i').hasClass('glyphicon-resize-full'))
+        {
+            $this.children('i').removeClass('glyphicon-resize-full');
+            $this.children('i').addClass('glyphicon-resize-small');
+            chart_box_plot.setSize(chart_historico.containerWidth, 600);
+            zoomAberto = true;
+        }
+        else if ($this.children('i').hasClass('glyphicon-resize-small'))
+        {
+            $this.children('i').removeClass('glyphicon-resize-small');
+            $this.children('i').addClass('glyphicon-resize-full');
+            chart_box_plot.setSize(chart_historico.containerWidth, 400);
+            zoomAberto = false;
+        }
+        $(this).closest('.panel').toggleClass('panel-fullscreen');		
+    });
+
     $("#panel-fullscreen-historico-geral").click(function (e) {
         e.preventDefault();
         

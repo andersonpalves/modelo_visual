@@ -59,6 +59,9 @@
 
     <div class="container-fluid">
 		<div class="row">
+        <div id='ajax_loader' style="position: fixed; left: 50%; top: 50%; display: none;">
+          <img src="images/loading.gif" id="loading-indicator" style="display:none" />
+        </div>
         <div class="col-sm-12 chart-container">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -181,6 +184,23 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-sm-12 chart-container">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h2 class="panel-title" align="center"><span id="boxplotTexto"></span></h2>
+            <ul class="list-inline panel-actions">
+              <li><a href="#" id="panel-fullscreen-boxplot" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div id="boxplotAnnual" style="height: 400px; min-width: 310px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-sm-12 chart-container">
         <div class="panel panel-default">
@@ -216,5 +236,6 @@
     <script src="js/scripts/horas.js"></script>
     <script src="js/scripts/dias.js"></script>
     <script src="js/scripts/graficos.js"></script>
+    <script src="js/scripts/boxplot.js"></script>
   </body>
 </html>

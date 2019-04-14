@@ -1278,7 +1278,7 @@ function Median(data) {
 	return Quartile_50(data);
   }
   
-  function Quartile_25(data) {
+  function 	Quartile_25(data) {
 	return Quartile(data, 0.25);
   }
   

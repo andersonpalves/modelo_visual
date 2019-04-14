@@ -208,7 +208,7 @@ function criaGraficoHorasBoxPlot(dados){
 			name: 'Consumption',
 			showInLegend: false,
 			data: dados,
-			fillColor: '#5cb85c',
+			fillColor: '#C0C0C0',
 			color: '#010916',
 			lineWidth: 1,
 			tooltip: {

@@ -1,11 +1,17 @@
 var calendar_view = {};
+var chart_box_plot = {};
 var lista_dados = [], lista_dados_semanais = [], lista_dados_consumo = [];
 var lista_jan = [], lista_fev = [], lista_mar = [], lista_abr = [], lista_mai = [], lista_jun = [], 
     lista_jul = [], lista_ago = [], lista_set = [], lista_out = [], lista_nov = [], lista_dez = [];
+var lista_jan_boxplot = [], lista_fev_boxplot = [], lista_mar_boxplot = [], lista_abr_boxplot = [], lista_mai_boxplot = [], 
+    lista_jun_boxplot = [], lista_jul_boxplot = [], lista_ago_boxplot = [], lista_set_boxplot = [], lista_out_boxplot = [], 
+    lista_nov_boxplot = [], lista_dez_boxplot = [];    
 var chart_calendar_view, largura_calendario, altura_calendario;
 var zoomAberto = false;
+
 $(function () {
     $("#calendarTexto").html("Calendar View - Energy selected: " + $('#energia option:selected').text());
+    $("#boxplotTexto").html("Monthly Consumption - Energy selected: " + $('#energia option:selected').text());
     calendar_view = {
         chart: {
             renderTo: 'calendar_view',
@@ -197,7 +203,12 @@ $(function () {
                             var somaTotal = 0;
 
                             for(i=0; i<=6; i++){
-                                somaTotal = somaTotal + dados[i][1];
+                                if (typeof dados[i] === 'undefined') {
+                                    somaTotal = somaTotal + 0;
+                                }
+                                else {
+                                    somaTotal = somaTotal + dados[i][1];
+                                }
                             }
 
                             var media = somaTotal / dados.length;
@@ -275,6 +286,7 @@ $(function () {
         }]
     }
     carregaDadosCalendario();
+    atualizaBoxPlot();
 });
 
 function rolarTela(aid){
@@ -289,6 +301,7 @@ $("#lugar").change(function() {
     abreDadosJson();
     removeTodosValores();
     carregaDadosCalendario();
+    atualizaBoxPlot();
 });
 
 $("#ano").change(function() {
@@ -299,6 +312,7 @@ $("#ano").change(function() {
     abreDadosJson();
     removeTodosValores();
     carregaDadosCalendario();
+    atualizaBoxPlot();
 });
 
 $("#energia").change(function() {
@@ -308,6 +322,7 @@ $("#energia").change(function() {
     abreDadosJson();
     removeTodosValores();
     carregaDadosCalendario();
+    atualizaBoxPlot();
 });
 
 function loadValuesFromFile(){
@@ -378,6 +393,7 @@ function loadValuesFromFile(){
                             lista_jan.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 0, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_jan_boxplot.push(valor)
 
                             if(dia == 31){
                                 if(diaSemana == 0) {
@@ -416,6 +432,7 @@ function loadValuesFromFile(){
                             lista_fev.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 1, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_fev_boxplot.push(valor)
 
                             if( (dia == 28 && false == verificaAnoBissexto(ano)) || 
                                 (dia == 29 && true == verificaAnoBissexto(ano)) ){
@@ -451,6 +468,7 @@ function loadValuesFromFile(){
                             lista_mar.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 2, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_mar_boxplot.push(valor)
 
                             if(dia == 31){
                                 if(diaSemana == 0) {
@@ -485,6 +503,7 @@ function loadValuesFromFile(){
                             lista_abr.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 2, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_abr_boxplot.push(valor)
 
                             if(dia == 30){
                                 if(diaSemana == 0) {
@@ -519,6 +538,7 @@ function loadValuesFromFile(){
                             lista_mai.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 4, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_mai_boxplot.push(valor)
 
                             if(dia == 31){
                                 if(diaSemana == 0) {
@@ -553,6 +573,7 @@ function loadValuesFromFile(){
                             lista_jun.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 5, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_jun_boxplot.push(valor)
 
                             if(dia == 30){
                                 if(diaSemana == 0) {
@@ -587,6 +608,7 @@ function loadValuesFromFile(){
                             lista_jul.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 6, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_jul_boxplot.push(valor)
 
                             if(dia == 31){
                                 if(diaSemana == 0) {
@@ -621,6 +643,7 @@ function loadValuesFromFile(){
                             lista_ago.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 7, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_ago_boxplot.push(valor)
 
                             if(dia == 31){
                                 if(diaSemana == 0) {
@@ -655,6 +678,7 @@ function loadValuesFromFile(){
                             lista_set.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 8, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_set_boxplot.push(valor)
 
                             if(dia == 30){
                                 if(diaSemana == 0) {
@@ -689,6 +713,7 @@ function loadValuesFromFile(){
                             lista_out.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 9, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_out_boxplot.push(valor)
 
                             if(dia == 31){
                                 if(diaSemana == 0) {
@@ -723,6 +748,7 @@ function loadValuesFromFile(){
                             lista_nov.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 10, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_nov_boxplot.push(valor)
 
                             if(dia == 30){
                                 if(diaSemana == 0) {
@@ -757,6 +783,7 @@ function loadValuesFromFile(){
                             lista_dez.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 11, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
+                            lista_dez_boxplot.push(valor)
 
                             if(dia == 31){
                                 if(diaSemana == 0) {
@@ -851,6 +878,7 @@ function carregaDadosCalendario(){
     largura_calendario = chart_calendar_view.chartWidth;
     altura_calendario = chart_calendar_view.chartHeight;
     $("#calendarTexto").html("Calendar View - Energy selected: " + $('#energia option:selected').text() + " - Max consumption: <b>" + Math.max(...lista_dados_consumo));
+    $("#boxplotTexto").html("Monthly Consumption - Energy selected: <b>" + $('#energia option:selected').text() + "</b>");
 }
 
 function diaDaSemana(date){
