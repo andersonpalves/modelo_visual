@@ -1,6 +1,159 @@
+$("#boxplotAno").change(function() {
+    var horaSelecionada = $("#boxplotAno").val();
+
+    if (horaSelecionada == "-") {
+        atualizaBoxPlot();
+    }
+    else {
+        atualizaBoxPlotPorHora(horaSelecionada);
+    }
+});
+
 function atualizaBoxPlot(){
     var lista_valores_boxplot = carregaDadosBoxplot();
-    var box_plot = {
+    var box_plot = retornaGrafico(lista_valores_boxplot);
+    chart_box_plot = new Highcharts.Chart(box_plot);
+}
+
+function atualizaBoxPlotPorHora(horaSelecionada){
+    var lista_valores_boxplot = [];
+    var lista = [];
+    
+    lista = trataLista(retornaHorasPorMes(lista_jan_hora_boxplot, horaSelecionada));
+    var janeiro = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_fev_hora_boxplot, horaSelecionada));
+    var fevereiro = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_mar_hora_boxplot, horaSelecionada));
+    var marco = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_abr_hora_boxplot, horaSelecionada));
+    var abril = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_mai_hora_boxplot, horaSelecionada));
+    var maio = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_jun_hora_boxplot, horaSelecionada));
+    var junho = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_jul_hora_boxplot, horaSelecionada));
+    var julho = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_ago_hora_boxplot, horaSelecionada));
+    var agosto = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_set_hora_boxplot, horaSelecionada));
+    var setembro = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_out_hora_boxplot, horaSelecionada));
+    var outubro = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_nov_hora_boxplot, horaSelecionada));
+    var novembro = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista = trataLista(retornaHorasPorMes(lista_dez_hora_boxplot, horaSelecionada));
+    var dezembro = [
+        Math.min(...lista),
+        parseInt(Quartile_25(new Array(Math.min(...lista), Math.max(...lista)))),
+        mediana(lista),
+        parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
+        Math.max(...lista)
+    ];
+
+    lista_valores_boxplot.push(janeiro);
+    lista_valores_boxplot.push(fevereiro);
+    lista_valores_boxplot.push(marco);
+    lista_valores_boxplot.push(abril);
+    lista_valores_boxplot.push(maio);
+    lista_valores_boxplot.push(junho);
+    lista_valores_boxplot.push(julho);
+    lista_valores_boxplot.push(agosto);
+    lista_valores_boxplot.push(setembro);
+    lista_valores_boxplot.push(outubro);
+    lista_valores_boxplot.push(novembro);
+    lista_valores_boxplot.push(dezembro);
+
+    var box_plot = retornaGrafico(lista_valores_boxplot);
+    chart_box_plot = new Highcharts.Chart(box_plot);
+}
+
+function trataLista(lista){
+    var retorno = [];
+    for(var i=0; i<lista.length; i++){
+        retorno.push(lista[i][1]);
+    }
+    return retorno;
+}
+
+function retornaGrafico(lista_valores_boxplot){
+    return {
         chart: {
             type: 'boxplot',
             renderTo: 'boxplotAnnual'
@@ -69,7 +222,16 @@ function atualizaBoxPlot(){
             }
         }]
     }
-    chart_box_plot = new Highcharts.Chart(box_plot);
+}
+
+function retornaHorasPorMes(lista, hora){
+    return lista.filter(
+        function(valores){
+            if(valores[0] == hora){
+                return parseInt(lista[1]);
+            }
+        }
+    )
 }
 
 function carregaDadosBoxplot(){

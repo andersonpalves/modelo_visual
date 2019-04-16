@@ -112,7 +112,7 @@ function criaGraficoDias(pontos, pontosMinimos, pontosMedios, pontosMaximos, pon
 					symbol: 'triangle-down',
 					radius: 6
 				},
-				visible: false
+				visible: true
 			},
 			{
 				name: "AVG",
@@ -122,7 +122,7 @@ function criaGraficoDias(pontos, pontosMinimos, pontosMedios, pontosMaximos, pon
 					symbol: 'diamond',
 					radius: 6
 				},
-				visible: false
+				visible: true
 			},
 			{
 				name: "Median",
@@ -132,7 +132,7 @@ function criaGraficoDias(pontos, pontosMinimos, pontosMedios, pontosMaximos, pon
 					symbol: 'diamond',
 					radius: 6
 				},
-				visible: false
+				visible: true
 			},
 			{
 				name: "Max.",
@@ -142,7 +142,7 @@ function criaGraficoDias(pontos, pontosMinimos, pontosMedios, pontosMaximos, pon
 					symbol: 'triangle',
 					radius: 6
 				},
-				visible: false
+				visible: true
 			}
 		],
 		navigation: {

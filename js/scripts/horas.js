@@ -98,7 +98,7 @@ function criaGraficoHoras(pontos, pontosMinimos, pontosMedios, pontosMaximos, po
 							symbol: 'triangle-down',
 							radius: 6
 						},
-						visible: false
+						visible: true
 					},
 					{
 						name: "AVG",
@@ -108,7 +108,7 @@ function criaGraficoHoras(pontos, pontosMinimos, pontosMedios, pontosMaximos, po
 							symbol: 'diamond',
 							radius: 6
 						},
-						visible: false
+						visible: true
 					},
 					{
 						name: "Median",
@@ -118,7 +118,7 @@ function criaGraficoHoras(pontos, pontosMinimos, pontosMedios, pontosMaximos, po
 							symbol: 'diamond',
 							radius: 6
 						},
-						visible: false
+						visible: true
 					},
 					{
 						name: "Max.",
@@ -128,7 +128,7 @@ function criaGraficoHoras(pontos, pontosMinimos, pontosMedios, pontosMaximos, po
 							symbol: 'triangle',
 							radius: 6
 						},
-						visible: false
+						visible: true
 					}
 				],
 				navigation: {
