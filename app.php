@@ -5,7 +5,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" type="image/png" href="images/favicon.ico"/>
-    <!-- Dashboard -->
+    <!-- Dashboard 26/06/2011 - Sunday-->
     <link href="css/keen-dashboards.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/style.css">
   </head>

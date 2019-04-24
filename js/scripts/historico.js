@@ -41,37 +41,28 @@ function carregarHistorico() {
                         var anoAtual = point.y;
                         var resultado = Math.abs((anoAtual - ano2017) / ano2017) * 100;
                         s += '<br/><span style="color:' + point.color + '">\u25CF</span> Error Sarima Prediction: <b>' + Math.round(resultado * 100) / 100 + '%';
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[7].mae)+'</b><br/>' +
+                                '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+nf.format(listaObjetos[7].mse)+'</b><br/>' +
+                                '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+nf.format(listaObjetos[7].rmse)+'</b>'; 
                     }
 
                     if (point.series.name == "2017 Holt Prediction") {
                         var anoAtual = point.y;
                         var resultado = Math.abs((anoAtual - ano2017) / ano2017) * 100;
                         s += '<br/><span style="color:' + point.color + '">\u25CF</span> Error Holt Prediction: <b>' + Math.round(resultado * 100) / 100 + '%';
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[8].mae)+'</b><br/>' +
+                                '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+ nf.format(listaObjetos[8].mse)+'</b><br/>' +
+                                '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+ nf.format(listaObjetos[8].rmse)+'</b>';
                     }
 
                     if (point.series.name == "2017 AR Prediction") {
                         var anoAtual = point.y;
                         var resultado = Math.abs((anoAtual - ano2017) / ano2017) * 100;
                         s += '<br/><span style="color:' + point.color + '">\u25CF</span> Error AR Prediction: <b>' + Math.round(resultado * 100) / 100 + '%';
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[9].mae)+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+nf.format(listaObjetos[9].mse)+'</b><br/>' +
+                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+nf.format(listaObjetos[9].rmse)+'</b>';
                     }
-                    
-                    // if (point.series.name == "2017 Sarimax Prediction") {
-                    //     s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[7].mae)+'</b><br/>' +
-                    //          '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+nf.format(listaObjetos[7].mse)+'</b><br/>' +
-                    //          '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+nf.format(listaObjetos[7].rmse)+'</b>'; 
-                    // }
-
-                    // if (point.series.name == "2017 Holt Prediction") {
-                    //     s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[8].mae)+'</b><br/>' +
-                    //          '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+ nf.format(listaObjetos[8].mse)+'</b><br/>' +
-                    //          '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+ nf.format(listaObjetos[8].rmse)+'</b>';
-                    // }
-
-                    // if (point.series.name == "2017 AR Prediction") {
-                    //     s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[9].mae)+'</b><br/>' +
-                    //          '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+nf.format(listaObjetos[9].mse)+'</b><br/>' +
-                    //          '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+nf.format(listaObjetos[9].rmse)+'</b>';
-                    // }
                 });
 
                 return s;
@@ -143,6 +134,8 @@ function buscaDadosHistorico(){
         },
         async: false
     });
+
+    console.log("dadosNomesArquivos", dadosNomesArquivos);
 	
     return dadosNomesArquivos;
 }
