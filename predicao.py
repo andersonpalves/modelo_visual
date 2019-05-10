@@ -37,12 +37,18 @@ def login():
 	valores_parameter = request.args.get('valores')
 	ano_inicio_parameter = request.args.get('anoInicio')
 	ano_fim_parameter = request.args.get('anoFim')
+
 	meses_array = meses_parameter.split(',')
 	valores_array = valores_parameter.split(',')
 
+	ano_fim = ano_fim_parameter[0:4]
+	ano_passado_metricas = int(ano_fim) - 1
+	ano_mes_metricas = str(ano_passado_metricas) + "-01"
 	tamanho_lista = len(meses_array)
-
+	qtde_meses_predicao = tamanho_lista - 12
+	
 	valores = []
+
 	for valor in valores_array:
 		novo_valor = int(valor)
 		valores.append(novo_valor)
@@ -74,13 +80,13 @@ def login():
 	dados_sarima = output[~np.isnan(output)].tolist()
 
 	##Sarima métricas
-	valores_anteriores = valores[0:72]
-	valores_ano_seguinte = valores[72:]
+	valores_anteriores = valores[0:qtde_meses_predicao]
+	valores_ano_seguinte = valores[qtde_meses_predicao:]
 	tamanho_predicao = len(valores_anteriores)
 
 	mod = sm.tsa.statespace.SARIMAX(valores_anteriores, order=(1, 0, 1), seasonal_order=(3, 0, 1, 12))
 	resultado = mod.fit()
-	start = datetime.datetime.strptime("2017-01", "%Y-%m")
+	start = datetime.datetime.strptime(ano_mes_metricas, "%Y-%m")
 	date_list = [start + relativedelta(months=x) for x in range(0,12)]
 	future = pd.DataFrame(index=date_list, columns= df.columns)
 	df = pd.concat([df, future])
@@ -88,10 +94,6 @@ def login():
 	dados_predicao_sarima = []
 	dados_predicao_sarima = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
 	dados_predicao_sarima = dados_predicao_sarima.tolist()
-		
-	sa_mse = mean_squared_error(valores_ano_seguinte, dados_predicao_sarima)
-	sa_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao_sarima)
-	sa_rmse = sqrt(sa_mse)
 
 	#Holt Winter
 	mod = ExponentialSmoothing(data, seasonal_periods=12 ,trend='add', seasonal='add')
@@ -109,7 +111,7 @@ def login():
 	#Holt Winter métricas
 	mod = ExponentialSmoothing(valores_anteriores, seasonal_periods=12 ,trend='add', seasonal='add')
 	resultado = mod.fit()
-	start = datetime.datetime.strptime("2017-01", "%Y-%m")
+	start = datetime.datetime.strptime(ano_mes_metricas, "%Y-%m")
 	date_list = [start + relativedelta(months=x) for x in range(0,12)]
 	future = pd.DataFrame(index=date_list, columns= df.columns)
 	df = pd.concat([df, future])
@@ -117,10 +119,6 @@ def login():
 	dados_predicao_hw = []
 	dados_predicao_hw = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11).astype(int)
 	dados_predicao_hw = dados_predicao_hw.tolist()
-		
-	hw_mse = mean_squared_error(valores_ano_seguinte, dados_predicao_hw)
-	hw_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao_hw)
-	hw_rmse = sqrt(hw_mse)
 
 	#AR
 	mod = AR(data)
@@ -138,7 +136,7 @@ def login():
 	#AR métricas
 	mod = AR(valores_anteriores)
 	resultado = mod.fit()
-	start = datetime.datetime.strptime("2017-01", "%Y-%m")
+	start = datetime.datetime.strptime(ano_mes_metricas, "%Y-%m")
 	date_list = [start + relativedelta(months=x) for x in range(0,12)]
 	future = pd.DataFrame(index=date_list, columns= df.columns)
 	df = pd.concat([df, future])
@@ -146,27 +144,14 @@ def login():
 	dados_predicao_ar = []
 	dados_predicao_ar = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
 	dados_predicao_ar = dados_predicao_ar.tolist()
-		
-	ar_mse = mean_squared_error(valores_ano_seguinte, dados_predicao_ar)
-	ar_mae = mean_absolute_error(valores_ano_seguinte, dados_predicao_ar)
-	ar_rmse = sqrt(ar_mse)
 
 	return jsonify(
 		sa_predict = dados_predicao_sarima,
         sa = dados_sarima,
-		sa_mse = sa_mse,
-		sa_mae = sa_mae,
-		sa_rmse = sa_rmse,
 		hw_predict = dados_predicao_hw,
 		hw = dados_holt,
-		hw_mse = hw_mse,
-		hw_mae = hw_mae,
-		hw_rmse = hw_rmse,
 		ar_predict = dados_predicao_ar,
-		ar = dados_ar,
-		ar_mse = ar_mse,
-		ar_mae = ar_mae,
-		ar_rmse = ar_rmse
+		ar = dados_ar
     )
 
 if __name__ == "__main__":

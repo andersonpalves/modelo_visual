@@ -1,5 +1,6 @@
 var listaMeses = [];
 var valoresMeses = [];
+var anoAnterior = parseInt($("#ano option:last").val());
 
 function carregarHistorico() {
     
@@ -28,40 +29,42 @@ function carregarHistorico() {
             formatter: function () {
                 var nf = new Intl.NumberFormat();
                 var s = '<b>'+ this.x +'</b>';
-                var ano2017 = 0;
+                var valorAnoAnterior = 0;
 
                 $.each(this.points, function(i, point) {
+                    //console.log(point)
                     s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': <b>' + nf.format(point.y) + '</b>';
 
-                    if (point.series.name == "2017") {
-                        ano2017 = point.y;
+                    if (point.series.name == anoAnterior) {
+                        valorAnoAnterior = point.y;
                     }
 
-                    if (point.series.name == "2017 Sarima Prediction") {
+                    var condicaoSarima = anoAnterior + " Sarima Prediction";
+                    var condicaoHw = anoAnterior + " Holt Prediction";
+                    var condicaoAr = anoAnterior + " AR Prediction";
+
+                    if (point.series.name == condicaoSarima) {
                         var anoAtual = point.y;
-                        var resultado = Math.abs((anoAtual - ano2017) / ano2017) * 100;
+                        var resultado = Math.abs((anoAtual - valorAnoAnterior) / valorAnoAnterior) * 100;
+                        var mae =  Math.abs(anoAtual - valorAnoAnterior);
                         s += '<br/><span style="color:' + point.color + '">\u25CF</span> Error Sarima Prediction: <b>' + Math.round(resultado * 100) / 100 + '%';
-                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[7].mae)+'</b><br/>' +
-                                '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+nf.format(listaObjetos[7].mse)+'</b><br/>' +
-                                '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+nf.format(listaObjetos[7].rmse)+'</b>'; 
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(mae) +'</b><br/>';
                     }
 
-                    if (point.series.name == "2017 Holt Prediction") {
+                    if (point.series.name == condicaoHw) {
                         var anoAtual = point.y;
-                        var resultado = Math.abs((anoAtual - ano2017) / ano2017) * 100;
+                        var resultado = Math.abs((anoAtual - valorAnoAnterior) / valorAnoAnterior) * 100;
+                        var mae =  Math.abs(anoAtual - valorAnoAnterior);
                         s += '<br/><span style="color:' + point.color + '">\u25CF</span> Error Holt Prediction: <b>' + Math.round(resultado * 100) / 100 + '%';
-                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[8].mae)+'</b><br/>' +
-                                '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+ nf.format(listaObjetos[8].mse)+'</b><br/>' +
-                                '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+ nf.format(listaObjetos[8].rmse)+'</b>';
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(mae) +'</b><br/>';
                     }
 
-                    if (point.series.name == "2017 AR Prediction") {
+                    if (point.series.name == condicaoAr) {
                         var anoAtual = point.y;
-                        var resultado = Math.abs((anoAtual - ano2017) / ano2017) * 100;
+                        var resultado = Math.abs((anoAtual - valorAnoAnterior) / valorAnoAnterior) * 100;
+                        var mae =  Math.abs(anoAtual - valorAnoAnterior);
                         s += '<br/><span style="color:' + point.color + '">\u25CF</span> Error AR Prediction: <b>' + Math.round(resultado * 100) / 100 + '%';
-                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(listaObjetos[9].mae)+'</b><br/>' +
-                             '<span style="color:' + point.color + '">\u25CF</span> MSE: <b>'+nf.format(listaObjetos[9].mse)+'</b><br/>' +
-                             '<span style="color:' + point.color + '">\u25CF</span> RMSE: <b>'+nf.format(listaObjetos[9].rmse)+'</b>';
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(mae) +'</b><br/>';
                     }
                 });
 
@@ -303,25 +306,16 @@ function carregarDados(nomesArquivos){
                 var objetoSarimaPredicao = {};
                 objetoSarimaPredicao.name = parseInt(proximoAnoPrevisao) + " Sarima Prediction";
                 objetoSarimaPredicao.data = dadosJson.sa_predict;
-                objetoSarimaPredicao.rmse = dadosJson.sa_rmse;
-                objetoSarimaPredicao.mse = dadosJson.sa_mse;
-                objetoSarimaPredicao.mae = dadosJson.sa_mae;
                 retornoFinal.push(objetoSarimaPredicao)
 
                 var objetoHoltPredicao = {};
                 objetoHoltPredicao.name = parseInt(proximoAnoPrevisao) + " Holt Prediction";
                 objetoHoltPredicao.data = dadosJson.hw_predict;
-                objetoHoltPredicao.rmse = dadosJson.hw_rmse;
-                objetoHoltPredicao.mse = dadosJson.hw_mse;
-                objetoHoltPredicao.mae = dadosJson.hw_mae;
                 retornoFinal.push(objetoHoltPredicao)
 
                 var objetoArPredicao = {};
                 objetoArPredicao.name = parseInt(proximoAnoPrevisao) + " AR Prediction";
                 objetoArPredicao.data = dadosJson.ar_predict;
-                objetoArPredicao.rmse = dadosJson.ar_rmse;
-                objetoArPredicao.mse = dadosJson.ar_mse;
-                objetoArPredicao.mae = dadosJson.ar_mae;
                 retornoFinal.push(objetoArPredicao)
 
                 var objetoSarima = {};
