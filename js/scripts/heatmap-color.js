@@ -223,10 +223,12 @@ function abreGraficos(ponto, e, semana_selecionada, data){
 	var valoresY = retornaValoresDiaDeSemanaPorHora(limitesLoop[0], limitesLoop[1], hora);
 	
 	var consumoY = [];
+	var totalConsumo = 0;
 	/*VALORES PARA HORAS*/
 	for(var i=0; i<=6; i++){
 		var contador = i + 1;
 		var consumo =  heatmapcolor.series[0].data[(24 * i) + ponto.y][2];
+		totalConsumo += consumo;
 		consumoY.push(consumo);
 		
 		if (i == 6) {
@@ -271,11 +273,14 @@ function abreGraficos(ponto, e, semana_selecionada, data){
 	valorDesvioPadraoY = round(retornaDesvioPadrao(consumoY));
 	valorVarianciaY = round(retornaVariancia(consumoY));
 	valorErroPadraoY = round(retornaErroPadrao(consumoY, valorDesvioPadraoY));
+	valorCVY = round((valorDesvioPadraoY / (totalConsumo / 7)));
 
 	var consumoX = [];
+	var totalConsumo = 0;
 	/*VALORES PARA DIAS*/
 	for(var z=0; z<=23; z++){
 		var consumo = heatmapcolor.series[0].data[z+total][2];
+		totalConsumo += consumo;
 		consumoX.push(consumo);
 		
 		var objeto = { 
@@ -328,6 +333,7 @@ function abreGraficos(ponto, e, semana_selecionada, data){
 	valorDesvioPadraoX = round(retornaDesvioPadrao(consumoX));
 	valorVarianciaX = round(retornaVariancia(consumoX));
 	valorErroPadraoX = round(retornaErroPadrao(consumoX, valorDesvioPadraoX));
+	valorCVX = round((valorDesvioPadraoX / (totalConsumo / 24)));
 
 	// Valores para o relogio
 	for(var x=0; x<=23; x++){
@@ -354,9 +360,9 @@ function abreGraficos(ponto, e, semana_selecionada, data){
 	$("#horasTexto").html("Hour View Selected: <b>" + hora + "</b> Hours");
 	
 	abreGraficoDias("area-conjunto-x1", arrayValoresX, arrayValoresMinimosX, arrayValoresMediosX, arrayValoresMaximosX, arrayValoresMedianaX, valorDesvioPadraoX,
-	valorVarianciaX, valorErroPadraoX);
+	valorVarianciaX, valorErroPadraoX, valorCVX);
 	abreGraficoHoras("area-conjunto-y1", arrayValoresY, arrayValoresMinimosY, arrayValoresMaximosY, arrayValoresMedianaY, arrayValoresMediosY, valorDesvioPadraoY,
-	valorVarianciaY, valorErroPadraoY);
+	valorVarianciaY, valorErroPadraoY, valorCVY);
 
 }
 

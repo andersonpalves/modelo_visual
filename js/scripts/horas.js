@@ -1,12 +1,12 @@
 function abreGraficoHoras(grafico, pontos, pontosMinimos, pontosMaximos, pontosMediana, pontosMedios, valorDesvioPadrao, 
-	valorVariancia, valorErroPadrao){
+	valorVariancia, valorErroPadrao, valorCV){
 
 	$("#" + grafico).show();
 	$("#botoes-" + grafico).show();
 
 	tipoGrafico = 'line';
 	var horas = criaGraficoHoras(pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, 
-		valorVariancia, valorErroPadrao, tipoGrafico, false);
+		valorVariancia, valorErroPadrao, valorCV, tipoGrafico, false);
 
 	var dados = [];
 	for(var i=0; i<=6; i++){
@@ -24,7 +24,7 @@ function abreGraficoHoras(grafico, pontos, pontosMinimos, pontosMaximos, pontosM
 }
 
 function criaGraficoHoras(pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, 
-	valorVariancia, valorErroPadrao, tipoGrafico, booleanPolar){
+	valorVariancia, valorErroPadrao, valorCV, tipoGrafico, booleanPolar){
 		return chart_horas_valores = {
 				chart: {
 					renderTo: 'area-conjunto-y1',
@@ -67,6 +67,7 @@ function criaGraficoHoras(pontos, pontosMinimos, pontosMedios, pontosMaximos, po
 							text += '<b>'+ valorVariancia + ' Variance<br>';
 							text += '<b>'+ valorDesvioPadrao + ' Std. Deviation<br>';
 							text += '<b>'+ valorErroPadrao + ' Std. Error<br>';
+							text += '<b>'+ valorCV + ' Coef. Variation<br>';
 						}
 		
 						return text;

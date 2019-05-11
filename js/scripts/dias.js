@@ -1,12 +1,12 @@
 function abreGraficoDias(grafico, pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, 
-	valorVariancia, valorErroPadrao){
+	valorVariancia, valorErroPadrao, valorCV){
 
 	$("#" + grafico).show();
 	$("#botoes-" + grafico).show();
 
 	tipoGrafico = 'line';
 	var dias = criaGraficoDias(pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, 
-		valorVariancia, valorErroPadrao, tipoGrafico, false);
+		valorVariancia, valorErroPadrao, valorCV, tipoGrafico, false);
 
 	var dados = [];
 	for(var i=0; i<=23; i++){
@@ -25,7 +25,7 @@ function abreGraficoDias(grafico, pontos, pontosMinimos, pontosMedios, pontosMax
 }
 
 function criaGraficoDias(pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, 
-	valorVariancia, valorErroPadrao, tipoGrafico, booleanPolar){
+	valorVariancia, valorErroPadrao, valorCV, tipoGrafico, booleanPolar){
 	return chart_dias_valores = {
 		chart: {
 			renderTo: 'area-conjunto-x1',
@@ -78,6 +78,7 @@ function criaGraficoDias(pontos, pontosMinimos, pontosMedios, pontosMaximos, pon
 					text += '<b>'+ valorVariancia + ' Variance<br>';
 					text += '<b>'+ valorDesvioPadrao + ' Std. Deviation<br>';
 					text += '<b>'+ valorErroPadrao + ' Std. Error<br>';
+					text += '<b>'+ valorCV + ' Cof. Variation<br>';
 				}
 
 				return text;

@@ -218,7 +218,7 @@ function retornaGrafico(lista_valores_boxplot){
             color: '#010916',
             lineWidth: 1,
             tooltip: {
-                headerFormat: '<b>Month: {point.x}</b><br/>'
+                headerFormat: '<b>Month: {point.x} - Year: '+anoComboSelecionado+'</b><br/>'
             }
         }]
     }
