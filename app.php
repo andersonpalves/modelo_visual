@@ -170,7 +170,7 @@
 
 		
     <div class="row">
-      <div class="col-sm-12 chart-container">
+      <div class="col-sm-6 chart-container">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h2 class="panel-title" align="center"><span id="heatmapHistoricoTexto"></span></h2>
@@ -183,10 +183,7 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-12 chart-container">
+      <div class="col-sm-6 chart-container">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h2 class="panel-title" align="center">
