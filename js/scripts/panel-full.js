@@ -124,7 +124,7 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-            chart_historico.setSize(chart_historico.containerWidth, 600);
+            chart_historico.setSize(chart_historico.containerWidth+500, 600);
             zoomAberto = true;
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
@@ -146,7 +146,7 @@ $(document).ready(function () {
         {
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
-            chart_box_plot.setSize(chart_historico.containerWidth, 600);
+            chart_box_plot.setSize(chart_historico.containerWidth+500, 600);
             zoomAberto = true;
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))

@@ -173,7 +173,7 @@
       <div class="col-sm-6 chart-container">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h2 class="panel-title" align="center"><span id="heatmapHistoricoTexto"></span></h2>
+            <h2 class="panel-title" align="center" style="margin:4px;"><span id="heatmapHistoricoTexto"></span></h2>
             <ul class="list-inline panel-actions">
               <li><a href="#" id="panel-fullscreen-historico" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
             </ul>
