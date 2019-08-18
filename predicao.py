@@ -17,6 +17,7 @@ from statsmodels.tsa.vector_ar.var_model import VAR
 from statsmodels.tsa.statespace.varmax import VARMAX
 from statsmodels.tsa.holtwinters import SimpleExpSmoothing
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
+from fbprophet import Prophet
 
 from flask import Flask
 from flask import jsonify
@@ -66,6 +67,10 @@ def login():
 
 	data = df.dados
 
+	dfp = pd.DataFrame()
+	dfp.insert(loc=0,column='ds',value=meses_array)
+	dfp.insert(loc=1,column='y',value=valores)
+
 	#SARIMA
 	mod = sm.tsa.statespace.SARIMAX(data, order=(1, 0, 1), seasonal_order=(3, 0, 1, 12))
 	results = mod.fit()
@@ -79,9 +84,8 @@ def login():
 	output = df['sarima'].unique()
 	dados_sarima = output[~np.isnan(output)].tolist()
 
-	##Sarima métricas
+	##Sarima ano seguinte
 	valores_anteriores = valores[0:qtde_meses_predicao]
-	valores_ano_seguinte = valores[qtde_meses_predicao:]
 	tamanho_predicao = len(valores_anteriores)
 
 	mod = sm.tsa.statespace.SARIMAX(valores_anteriores, order=(1, 0, 1), seasonal_order=(3, 0, 1, 12))
@@ -108,7 +112,7 @@ def login():
 	output = df['holtwinter'].unique()
 	dados_holt = output[~np.isnan(output)].tolist()
 
-	#Holt Winter métricas
+	#Holt Winter ano seguinte
 	mod = ExponentialSmoothing(valores_anteriores, seasonal_periods=12 ,trend='add', seasonal='add')
 	resultado = mod.fit()
 	start = datetime.datetime.strptime(ano_mes_metricas, "%Y-%m")
@@ -133,7 +137,7 @@ def login():
 	output = df['ar'].unique()
 	dados_ar = output[~np.isnan(output)].tolist()
 
-	#AR métricas
+	#AR ano seguinte
 	mod = AR(valores_anteriores)
 	resultado = mod.fit()
 	start = datetime.datetime.strptime(ano_mes_metricas, "%Y-%m")
@@ -145,14 +149,46 @@ def login():
 	dados_predicao_ar = resultado.predict(start = tamanho_predicao, end = tamanho_predicao + 11, dynamic= True).astype(int)
 	dados_predicao_ar = dados_predicao_ar.tolist()
 
+	#Prophet
+	model_prophet = Prophet()
+	model_prophet.fit(dfp[0:qtde_meses_predicao])
+	future_data = model_prophet.make_future_dataframe(periods=12, freq = 'm')
+	forecast_data = model_prophet.predict(future_data)
+
+	lista_prophet = []
+	lista_prophet = forecast_data['yhat']
+	lista_prophet = lista_prophet[qtde_meses_predicao:]
+
+	dados_predicao_prophet = []
+	
+	for indice in range(qtde_meses_predicao, tamanho_lista):
+		dados_predicao_prophet.append(int(lista_prophet.get(indice)))
+
+	#Prophet ano seguinte
+	model_prophet_ano_seguinte = Prophet()
+	model_prophet_ano_seguinte.fit(dfp)
+	future_data = model_prophet_ano_seguinte.make_future_dataframe(periods=12, freq = 'm')
+	forecast_data = model_prophet_ano_seguinte.predict(future_data)
+
+	lista_prophet_ano_seguinte = []
+	lista_prophet_ano_seguinte = forecast_data['yhat']
+	lista_prophet_ano_seguinte = lista_prophet_ano_seguinte[tamanho_lista:]
+
+	dados_prophet = []
+
+	for indice in range(tamanho_lista, tamanho_lista + 12):
+		dados_prophet.append(int(lista_prophet_ano_seguinte.get(indice)))
+
 	return jsonify(
 		sa_predict = dados_predicao_sarima,
-        sa = dados_sarima,
+    sa = dados_sarima,
 		hw_predict = dados_predicao_hw,
 		hw = dados_holt,
 		ar_predict = dados_predicao_ar,
-		ar = dados_ar
-    )
+		ar = dados_ar,
+		prophet_predict = dados_predicao_prophet,
+		prophet = dados_prophet
+  )
 
 if __name__ == "__main__":
 	app.run()

@@ -42,6 +42,7 @@ function carregarHistorico() {
                     var condicaoSarima = anoAnterior + " Sarima Prediction";
                     var condicaoHw = anoAnterior + " Holt Prediction";
                     var condicaoAr = anoAnterior + " AR Prediction";
+                    var condicaoProphet = anoAnterior + " Prophet Prediction";
 
                     if (point.series.name == condicaoSarima) {
                         var anoAtual = point.y;
@@ -66,6 +67,15 @@ function carregarHistorico() {
                         s += '<br/><span style="color:' + point.color + '">\u25CF</span> Error AR Prediction: <b>' + Math.round(resultado * 100) / 100 + '%';
                         s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(mae) +'</b><br/>';
                     }
+
+                    if (point.series.name == condicaoProphet) {
+                        var anoAtual = point.y;
+                        var resultado = Math.abs((anoAtual - valorAnoAnterior) / valorAnoAnterior) * 100;
+                        var mae =  Math.abs(anoAtual - valorAnoAnterior);
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> Error Prophet Prediction: <b>' + Math.round(resultado * 100) / 100 + '%';
+                        s += '<br/><span style="color:' + point.color + '">\u25CF</span> MAE: <b>' + nf.format(mae) +'</b><br/>';
+                    }
+
                 });
 
                 return s;
@@ -318,6 +328,11 @@ function carregarDados(nomesArquivos){
                 objetoArPredicao.data = dadosJson.ar_predict;
                 retornoFinal.push(objetoArPredicao)
 
+                var objetoProphetPredicao = {};
+                objetoProphetPredicao.name = parseInt(proximoAnoPrevisao) + " Prophet Prediction";
+                objetoProphetPredicao.data = dadosJson.prophet_predict;
+                retornoFinal.push(objetoProphetPredicao)
+
                 var objetoSarima = {};
                 objetoSarima.name = parseInt(proximoAnoPrevisao+1) + " Sarima Prediction";
                 objetoSarima.data = dadosJson.sa;
@@ -331,7 +346,12 @@ function carregarDados(nomesArquivos){
                 var objetoAr = {};
                 objetoAr.name = parseInt(proximoAnoPrevisao+1) + " AR Prediction";
                 objetoAr.data = dadosJson.ar;
-                retornoFinal.push(objetoAr)
+                retornoFinal.push(objetoAr);
+
+                var objetoProphet = {};
+                objetoProphet.name = parseInt(proximoAnoPrevisao+1) + " Prophet Prediction";
+                objetoProphet.data = dadosJson.prophet;
+                retornoFinal.push(objetoProphet)
             },
             async: false
         });

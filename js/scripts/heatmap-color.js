@@ -79,7 +79,7 @@ var heatmapcolor = {
 			},
 			{
 				type: 'scatter',
-				name: 'Smaller<br>Consump.<br>Daily',
+				name: 'Lowest<br>Consump.<br>Daily',
 				color: '#00008B',
 				data: [],
 				marker: {
@@ -93,7 +93,7 @@ var heatmapcolor = {
 			},
 			{
 				type: 'scatter',
-				name: 'Bigger<br>Consump.<br>Daily',
+				name: 'Highest<br>Consump.<br>Daily',
 				color: '#CC0000',
 				data: [],
 				marker: {
@@ -107,7 +107,7 @@ var heatmapcolor = {
 			},
 			{
 				type: 'scatter',
-				name: 'Smaller<br>Consump.<br>Hours',
+				name: 'Lowest<br>Consump.<br>Hours',
 				color: '#0000CD',
 				data: [],
 				lineWidth: 0,
@@ -122,7 +122,7 @@ var heatmapcolor = {
 			},
 			{
 				type: 'scatter',
-				name: 'Bigger<br>Consump.<br>Hours',
+				name: 'Highest<br>Consump.<br>Hours',
 				color: '#B70B2C',
 				data: [],
 				lineWidth: 0,
