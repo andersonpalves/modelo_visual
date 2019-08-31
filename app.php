@@ -7,6 +7,7 @@
     <link rel="shortcut icon" type="image/png" href="images/favicon.ico"/>
     <!-- Dashboard 26/06/2011 - Sunday-->
     <link href="css/keen-dashboards.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" media="all">
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body class="keen-dashboard">
@@ -44,6 +45,13 @@
             <li>
               <span class="texto">Energy Source: </span><select id="energia"></select>
             </li>
+            <li>
+              <span class="texto">Comparison: </span>
+              <label class="switch">
+                <input type="checkbox" id="comparison">
+                <span class="slider round"></span>
+              </label>
+            </li>
             <!--	<li>
               <span class="texto">Group Energy Source: </span>
               <select id="grupo">
@@ -55,13 +63,32 @@
           </ul>
         </div>
       </div>
-		</div>
+    </div>
 
     <div class="container-fluid">
 		<div class="row">
-        <div id='ajax_loader' style="position: fixed; left: 50%; top: 50%; display: none;">
-          <img src="images/loading.gif" id="loading-indicator" style="display:none" />
+        <div id="dialogs" class="modal-style">
+          <div class="dialog-tmpl">
+            <div class="dialog-body"></div>
+          </div>
         </div>
+
+        <div id="comparisonModal" class="modal fade" tabindex="-1" align="center" valign="center">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Select mode visualization</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-footer" align="center">
+                <button id="modal-monthly" type="button" class="btn btn-danger" data-dismiss="modal">Monthly</button>
+                <button id="modal-weekly" type="button" class="btn btn-primary" data-dismiss="modal">Weekly</button>
+                <button id="modal-daily"  type="button" class="btn btn-success" data-dismiss="modal">Daily</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="col-sm-12 chart-container">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -231,7 +258,7 @@
       <div class="col-sm-12 chart-container">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h2 class="panel-title" align="center" <span id="heatmapHistoricoGeralTexto"></span></h2>
+            <h2 class="panel-title" align="center"> <span id="heatmapHistoricoGeralTexto"></span></h2>
             <ul class="list-inline panel-actions">
               <li><a href="#" id="panel-fullscreen-historico-geral" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
             </ul>
@@ -252,6 +279,7 @@
     <script src="js/highchart/exporting.js"></script>
     <script src="js/highchart/data.js"></script>
     <script src="js/highchart/boost-canvas.js"></script>
+    <script src="js/highchart/jquery-ui.js"></script>
     <script src="js/scripts/historico.js"></script>
 		<script src="js/scripts/historico-geral.js"></script>
 		<script src="js/scripts/calendar-view.js"></script>
@@ -263,5 +291,6 @@
     <script src="js/scripts/dias.js"></script>
     <script src="js/scripts/graficos.js"></script>
     <script src="js/scripts/boxplot.js"></script>
+    <script src="js/scripts/dialogs.js"></script>
   </body>
 </html>

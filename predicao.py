@@ -4,19 +4,12 @@ import matplotlib.pyplot as plt
 import datetime
 from dateutil.relativedelta import relativedelta
 import seaborn as sns
-import statsmodels.api as sm  
-from statsmodels.tsa.stattools import acf  
-from statsmodels.tsa.stattools import pacf
-from statsmodels.tsa.seasonal import seasonal_decompose
+import statsmodels.api as sm
 
-from statsmodels.tsa.arima_model import ARIMA
 from statsmodels.tsa.ar_model import AR
-from statsmodels.tsa.arima_model import ARMA
 from statsmodels.tsa.statespace.sarimax import SARIMAX
-from statsmodels.tsa.vector_ar.var_model import VAR
-from statsmodels.tsa.statespace.varmax import VARMAX
-from statsmodels.tsa.holtwinters import SimpleExpSmoothing
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
+from sklearn.linear_model import LinearRegression
 from fbprophet import Prophet
 
 from flask import Flask

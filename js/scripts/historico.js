@@ -147,8 +147,6 @@ function buscaDadosHistorico(){
         },
         async: false
     });
-
-    console.log("dadosNomesArquivos", dadosNomesArquivos);
 	
     return dadosNomesArquivos;
 }

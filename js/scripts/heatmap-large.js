@@ -1,4 +1,5 @@
 var lista_global = [];
+var lista_global_mensal = [];
 var lista_datas = [];
 var lista_heatmap = [];
 var lista_dados = [];
@@ -193,63 +194,68 @@ function abreDados(ano, lugar){
 				series: {
 					events: {
 						click: function (e) {
-							var retorno = getWeekNumber(new Date(parseInt(e.point.x)));
-							lista_itens = [];
-							semana_selecionada = retorno[1];
-
-							$.post( "datas_semanais.php", { ano: retorno[0], semana: retorno[1] }, function( data ) {
-								lista_dias=[];
-
-								$.each(data, function (key, val) {
-									lista_dias.push(val);
-									lista_heatmap.push(getLoadDatas(val));
-								});
-
-								for(var i=0; i<=6; i++){
-									for(var j=0; j<=23; j++){
-										var item = [];
-										var valor = 0;
-
-										if (typeof lista_heatmap[i][j] === 'undefined') {
-											valor = null
-										}
-										else {
-											valor = lista_heatmap[i][j][2];
-										}
-
-										if (valor != null) {
-											valor = parseInt(valor);
-										}
-
-										item.push(i, j, valor);
-										lista_itens.push(item);
-									}
-								}
-
-								carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay);
-
-								lista_heatmap=[];
-								chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
-								largura_heatmap = chart_heatmap_color.chartWidth;
-								altura_heatmap = chart_heatmap_color.chartHeight;
-							}, "json");
-
-							$("#heatmap-color-semana").show();
-							$("#heatmap-color").show();
-							$('#heatmapRange').html("<b>0</b>");
-							$('#rangeValuesHeatmap').val(0);
-							
-							carregaGraficoDias(null);
-							chart_dias = new Highcharts.Chart(dias);
-							
-							carregaGraficoHoras(null);
-							chart_horas = new Highcharts.Chart(horas);
-							
-							if(zoomAberto == true){
-								$("#panel-fullscreen-dense-display").click();
+							if($("#comparison").is(':checked')) {
+								$("#comparisonModal").modal('show');
 							}
-
-							rolarTela("link_heatmap");
+							else {
+								var retorno = getWeekNumber(new Date(parseInt(e.point.x)));
+								lista_itens = [];
+								semana_selecionada = retorno[1];
+	
+								$.post( "datas_semanais.php", { ano: retorno[0], semana: retorno[1] }, function( data ) {
+									lista_dias=[];
+	
+									$.each(data, function (key, val) {
+										lista_dias.push(val);
+										lista_heatmap.push(getLoadDatas(val));
+									});
+	
+									for(var i=0; i<=6; i++){
+										for(var j=0; j<=23; j++){
+											var item = [];
+											var valor = 0;
+	
+											if (typeof lista_heatmap[i][j] === 'undefined') {
+												valor = null
+											}
+											else {
+												valor = lista_heatmap[i][j][2];
+											}
+	
+											if (valor != null) {
+												valor = parseInt(valor);
+											}
+	
+											item.push(i, j, valor);
+											lista_itens.push(item);
+										}
+									}
+	
+									carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay);
+	
+									lista_heatmap=[];
+									chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
+									largura_heatmap = chart_heatmap_color.chartWidth;
+									altura_heatmap = chart_heatmap_color.chartHeight;
+								}, "json");
+	
+								$("#heatmap-color-semana").show();
+								$("#heatmap-color").show();
+								$('#heatmapRange').html("<b>0</b>");
+								$('#rangeValuesHeatmap').val(0);
+								
+								carregaGraficoDias(null);
+								chart_dias = new Highcharts.Chart(dias);
+								
+								carregaGraficoHoras(null);
+								chart_horas = new Highcharts.Chart(horas);
+								
+								if(zoomAberto == true){
+									$("#panel-fullscreen-dense-display").click();
+								}
+	
+								rolarTela("link_heatmap");
+							}
 						}
 					}
 				}
@@ -285,6 +291,7 @@ function abreDados(ano, lugar){
 				lista_datas = [];
 				dados_heat = [];
 				lista_global = []
+				lista_global_mensal = []
 				
 				$.each(data, function (key, val) {
 					if (key != 0) {
@@ -342,6 +349,9 @@ function abreDados(ano, lugar){
 						
 							var elemento = [dataUTC ,val[1],parseInt(valor)];
 							lista_global.push(elemento);
+
+							var elemento_mensal = [parseInt(dataFormato[1]), dataUTC ,val[1],parseInt(valor)];
+							lista_global_mensal.push(elemento_mensal);
 						}
 	
 					}
@@ -1008,6 +1018,17 @@ function getLoadDatas(code) {
 		function(lista_datas){
 			if (lista_datas[0] == code){
 				return lista_datas;
+			}	
+		}
+	);
+}
+
+function getLoadDatasByMonth(month) {
+	
+	return lista_global_mensal.filter(
+		function(lista_global_mensal){
+			if (lista_global_mensal[0] == month){
+				return lista_global_mensal;
 			}	
 		}
 	);

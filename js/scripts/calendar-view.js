@@ -108,7 +108,7 @@ $(function () {
                 [1, '#c4463a']
             ],
             labels: {
-            enabled: true
+                enabled: true
             }
         },
         legend: {
@@ -134,61 +134,67 @@ $(function () {
             series: {
                 events: {
                     click: function (e) {
-                        var retorno = getWeekNumber(new Date(parseInt(e.point.date)));
-                        lista_itens = [];
-                        semana_selecionada = retorno[1];
-
-                        $.post( "datas_semanais.php", { ano: retorno[0], semana: retorno[1] }, function( data ) {
-                            lista_dias=[];
-
-                            $.each(data, function (key, val) {
-                                lista_dias.push(val);
-                                lista_heatmap.push(getLoadDatas(val));
-                            });
-
-                            for(var i=0; i<=6; i++){
-                                for(var j=0; j<=23; j++){
-                                    var item = [];
-                                    var valor = 0;
-
-                                    if (typeof lista_heatmap[i][j] === 'undefined') {
-                                        valor = null
-                                    }
-                                    else {
-                                        valor = lista_heatmap[i][j][2];
-                                    }
-
-                                    if (valor != null) {
-                                        valor = parseInt(valor);
-                                    }
-
-                                    item.push(i, j, valor);
-                                    lista_itens.push(item);
-                                }
-                            }
-                            
-                            carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay);
-
-                            lista_heatmap=[];
-                            chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
-                        }, "json");
-
-                        $("#heatmap-color-semana").show();
-                        $("#heatmap-color").show();
-                        $('#heatmapRange').html("<b>0</b>");
-                        $('#rangeValuesHeatmap').val(0);
-                        
-                        carregaGraficoDias(null);
-                        chart_dias = new Highcharts.Chart(dias);
-                        
-                        carregaGraficoHoras(null);
-                        chart_horas = new Highcharts.Chart(horas);
-
-                        if(zoomAberto == true){
-                            $("#panel-fullscreen-calendar-view").click();
+                        if($("#comparison").is(':checked')) {
+                            mesSelected =  new Date(e.point.date).getMonth() + 1;
+                            $("#comparisonModal").modal('show');
                         }
+                        else {
+                            var retorno = getWeekNumber(new Date(parseInt(e.point.date)));
+                            lista_itens = [];
+                            semana_selecionada = retorno[1];
 
-                        rolarTela("link_heatmap");
+                            $.post( "datas_semanais.php", { ano: retorno[0], semana: retorno[1] }, function( data ) {
+                                lista_dias=[];
+
+                                $.each(data, function (key, val) {
+                                    lista_dias.push(val);
+                                    lista_heatmap.push(getLoadDatas(val));
+                                });
+
+                                for(var i=0; i<=6; i++){
+                                    for(var j=0; j<=23; j++){
+                                        var item = [];
+                                        var valor = 0;
+
+                                        if (typeof lista_heatmap[i][j] === 'undefined') {
+                                            valor = null
+                                        }
+                                        else {
+                                            valor = lista_heatmap[i][j][2];
+                                        }
+
+                                        if (valor != null) {
+                                            valor = parseInt(valor);
+                                        }
+
+                                        item.push(i, j, valor);
+                                        lista_itens.push(item);
+                                    }
+                                }
+                                
+                                carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay);
+
+                                lista_heatmap=[];
+                                chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
+                            }, "json");
+
+                            $("#heatmap-color-semana").show();
+                            $("#heatmap-color").show();
+                            $('#heatmapRange').html("<b>0</b>");
+                            $('#rangeValuesHeatmap').val(0);
+                            
+                            carregaGraficoDias(null);
+                            chart_dias = new Highcharts.Chart(dias);
+                            
+                            carregaGraficoHoras(null);
+                            chart_horas = new Highcharts.Chart(horas);
+
+                            if(zoomAberto == true){
+                                $("#panel-fullscreen-calendar-view").click();
+                            }
+
+                            rolarTela("link_heatmap");
+                        }
                     }
                 },
                 // show the week number under the calendar blocks
