@@ -48,7 +48,7 @@
             <li>
               <span class="texto">Comparison: </span>
               <label class="switch">
-                <input type="checkbox" id="comparison">
+                <input type="checkbox" id="comparison" checked>
                 <span class="slider round"></span>
               </label>
             </li>
@@ -280,6 +280,7 @@
     <script src="js/highchart/data.js"></script>
     <script src="js/highchart/boost-canvas.js"></script>
     <script src="js/highchart/jquery-ui.js"></script>
+    <script src="js/scripts/funcoes.js"></script>
     <script src="js/scripts/historico.js"></script>
 		<script src="js/scripts/historico-geral.js"></script>
 		<script src="js/scripts/calendar-view.js"></script>

@@ -32,7 +32,6 @@ function carregarHistorico() {
                 var valorAnoAnterior = 0;
 
                 $.each(this.points, function(i, point) {
-                    //console.log(point)
                     s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': <b>' + nf.format(point.y) + '</b>';
 
                     if (point.series.name == anoAnterior) {

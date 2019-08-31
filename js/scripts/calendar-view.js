@@ -11,6 +11,8 @@ var lista_jan_hora_boxplot = [], lista_fev_hora_boxplot = [], lista_mar_hora_box
     lista_nov_hora_boxplot = [], lista_dez_hora_boxplot = [];
 var chart_calendar_view, largura_calendario, altura_calendario;
 var zoomAberto = false;
+var mesSelected = 0;
+var weekSelected = [];
 
 $(function () {
     $("#calendarTexto").html("Calendar View - Energy selected: " + $('#energia option:selected').text());
@@ -136,6 +138,7 @@ $(function () {
                     click: function (e) {
                         if($("#comparison").is(':checked')) {
                             mesSelected =  new Date(e.point.date).getMonth() + 1;
+                            weekSelected =  getWeekNumber(new Date(parseInt(e.point.date)));
                             $("#comparisonModal").modal('show');
                         }
                         else {
@@ -172,7 +175,7 @@ $(function () {
                                     }
                                 }
                                 
-                                carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay);
+                                carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay, false);
 
                                 lista_heatmap=[];
                                 chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
@@ -976,11 +979,6 @@ function semanaDoAno(d) {
 
 function ultimoDiaMes(ano, mes){
     return new Date(ano, mes +1, 0).getDate();
-}
-
-function formatarData(data){
-	var split = data.split("/");
-	return split[2]+"-"+split[1]+"-"+split[0];
 }
 
 function removeTodosValores(){
