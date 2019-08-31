@@ -17,6 +17,7 @@ $("#modal-monthly").click(function(e){
     var title = 'Monthly View - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
     var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 415, 410)
     var chartMonth = createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados);
+    
     Highcharts.chart(chartMonth);
     modalNumber++;
 });
@@ -56,10 +57,12 @@ $("#modal-weekly").click(function(e){
     }
 
     var idChart = 'idDialog_'+ modalNumber;
-    var title = 'Week View - Week ' + weekSelected[1] + ' - ' +retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
+    var title = 'Week View - Week ' + weekSelected[1] + ' - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
     var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 395, 390)
     var chartWeek = createDialogWeek(idChart, mesSelected, weekSelected[1], listaDados);
+
     carregaHeatmap(chartWeek, listaDados, maxDenseDisplay, true);
+
     Highcharts.chart(chartWeek);
     modalNumber++;
 
@@ -68,7 +71,18 @@ $("#modal-weekly").click(function(e){
 });
 
 $("#modal-daily").click(function(e){
-    var $dlg = createNewDialog('Dialog title', '<div id="container"></div>', 350, 350);
+  var arrayValoresX = [];
+
+  var idChart = 'idDialog_'+ modalNumber;
+  var title = 'Day View - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
+  var $dlg = createNewDialog(title, '<div id="container"></div>', 350, 350);
+  var chartWeek = createDialogDaily(idChart, mesSelected, weekSelected[1], listaDados);
+  
+  abreGraficoDias(idChart, arrayValoresX, arrayValoresMinimosX, arrayValoresMediosX, arrayValoresMaximosX, 
+                  arrayValoresMedianaX, valorDesvioPadraoX, valorVarianciaX, valorErroPadraoX, valorCVX);
+
+  Highcharts.chart(chartWeek);
+  modalNumber++;
 });
 
 var createNewDialog = (title, body, height, width) => {
@@ -88,6 +102,7 @@ var createNewDialog = (title, body, height, width) => {
 };
 
 function createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados){
+  $('.ui-widget-header').css('background','#d9534f');
   return {
       chart: {
           renderTo: idChart,
@@ -200,6 +215,7 @@ function createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados){
 }
 
 function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
+  $('.ui-widget-header').css('background','#357ebd');
   return {
     chart: {
       renderTo: idChart,
@@ -391,4 +407,8 @@ function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
       }]
     }
   }
+}
+
+function createDialogDaily(idChart, mesSelected, weekSelected, listaDados){
+  $('.ui-widget-header').css('background','#5cb85c');
 }

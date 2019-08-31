@@ -299,7 +299,7 @@ function abreGraficos(ponto, e, semana_selecionada, data){
 		}
 
 		valorMinimo = Math.min( ...listaMedias),
-    	valorMaximo = Math.max( ...listaMedias);
+		valorMaximo = Math.max( ...listaMedias);
 
 		var objetoMinimo = {
 			"name": z + ":00 horas",

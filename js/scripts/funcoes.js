@@ -36,14 +36,13 @@ return lista_global_mensal.filter(
 }
 
 function getEstadoInicial(data, hora) {
-
-return dados_dense_estado_inicial.filter(
-  function(valores){
-    if (valores[0] == data && valores[1] == hora){
-      return dados_dense_estado_inicial[2];
-    }	
-  }
-);
+  return dados_dense_estado_inicial.filter(
+    function(valores){
+      if (valores[0] == data && valores[1] == hora){
+        return dados_dense_estado_inicial[2];
+      }	
+    }
+  );
 }
 
 function formatarData(data){

@@ -211,8 +211,7 @@ input:checked + .slider:before {
 	display: block;
 }
 
-.ui-widget-header {	
-	background: #2191c0;
-	color: #eaf5f7;
+.ui-widget-header {
+	color: #ffffff;
 	font-weight: bold;
 }
