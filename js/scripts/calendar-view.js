@@ -169,10 +169,10 @@ $(function() {
                 events: {
                     click: function(e) {
                         if ($("#comparison").is(':checked')) {
-                            mesSelected = setMes(new Date(e.point.date).getMonth() + 1);
+                            mesSelected = setZero(new Date(e.point.date).getMonth() + 1);
                             weekSelected = getWeekNumber(new Date(parseInt(e.point.date)));
                             daySelected = new Date(e.point.date).getDate() + 1;
-                            dateSelected = $("#ano").val() + '-' + mesSelected + '-' + daySelected;
+                            dateSelected = $("#ano").val() + '-' + mesSelected + '-' + setZero(daySelected);
 
                             $("#comparisonModal").modal('show');
                         } else {
@@ -223,8 +223,9 @@ $(function() {
                             $('#rangeValuesHeatmap').val(0);
 
                             carregaGraficoDias(null);
+                            console.log('dias', dias)
                             chart_dias = new Highcharts.Chart(dias);
-
+                            console.log('horas', horas)
                             carregaGraficoHoras(null);
                             chart_horas = new Highcharts.Chart(horas);
 

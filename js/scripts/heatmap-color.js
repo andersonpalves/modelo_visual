@@ -149,8 +149,8 @@ var heatmapcolor = {
 
 					largura_dias = chart_dias.chartWidth;
 					altura_dias = chart_dias.chartHeight;
-					largura_horas = chart_horas.chartWidth;
-					altura_horas = chart_horas.chartHeight;
+					largura_hours = chart_hours.chartWidth;
+					altura_hours = chart_hours.chartHeight;
 
 					if (e.point.value != null) {
 						abreGraficos(e.point, data);					
@@ -217,14 +217,14 @@ function abreGraficos(ponto, data){
 	var ano = dataSelecionada[2];
 	
 	//var totalDiasPorMes = retornaTotalDiasPorMes(mes, ano);
-	var limitesLoop = retornaInicioPorMes(mes, ano);
+	var limitesLoop = retornaInicioPorMes(mes);
 	
 	var valoresX = retornaValoresDiaDeSemana(limitesLoop[0], limitesLoop[1]);
 	var valoresY = retornaValoresDiaDeSemanaPorHora(limitesLoop[0], limitesLoop[1], hora);
 	
 	var consumoY = [];
 	var totalConsumo = 0;
-	/*VALORES PARA HORAS*/
+	/*VALORES PARA hours*/
 	for(var i=0; i<=6; i++){
 		var contador = i + 1;
 		var consumo =  heatmapcolor.series[0].data[(24 * i) + ponto.y][2];
@@ -236,29 +236,29 @@ function abreGraficos(ponto, data){
 		}
 		
 		var objeto = { 
-			"name": i + ":00 horas",
+			"name": i + ":00 hours",
 			"y" : consumo
 		}
 		
 		var listaValoresY = valoresY[contador];
 		
 		var objetoMinimo = { 
-			"name": i + ":00 horas",
+			"name": i + ":00 hours",
 			"y" : Math.min.apply(null, listaValoresY)
 		}
 
 		var objetoMedia = { 
-			"name": i + ":00 horas",
+			"name": i + ":00 hours",
 			"y" : retornaSoma(listaValoresY) / listaValoresY.length
 		}
 		
 		var objetoMaximo = { 
-			"name": i + ":00 horas",
+			"name": i + ":00 hours",
 			"y" : Math.max.apply(null, listaValoresY)
 		}
 		
 		var objetoMediana = { 
-			"name": i + ":00 horas",
+			"name": i + ":00 hours",
 			"y" : mediana(listaValoresY)
 		}
 
@@ -284,7 +284,7 @@ function abreGraficos(ponto, data){
 		consumoX.push(consumo);
 		
 		var objeto = { 
-			"name": z + ":00 horas",
+			"name": z + ":00 hours",
 			"y" : consumo
 		}
 
@@ -299,27 +299,27 @@ function abreGraficos(ponto, data){
 		}
 
 		valorMinimo = Math.min( ...listaMedias),
-    	valorMaximo = Math.max( ...listaMedias);
+		valorMaximo = Math.max( ...listaMedias);
 
 		var objetoMinimo = {
-			"name": z + ":00 horas",
+			"name": z + ":00 hours",
 			"y" : valorMinimo
 		}
 		
 		var objetoMedia = {
-			"name": z + ":00 horas",
+			"name": z + ":00 hours",
 			"y" : parseInt(retornaMedia(listaMedias))
 		}
 		
 		var objetoMaximo = {
-			"name": z + ":00 horas",
+			"name": z + ":00 hours",
 			"y" : valorMaximo
 		}
 
 		var valorMediana = mediana(listaMedias);
 		
 		var objetoMediana = {
-			"name": z + ":00 horas",
+			"name": z + ":00 hours",
 			"y" : valorMediana
 		}
 
@@ -335,29 +335,11 @@ function abreGraficos(ponto, data){
 	valorErroPadraoX = round(retornaErroPadrao(consumoX, valorDesvioPadraoX));
 	valorCVX = round((valorDesvioPadraoX / (totalConsumo / 24)));
 
-	// Valores para o relogio
-	for(var x=0; x<=23; x++){
-		var valor = parseInt(heatmapcolor.series[0].data[x+total][2]);
-		var objeto = { 
-				"name": x + "h",
-				"y" : 12.5,
-				"value" : valor,
-				"color": selecionaCorDaFatia(valor)
-			}
-		
-		if(x <= 11){
-			arrayPieManha.push(objeto);
-		}
-		else{
-			arrayPieTarde.push(objeto);
-		}
-	}
-
 	var dia_semana =  res[0];
 	var dia =  res[1];
 	
 	$("#diasTexto").html("Day View Selected: <b>" + dia +" </b> - <b>" + dia_semana);
-	$("#horasTexto").html("Hour View Selected: <b>" + hora + "</b> Hours");
+	$("#hoursTexto").html("Hour View Selected: <b>" + hora + "</b> Hours");
 	
 	abreGraficoDias("area-conjunto-x1", arrayValoresX, arrayValoresMinimosX, arrayValoresMediosX, arrayValoresMaximosX, arrayValoresMedianaX, valorDesvioPadraoX,
 	valorVarianciaX, valorErroPadraoX, valorCVX);

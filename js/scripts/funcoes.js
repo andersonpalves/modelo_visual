@@ -94,7 +94,7 @@ function retornaDiaDaSemana(diaUTC) {
 }
 
 function retornaNomePorMes(mes) {
-  switch (mes) {
+  switch (String(mes)) {
       case "01":
           return "January";
       case "02":
@@ -151,9 +151,9 @@ function retornaTotalDiasPorMes(mes, ano) {
   }
 }
 
-function retornaInicioPorMes(mes, ano) {
+function retornaInicioPorMes(mes) {
   var lista = [];
-  switch (mes) {
+  switch (String(mes)) {
       case "01":
           lista.push(0, 30);
           return lista;
@@ -359,7 +359,7 @@ function Array_Stdev(tab) {
   }) / tab.length));
 }
 
-function setMes(mes) {
+function setZero(mes) {
   if (mes < 10) {
     mes = '0' + mes;
   }

@@ -7,14 +7,14 @@ var lista_dias = [];
 var lista_series_historico = [];
 var lista_conteudo_dense = [];
 var lista_itens = [];
-var chart_heatmap_large, chart_heatmap_color, chart_dias, chart_horas, app, chart_relogio_tarde, chart_historico, chart_historico_geral;
+var chart_heatmap_large, chart_heatmap_color, chart_dias, chart_hours, app, chart_relogio_tarde, chart_historico, chart_historico_geral;
 var chart_heatmap_large_init;
-var chart_dias_valores, chart_dias_valores_boxplot, chart_horas_valores, chart_horas_valores_boxplot;
+var chart_dias_valores, chart_dias_valores_boxplot, chart_hours_valores, chart_hours_valores_boxplot;
 var semana_selecionada, lugar_selecionado;
 var heatmap_large, maxDenseDisplay = 0,
     maxHeatmap = 0,
     tamanhoX = 0;
-var largura_dense, altura_dense, largura_heatmap, altura_heatmap, largura_dias, altura_dias, largura_horas, altura_horas;
+var largura_dense, altura_dense, largura_heatmap, altura_heatmap, largura_dias, altura_dias, largura_hours, altura_hours;
 
 var selecaoPorGrupo = false;
 var valoresEletricidade = [0, 1, 2, 3, 4, 5];
@@ -95,7 +95,7 @@ function ajustarTextos() {
     $("#denseTexto").html("Annual / Monthly View");
     $("#heatmapTexto").html("Weekly View");
     $("#diasTexto").html("Day View");
-    $("#horasTexto").html("Hour View");
+    $("#hoursTexto").html("Hour View");
     $("#relogioTexto").html("Clock View");
     $("#heatmapHistoricoGeralTexto").html("All energy sources - <b>Year selected<b>: " + $("#ano").val());
 }
@@ -254,7 +254,7 @@ function abreDados(ano, lugar) {
                             chart_dias = new Highcharts.Chart(dias);
 
                             carregaGraficoHoras(null);
-                            chart_horas = new Highcharts.Chart(horas);
+                            chart_hours = new Highcharts.Chart(hours);
 
                             if (zoomAberto == true) {
                                 $("#panel-fullscreen-dense-display").click();
@@ -419,7 +419,7 @@ function abreDados(ano, lugar) {
             chart_dias = new Highcharts.Chart(dias);
 
             carregaGraficoHoras(null);
-            chart_horas = new Highcharts.Chart(horas);
+            chart_hours = new Highcharts.Chart(horas);
 
             carregarHistorico();
             carregarHistoricoGeral(file);
@@ -867,75 +867,75 @@ function carregaGraficoDias(valores) {
 }
 
 function carregaGraficoHoras() {
-    horas = {
-        chart: {
-            renderTo: 'area-conjunto-y1',
-            type: 'line',
-        },
-        title: {
-            text: ''
-        },
-        subtitle: {
-            text: ''
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'left',
-            verticalAlign: 'top',
-            x: 0,
-            y: 25,
-            floating: true,
-            borderWidth: 1,
-            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-        },
-        xAxis: {
-            categories: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'],
-            title: {
-                text: 'Schedule'
-            },
-        },
-        yAxis: {
-            title: {
-                text: 'Consumption'
-            }
-        },
-        tooltip: {
-            formatter: function() {
-                return 'Consumption <b>' + this.y + '</b>';
-            }
-        },
-        credits: {
-            enabled: false
-        },
-        plotOptions: {
-            areaspline: {
-                fillOpacity: 0.5
-            }
-        },
-        series: [{
-            name: "Consumption",
-            data: [null, null, null, null, null, null, null]
-        }],
-        navigation: {
-            buttonOptions: {
-                enabled: false
-            }
-        },
-        credits: {
-            enabled: false
-        },
-        responsive: {
-            rules: [{
-                condition: {
-                    maxWidth: "100%",
-                    maxHeight: "100%"
-                }
-            }]
-        },
-        legend: {
-            text: null
-        }
-    };
+	horas = {
+			chart: {
+					renderTo: 'area-conjunto-y1',
+					type: 'line',
+			},
+			title: {
+					text: ''
+			},
+			subtitle: {
+					text: ''
+			},
+			legend: {
+					layout: 'vertical',
+					align: 'left',
+					verticalAlign: 'top',
+					x: 0,
+					y: 25,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+			},
+			xAxis: {
+					categories: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'],
+					title: {
+							text: 'Schedule'
+					},
+			},
+			yAxis: {
+					title: {
+							text: 'Consumption'
+					}
+			},
+			tooltip: {
+					formatter: function() {
+							return 'Consumption <b>' + this.y + '</b>';
+					}
+			},
+			credits: {
+					enabled: false
+			},
+			plotOptions: {
+					areaspline: {
+							fillOpacity: 0.5
+					}
+			},
+			series: [{
+					name: "Consumption",
+					data: [null, null, null, null, null, null, null]
+			}],
+			navigation: {
+					buttonOptions: {
+							enabled: false
+					}
+			},
+			credits: {
+					enabled: false
+			},
+			responsive: {
+					rules: [{
+							condition: {
+									maxWidth: "100%",
+									maxHeight: "100%"
+							}
+					}]
+			},
+			legend: {
+					text: null
+			}
+	};
 }
 
 function carregaRelogioManha() {
@@ -1075,7 +1075,7 @@ function carregaRelogioTarde() {
                 connectorColor: '#000000',
                 formatter: function() {
                     var texto = this.point.name;
-                    return '<b>' + texto.replace("horas", "<br>horas");
+                    return '<b>' + texto.replace("hours", "<br>hours");
                 }
             }
         }],

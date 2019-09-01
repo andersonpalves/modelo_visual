@@ -71,13 +71,12 @@ $("#modal-weekly").click(function(e){
 });
 
 $("#modal-daily").click(function(e){
-  var arrayValoresX = [];
-
+  var valuesDay = getLoadDatas(dateSelected);
   var idChart = 'idDialog_'+ modalNumber;
-  var title = 'Day View - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-  var $dlg = createNewDialog(title, '<div id="container"></div>', 350, 350);
-  var chartWeek = createDialogDaily(idChart, mesSelected, weekSelected[1], null);
-  
+  var title = 'Day View - ' + daySelected + '/' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
+  var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 445, 350);
+  var chartWeek = createDialogDaily(idChart, mesSelected, $("#ano").val(), valuesDay);
+
   Highcharts.chart(chartWeek);
   modalNumber++;
 });
@@ -99,7 +98,7 @@ var createNewDialog = (title, body, height, width) => {
 };
 
 function createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados){
-  $('.ui-widget-header').css('background','#d9534f');
+  //$('.ui-widget-header').css('background','#d9534f');
   return {
       chart: {
           renderTo: idChart,
@@ -212,7 +211,7 @@ function createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados){
 }
 
 function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
-  $('.ui-widget-header').css('background','#357ebd');
+  //$('.ui-widget-header').css('background','#357ebd');
   return {
     chart: {
       renderTo: idChart,
@@ -380,6 +379,206 @@ function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
   }
 }
 
-function createDialogDaily(idChart, mesSelected, weekSelected, listaDados){
-  $('.ui-widget-header').css('background','#5cb85c');
+function createDialogDaily(idChart, mes, ano ,listaDadosConsumo){
+  //$('.ui-widget-header').css('background','#5cb85c');
+  var limitesLoop = retornaInicioPorMes(mes);
+	var valoresDias = retornaValoresDiaDeSemana(limitesLoop[0], limitesLoop[1]);
+  var arrayValoresConsumo = [], arrayValoresConsumoMinimo = [], arrayValoresConsumoMedio = [], 
+      arrayValoresConsumoMaximo = [], arrayValoresConsumoMediana= [];
+  var arrayConsumo = [];
+  var totalConsumo = 0;
+
+  for(var i=0; i<=23; i++){
+    var consumo = listaDadosConsumo[i];
+    var objeto = { 
+      "name": i + ":00 hours",
+      "y" : consumo[2]
+    }
+    totalConsumo += consumo[2];
+    arrayConsumo.push(consumo[2]);
+
+    var listaMedias = [];
+		var valorMinimo, valorMaximo;
+
+		for(var a=0; a<valoresDias.length; a++){
+			for(var b=0; b<valoresDias[a].length; b++){
+				var valor = valoresDias[a][b][i];
+				listaMedias.push(valor);
+			}
+		}
+
+		valorMinimo = Math.min( ...listaMedias),
+		valorMaximo = Math.max( ...listaMedias);
+
+		var objetoMinimo = {
+			"name": i + ":00 hours",
+			"y" : valorMinimo
+		}
+		
+		var objetoMedia = {
+			"name": i + ":00 hours",
+			"y" : parseInt(retornaMedia(listaMedias))
+		}
+		
+		var objetoMaximo = {
+			"name": i + ":00 hours",
+			"y" : valorMaximo
+		}
+
+		var valorMediana = mediana(listaMedias);
+		
+		var objetoMediana = {
+			"name": i + ":00 hours",
+			"y" : valorMediana
+		}
+
+    arrayValoresConsumo.push(objeto);
+		arrayValoresConsumoMinimo.push(objetoMinimo);
+		arrayValoresConsumoMedio.push(objetoMedia);
+		arrayValoresConsumoMaximo.push(objetoMaximo);
+		arrayValoresConsumoMediana.push(objetoMediana);
+  }
+
+  var valorDesvioPadrao = round(retornaDesvioPadrao(arrayConsumo));
+	var valorVariancia = round(retornaVariancia(arrayConsumo));
+	var valorErroPadrao = round(retornaErroPadrao(arrayConsumo, valorDesvioPadrao));
+	var valorCV = round((valorDesvioPadrao / (totalConsumo / 24)));
+
+  return {
+		chart: {
+			renderTo: idChart,
+			type: 'line'
+			//polar: booleanPolar
+		},
+		title: {
+			text: ''
+		},
+		subtitle: {
+			text: ''
+		},
+		legend: {
+			layout: 'vertical',
+			align: 'left',
+			verticalAlign: 'top',
+			x: 0,
+			y: 23,
+			floating: true,
+			borderWidth: 1,
+			backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+		},
+		xAxis: {
+			labels: {
+				format: '{value}h', //:00
+				rotation: -60
+			},
+			title: {
+				text: 'Schedule'
+			},
+			minPadding: 0,
+			maxPadding: 0,
+			startOnTick: false,
+			endOnTick: false,
+			tickPositions: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+			tickWidth: 1,
+			min: 0,
+			max: 23.5
+		},
+		yAxis: {
+			title: {
+				text: 'Consumption'
+			}
+		},
+		tooltip: {
+			formatter: function () {
+				var text = '<b>'+this.x +':00h ' + this.y + ' Consumption<br>';
+
+				if (this.series.name == "Consumption") {
+					text += '<b>'+ valorVariancia + ' Variance<br>';
+					text += '<b>'+ valorDesvioPadrao + ' Std. Deviation<br>';
+					text += '<b>'+ valorErroPadrao + ' Std. Error<br>';
+					text += '<b>'+ valorCV + ' Cof. Variation<br>';
+				}
+
+				return text;
+			}
+		},
+		credits: {
+			enabled: false
+		},
+		plotOptions: {
+			areaspline: {
+				fillOpacity: 0.5
+			},
+			series: {
+                allowPointSelect: true
+            }
+		},
+		series: [
+			{
+				name: "Consumption",
+				data:  arrayValoresConsumo,
+				color: "#008000",
+				marker: {
+					symbol: 'circle',
+					radius: 6,
+				}
+			},
+			{
+				name: "Min.",
+				data:  arrayValoresConsumoMinimo,
+				color: "#3060cf",
+				marker: {
+					symbol: 'triangle-down',
+					radius: 6
+				},
+				visible: true
+			},
+			{
+				name: "AVG",
+				data:  arrayValoresConsumoMedio,
+				color: "#ffd700",
+				marker: {
+					symbol: 'diamond',
+					radius: 6
+				},
+				visible: true
+			},
+			{
+				name: "Median",
+				data:  arrayValoresConsumoMediana,
+				color: "#FD6A02",
+				marker: {
+					symbol: 'diamond',
+					radius: 6
+				},
+				visible: true
+			},
+			{
+				name: "Max.",
+				data:  arrayValoresConsumoMaximo,
+				color: "#d1473a",
+				marker: {
+					symbol: 'triangle',
+					radius: 6
+				},
+				visible: true
+			}
+    ],
+		navigation: {
+			buttonOptions: {
+				enabled: false
+			}
+		},
+		responsive: {
+			rules: [{
+				condition: {
+					maxWidth: "100%",
+					maxHeight: "100%"
+				}
+			}]
+		},
+		legend: {
+			text:null
+		}
+	}
 }
