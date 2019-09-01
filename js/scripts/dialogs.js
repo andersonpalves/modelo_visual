@@ -58,7 +58,7 @@ $("#modal-weekly").click(function(e){
 
     var idChart = 'idDialog_'+ modalNumber;
     var title = 'Week View - Week ' + weekSelected[1] + ' - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 395, 390)
+    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 410, 410)
     var chartWeek = createDialogWeek(idChart, mesSelected, weekSelected[1], listaDados);
 
     carregaHeatmap(chartWeek, listaDados, maxDenseDisplay, true);

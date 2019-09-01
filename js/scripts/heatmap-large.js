@@ -254,7 +254,7 @@ function abreDados(ano, lugar) {
                             chart_dias = new Highcharts.Chart(dias);
 
                             carregaGraficoHoras(null);
-                            chart_hours = new Highcharts.Chart(hours);
+                            chart_hours = new Highcharts.Chart(horas);
 
                             if (zoomAberto == true) {
                                 $("#panel-fullscreen-dense-display").click();
