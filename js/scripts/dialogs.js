@@ -15,7 +15,7 @@ $("#modal-monthly").click(function(e){
 
     var idChart = 'idDialog_'+ modalNumber;
     var title = 'Monthly View - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 415, 410)
+    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425)
     var chartMonth = createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados);
     
     Highcharts.chart(chartMonth);
@@ -58,7 +58,7 @@ $("#modal-weekly").click(function(e){
 
     var idChart = 'idDialog_'+ modalNumber;
     var title = 'Week View - Week ' + weekSelected[1] + ' - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 410, 410)
+    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425)
     var chartWeek = createDialogWeek(idChart, mesSelected, weekSelected[1], listaDados);
 
     carregaHeatmap(chartWeek, listaDados, maxDenseDisplay, true);
@@ -74,7 +74,7 @@ $("#modal-daily").click(function(e){
   var valuesDay = getLoadDatas(dateSelected);
   var idChart = 'idDialog_'+ modalNumber;
   var title = 'Day View - ' + daySelected + '/' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-  var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 445, 350);
+  var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 470, 370);
   var chartWeek = createDialogDaily(idChart, mesSelected, $("#ano").val(), valuesDay);
 
   Highcharts.chart(chartWeek);

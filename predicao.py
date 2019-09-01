@@ -174,7 +174,7 @@ def login():
 
 	return jsonify(
 		sa_predict = dados_predicao_sarima,
-    sa = dados_sarima,
+		sa = dados_sarima,
 		hw_predict = dados_predicao_hw,
 		hw = dados_holt,
 		ar_predict = dados_predicao_ar,
