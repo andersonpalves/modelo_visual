@@ -1,20 +1,52 @@
 var calendar_view = {};
 var chart_box_plot = {};
-var lista_dados = [], lista_dados_semanais = [], lista_dados_consumo = [];
-var lista_jan = [], lista_fev = [], lista_mar = [], lista_abr = [], lista_mai = [], lista_jun = [], 
-    lista_jul = [], lista_ago = [], lista_set = [], lista_out = [], lista_nov = [], lista_dez = [];
-var lista_jan_boxplot = [], lista_fev_boxplot = [], lista_mar_boxplot = [], lista_abr_boxplot = [], lista_mai_boxplot = [], 
-    lista_jun_boxplot = [], lista_jul_boxplot = [], lista_ago_boxplot = [], lista_set_boxplot = [], lista_out_boxplot = [], 
-    lista_nov_boxplot = [], lista_dez_boxplot = [];
-var lista_jan_hora_boxplot = [], lista_fev_hora_boxplot = [], lista_mar_hora_boxplot = [], lista_abr_hora_boxplot = [], lista_mai_hora_boxplot = [], 
-    lista_jun_hora_boxplot = [], lista_jul_hora_boxplot = [], lista_ago_hora_boxplot = [], lista_set_hora_boxplot = [], lista_out_hora_boxplot = [], 
-    lista_nov_hora_boxplot = [], lista_dez_hora_boxplot = [];
+var lista_dados = [],
+    lista_dados_semanais = [],
+    lista_dados_consumo = [];
+var lista_jan = [],
+    lista_fev = [],
+    lista_mar = [],
+    lista_abr = [],
+    lista_mai = [],
+    lista_jun = [],
+    lista_jul = [],
+    lista_ago = [],
+    lista_set = [],
+    lista_out = [],
+    lista_nov = [],
+    lista_dez = [];
+var lista_jan_boxplot = [],
+    lista_fev_boxplot = [],
+    lista_mar_boxplot = [],
+    lista_abr_boxplot = [],
+    lista_mai_boxplot = [],
+    lista_jun_boxplot = [],
+    lista_jul_boxplot = [],
+    lista_ago_boxplot = [],
+    lista_set_boxplot = [],
+    lista_out_boxplot = [],
+    lista_nov_boxplot = [],
+    lista_dez_boxplot = [];
+var lista_jan_hora_boxplot = [],
+    lista_fev_hora_boxplot = [],
+    lista_mar_hora_boxplot = [],
+    lista_abr_hora_boxplot = [],
+    lista_mai_hora_boxplot = [],
+    lista_jun_hora_boxplot = [],
+    lista_jul_hora_boxplot = [],
+    lista_ago_hora_boxplot = [],
+    lista_set_hora_boxplot = [],
+    lista_out_hora_boxplot = [],
+    lista_nov_hora_boxplot = [],
+    lista_dez_hora_boxplot = [];
 var chart_calendar_view, largura_calendario, altura_calendario;
 var zoomAberto = false;
 var mesSelected = 0;
 var weekSelected = [];
+var daySelected = 0;
+var dateSelected = '';
 
-$(function () {
+$(function() {
     $("#calendarTexto").html("Calendar View - Energy selected: " + $('#energia option:selected').text());
     $("#boxplotTexto").html("Monthly Consumption - Energy selected: " + $('#energia option:selected').text());
     calendar_view = {
@@ -33,11 +65,11 @@ $(function () {
                     series.forEach(function(s) {
                         bbox = s.group.getBBox(true);
                         this.renderer.text(
-                                "<b>"+s.name+"<b>",
-                                bbox.x + 
-                                this.plotLeft + 
+                                "<b>" + s.name + "<b>",
+                                bbox.x +
+                                this.plotLeft +
                                 bbox.width / 2,
-                                bbox.y + 
+                                bbox.y +
                                 this.plotTop - 10
                             )
                             .attr({
@@ -68,17 +100,17 @@ $(function () {
             opposite: true,
             labels: {
                 // don't show the axis label : it's the category id
-            // see plotOptions -> dataLabels to show the week number
-                enabled: false 
+                // see plotOptions -> dataLabels to show the week number
+                enabled: false
             }
         },
 
         yAxis: {
             type: 'category',
-            categories: [ 
+            categories: [
                 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.', 'Sun.',
                 'Week<br>Avg', ' ', ' ',
-                'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.', 'Sun.','Week<br>Avg'
+                'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.', 'Sun.', 'Week<br>Avg'
             ],
             title: null,
             reversed: true,
@@ -104,7 +136,7 @@ $(function () {
             startOnTick: false,
             endOnTick: false,
             stops: [
-                [0,   '#ffffff'],
+                [0, '#ffffff'],
                 [0.1, '#3060cf'],
                 [0.5, '#fffbbc'],
                 [1, '#c4463a']
@@ -124,45 +156,49 @@ $(function () {
 
         tooltip: {
             useHTML: true,
-            formatter: function () {
-                if(this.point.value==0) return false;
+            formatter: function() {
+                if (this.point.value == 0) return false;
                 var s = Highcharts.dateFormat('<b>%a %e. %B %Y', this.point.date);
-                s +='<br><b>Consumption: ' + this.point.value;
+                s += '<br><b>Consumption: ' + this.point.value;
                 return s;
             }
         },
-        
+
         plotOptions: {
             series: {
                 events: {
-                    click: function (e) {
-                        if($("#comparison").is(':checked')) {
-                            mesSelected =  new Date(e.point.date).getMonth() + 1;
-                            weekSelected =  getWeekNumber(new Date(parseInt(e.point.date)));
+                    click: function(e) {
+                        if ($("#comparison").is(':checked')) {
+                            mesSelected = setMes(new Date(e.point.date).getMonth() + 1);
+                            weekSelected = getWeekNumber(new Date(parseInt(e.point.date)));
+                            daySelected = new Date(e.point.date).getDate() + 1;
+                            dateSelected = $("#ano").val() + '-' + mesSelected + '-' + daySelected;
+
                             $("#comparisonModal").modal('show');
-                        }
-                        else {
+                        } else {
                             var retorno = getWeekNumber(new Date(parseInt(e.point.date)));
                             lista_itens = [];
                             semana_selecionada = retorno[1];
 
-                            $.post( "datas_semanais.php", { ano: retorno[0], semana: retorno[1] }, function( data ) {
-                                lista_dias=[];
+                            $.post("datas_semanais.php", {
+                                ano: retorno[0],
+                                semana: retorno[1]
+                            }, function(data) {
+                                lista_dias = [];
 
-                                $.each(data, function (key, val) {
+                                $.each(data, function(key, val) {
                                     lista_dias.push(val);
                                     lista_heatmap.push(getLoadDatas(val));
                                 });
 
-                                for(var i=0; i<=6; i++){
-                                    for(var j=0; j<=23; j++){
+                                for (var i = 0; i <= 6; i++) {
+                                    for (var j = 0; j <= 23; j++) {
                                         var item = [];
                                         var valor = 0;
 
                                         if (typeof lista_heatmap[i][j] === 'undefined') {
                                             valor = null
-                                        }
-                                        else {
+                                        } else {
                                             valor = lista_heatmap[i][j][2];
                                         }
 
@@ -174,10 +210,10 @@ $(function () {
                                         lista_itens.push(item);
                                     }
                                 }
-                                
+
                                 carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay, false);
 
-                                lista_heatmap=[];
+                                lista_heatmap = [];
                                 chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
                             }, "json");
 
@@ -185,14 +221,14 @@ $(function () {
                             $("#heatmap-color").show();
                             $('#heatmapRange').html("<b>0</b>");
                             $('#rangeValuesHeatmap').val(0);
-                            
+
                             carregaGraficoDias(null);
                             chart_dias = new Highcharts.Chart(dias);
-                            
+
                             carregaGraficoHoras(null);
                             chart_horas = new Highcharts.Chart(horas);
 
-                            if(zoomAberto == true){
+                            if (zoomAberto == true) {
                                 $("#panel-fullscreen-calendar-view").click();
                             }
 
@@ -210,24 +246,22 @@ $(function () {
                     crop: false,
                     //overflow: 'allow',
                     formatter: function() {
-                        if(this.point.y == 6 || this.point.y == 16) {
+                        if (this.point.y == 6 || this.point.y == 16) {
                             var dados = retornaValoresSemanais(this.point.week);
                             var somaTotal = 0;
 
-                            for(i=0; i<=6; i++){
+                            for (i = 0; i <= 6; i++) {
                                 if (typeof dados[i] === 'undefined') {
                                     somaTotal = somaTotal + 0;
-                                }
-                                else {
+                                } else {
                                     somaTotal = somaTotal + dados[i][1];
                                 }
                             }
 
                             var media = somaTotal / dados.length;
                             return this.point.week + "<br>" + parseInt(media);
-                            
-                        }
-                        else{
+
+                        } else {
                             return null;
                         }
                     },
@@ -262,37 +296,37 @@ $(function () {
         series: [{
             name: 'January',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'February',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'March',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'April',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'May',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'June',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'July',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'August',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'September',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'October',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'November',
             keys: ['x', 'y', 'value', 'week', 'date']
-        },{
+        }, {
             name: 'December',
             keys: ['x', 'y', 'value', 'week', 'date']
         }]
@@ -301,15 +335,17 @@ $(function () {
     atualizaBoxPlot();
 });
 
-function rolarTela(aid){
-    var aTag = $("a[name='"+ aid +"']");
-    $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+function rolarTela(aid) {
+    var aTag = $("a[name='" + aid + "']");
+    $('html,body').animate({
+        scrollTop: aTag.offset().top
+    }, 'slow');
 }
 
 $("#lugar").change(function() {
     $("#rangeValuesDense").attr("max", 0);
     $("#energia").val('Média');
-   
+
     abreDadosJson();
     removeTodosValores();
     carregaDadosCalendario();
@@ -337,26 +373,26 @@ $("#energia").change(function() {
     atualizaBoxPlot();
 });
 
-function loadValuesFromFile(){
+function loadValuesFromFile() {
     //['x', 'y', 'value', 'week', 'date']
     var ano = $("#ano").val();
     var anoPassado = parseInt(ano) - 1;
     var lugar = $("#lugar").val();
-    var file = ano+"_"+lugar+".json";
-    var date = new Date(ano+"-01-01");
+    var file = ano + "_" + lugar + ".json";
+    var date = new Date(ano + "-01-01");
     var diaSemana = diaDaSemana(date);
     var valorEixoY = 0;
     var trocaMes = 0;
 
     $.ajax({
-        url: "datasets/"+file,
-        success: function (data) {        
+        url: "datasets/" + file,
+        success: function(data) {
             lista_global = [];
             var valor = 0;
             var contadorTotal = 0;
             var valorEixoX = 0;
-            
-            $.each(data, function (key, valorJson) {
+
+            $.each(data, function(key, valorJson) {
                 if (key != 0) {
                     var energia = $("#energia").val();
                     var data = valorJson[0];
@@ -367,16 +403,15 @@ function loadValuesFromFile(){
                     var valorHora = 0;
 
                     if (energia == "Média") {
-                        for(var z=0; z<=valorJson[2].length-1; z++){
+                        for (var z = 0; z <= valorJson[2].length - 1; z++) {
                             contadorTotal += parseInt(valorJson[2][z]);
                             valorHora += parseInt(valorJson[2][z]);
                         }
                         valor = contadorTotal / valorJson[2].length;
                         valorHora = valorHora / valorJson[2].length;
-                    }
-                    else{
-                        valor = valorJson[2][energia-1];
-                        valorHora = valorJson[2][energia-1];
+                    } else {
+                        valor = valorJson[2][energia - 1];
+                        valorHora = valorJson[2][energia - 1];
                     }
 
                     salvaHoras(mes, hora, valorHora);
@@ -386,7 +421,7 @@ function loadValuesFromFile(){
                         var semanaAno = semanaDoAno(new Date(data));
                         diaSemana = diaDaSemana(new Date(data));
 
-                        if (valorEixoY == 7){
+                        if (valorEixoY == 7) {
                             valorEixoY = 0;
                             valorEixoX++;
                         }
@@ -398,60 +433,57 @@ function loadValuesFromFile(){
 
                         if (mes == 1) {
                             if (semanaAno >= 50) {
-                                semanaAno = semanaAno + " - "+ parseInt(ano - 1);
+                                semanaAno = semanaAno + " - " + parseInt(ano - 1);
                             }
 
-                            if(dia == 1){
-                                if(diaSemana == 0){
+                            if (dia == 1) {
+                                if (diaSemana == 0) {
                                     valorEixoX++;
                                 }
 
-                                for (var i=0; i<diaSemana; i++) {
+                                for (var i = 0; i < diaSemana; i++) {
                                     lista_jan.push([valorEixoX, i, 0, semanaAno, Date.UTC(ano, 0, 0)]);
                                 }
 
                                 valorEixoY = diaSemana;
                             }
-                            
-                            lista_jan.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 0, dia)]);    
+
+                            lista_jan.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 0, dia)]);
                             lista_dados_consumo.push(valor);
                             lista_jan_boxplot.push(valor);
 
                             if (semanaAno >= 50) {
-                                lista_dados_semanais.push(new Array(semanaAno+"-"+ano, valor));
-                            }
-                            else {
+                                lista_dados_semanais.push(new Array(semanaAno + "-" + ano, valor));
+                            } else {
                                 lista_dados_semanais.push(new Array(semanaAno, valor));
                             }
 
-                            if(dia == 31){
-                                if(diaSemana == 0) {
+                            if (dia == 31) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
+
                                         lista_jan.push([valorEixoX, valorEixo, 0, semanaAno, Date.UTC(ano, 0, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
+                                    for (var i = diaSemana; i <= 7; i++) {
                                         lista_jan.push([valorEixoX, i, 0, semanaAno, Date.UTC(ano, 0, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 2) {
-                            if(dia == 1){
-                                for (var i=0; i<diaSemana; i++) {
+                        } else if (mes == 2) {
+                            if (dia == 1) {
+                                for (var i = 0; i < diaSemana; i++) {
                                     lista_fev.push([valorEixoX, i, 0, semanaAno, Date.UTC(ano, 0, 0)]);
                                 }
 
@@ -463,69 +495,65 @@ function loadValuesFromFile(){
                             lista_dados_consumo.push(valor);
                             lista_fev_boxplot.push(valor);
 
-                            if( (dia == 28 && false == verificaAnoBissexto(ano)) || 
-                                (dia == 29 && true == verificaAnoBissexto(ano)) ){
-                                if(diaSemana == 0) {
+                            if ((dia == 28 && false == verificaAnoBissexto(ano)) ||
+                                (dia == 29 && true == verificaAnoBissexto(ano))) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
+
                                         lista_fev.push([valorEixoX, valorEixo, 0, semanaAno, Date.UTC(ano, 1, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
+                                    for (var i = diaSemana; i <= 7; i++) {
                                         lista_fev.push([valorEixoX, i, 0, semanaAno, Date.UTC(ano, 1, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 3) {
-                            if(dia == 1){
+                        } else if (mes == 3) {
+                            if (dia == 1) {
                                 valorEixoY = diaSemana;
                             }
-                            
+
                             lista_mar.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 2, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
                             lista_mar_boxplot.push(valor);
 
-                            if(dia == 31){
-                                if(diaSemana == 0) {
+                            if (dia == 31) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
+
                                         lista_mar.push([valorEixoX, valorEixo, 0, semanaAno, Date.UTC(ano, 2, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
+                                    for (var i = diaSemana; i <= 7; i++) {
                                         lista_mar.push([valorEixoX, i, 0, semanaAno, Date.UTC(ano, 2, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 4) {
-                            if(dia == 1){
+                        } else if (mes == 4) {
+                            if (dia == 1) {
                                 valorEixoY = diaSemana;
                             }
 
@@ -534,33 +562,31 @@ function loadValuesFromFile(){
                             lista_dados_consumo.push(valor);
                             lista_abr_boxplot.push(valor);
 
-                            if(dia == 30){
-                                if(diaSemana == 0) {
+                            if (dia == 30) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
+
                                         lista_abr.push([valorEixoX, valorEixo, 0, semanaAno, Date.UTC(ano, 3, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
+                                    for (var i = diaSemana; i <= 7; i++) {
                                         lista_abr.push([valorEixoX, i, 0, semanaAno, Date.UTC(ano, 3, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 5) {
-                            if(dia == 1){
+                        } else if (mes == 5) {
+                            if (dia == 1) {
                                 valorEixoY = diaSemana;
                             }
 
@@ -569,33 +595,31 @@ function loadValuesFromFile(){
                             lista_dados_consumo.push(valor);
                             lista_mai_boxplot.push(valor);
 
-                            if(dia == 31){
-                                if(diaSemana == 0) {
+                            if (dia == 31) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
+
                                         lista_mai.push([valorEixoX, valorEixo, 0, semanaAno, Date.UTC(ano, 4, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
+                                    for (var i = diaSemana; i <= 7; i++) {
                                         lista_mai.push([valorEixoX, i, 0, semanaAno, Date.UTC(ano, 4, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 6) {
-                            if(dia == 1){
+                        } else if (mes == 6) {
+                            if (dia == 1) {
                                 valorEixoY = diaSemana;
                             }
 
@@ -604,251 +628,237 @@ function loadValuesFromFile(){
                             lista_dados_consumo.push(valor);
                             lista_jun_boxplot.push(valor);
 
-                            if(dia == 30){
-                                if(diaSemana == 0) {
+                            if (dia == 30) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
+
                                         lista_jun.push([valorEixoX, valorEixo, 0, semanaAno, Date.UTC(ano, 5, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
+                                    for (var i = diaSemana; i <= 7; i++) {
                                         lista_jun.push([valorEixoX, i, 0, semanaAno, Date.UTC(ano, 5, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 7) {
-                            if(dia == 1){
+                        } else if (mes == 7) {
+                            if (dia == 1) {
                                 valorEixoY = diaSemana;
                             }
-                            
-                            lista_jul.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 6, dia)]);
+
+                            lista_jul.push([valorEixoX, 10 + valorEixoY, valor, semanaAno, Date.UTC(ano, 6, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
                             lista_jul_boxplot.push(valor);
 
-                            if(dia == 31){
-                                if(diaSemana == 0) {
+                            if (dia == 31) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
-                                        lista_jul.push([valorEixoX, 10+valorEixo, 0, semanaAno, Date.UTC(ano, 6, dia)]);
+
+                                        lista_jul.push([valorEixoX, 10 + valorEixo, 0, semanaAno, Date.UTC(ano, 6, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
-                                        lista_jul.push([valorEixoX, 10+i, 0, semanaAno, Date.UTC(ano, 6, 0)]);
+                                    for (var i = diaSemana; i <= 7; i++) {
+                                        lista_jul.push([valorEixoX, 10 + i, 0, semanaAno, Date.UTC(ano, 6, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 8) {
-                            if(dia == 1){
+                        } else if (mes == 8) {
+                            if (dia == 1) {
                                 valorEixoY = diaSemana;
                             }
 
-                            lista_ago.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 7, dia)]);
+                            lista_ago.push([valorEixoX, 10 + valorEixoY, valor, semanaAno, Date.UTC(ano, 7, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
                             lista_ago_boxplot.push(valor);
 
-                            if(dia == 31){
-                                if(diaSemana == 0) {
+                            if (dia == 31) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
-                                        lista_ago.push([valorEixoX, 10+valorEixo, 0, semanaAno, Date.UTC(ano, 7, dia)]);
+
+                                        lista_ago.push([valorEixoX, 10 + valorEixo, 0, semanaAno, Date.UTC(ano, 7, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
-                                        lista_ago.push([valorEixoX, 10+i, 0, semanaAno, Date.UTC(ano, 7, 0)]);
+                                    for (var i = diaSemana; i <= 7; i++) {
+                                        lista_ago.push([valorEixoX, 10 + i, 0, semanaAno, Date.UTC(ano, 7, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 9) {
-                            if(dia == 1){
+                        } else if (mes == 9) {
+                            if (dia == 1) {
                                 valorEixoY = diaSemana;
                             }
 
-                            lista_set.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 8, dia)]);
+                            lista_set.push([valorEixoX, 10 + valorEixoY, valor, semanaAno, Date.UTC(ano, 8, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
                             lista_set_boxplot.push(valor);
 
-                            if(dia == 30){
-                                if(diaSemana == 0) {
+                            if (dia == 30) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
-                                        lista_set.push([valorEixoX, 10+valorEixo, 0, semanaAno, Date.UTC(ano, 8, dia)]);
+
+                                        lista_set.push([valorEixoX, 10 + valorEixo, 0, semanaAno, Date.UTC(ano, 8, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
-                                        lista_set.push([valorEixoX, 10+i, 0, semanaAno, Date.UTC(ano, 8, 0)]);
+                                    for (var i = diaSemana; i <= 7; i++) {
+                                        lista_set.push([valorEixoX, 10 + i, 0, semanaAno, Date.UTC(ano, 8, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 10) {
-                            if(dia == 1){
+                        } else if (mes == 10) {
+                            if (dia == 1) {
                                 valorEixoY = diaSemana;
                             }
 
-                            lista_out.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 9, dia)]);
+                            lista_out.push([valorEixoX, 10 + valorEixoY, valor, semanaAno, Date.UTC(ano, 9, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
                             lista_out_boxplot.push(valor);
 
-                            if(dia == 31){
-                                if(diaSemana == 0) {
+                            if (dia == 31) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
-                                        lista_out.push([valorEixoX, 10+valorEixo, 0, semanaAno, Date.UTC(ano, 9, dia)]);
+
+                                        lista_out.push([valorEixoX, 10 + valorEixo, 0, semanaAno, Date.UTC(ano, 9, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
-                                        lista_out.push([valorEixoX, 10+i, 0, semanaAno, Date.UTC(ano, 9, 0)]);
+                                    for (var i = diaSemana; i <= 7; i++) {
+                                        lista_out.push([valorEixoX, 10 + i, 0, semanaAno, Date.UTC(ano, 9, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 11) {
-                            if(dia == 1){
+                        } else if (mes == 11) {
+                            if (dia == 1) {
                                 valorEixoY = diaSemana;
                             }
 
-                            lista_nov.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 10, dia)]);
+                            lista_nov.push([valorEixoX, 10 + valorEixoY, valor, semanaAno, Date.UTC(ano, 10, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
                             lista_nov_boxplot.push(valor);
 
-                            if(dia == 30){
-                                if(diaSemana == 0) {
+                            if (dia == 30) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
-                                        lista_nov.push([valorEixoX, 10+valorEixo, 0, semanaAno, Date.UTC(ano, 10, dia)]);
+
+                                        lista_nov.push([valorEixoX, 10 + valorEixo, 0, semanaAno, Date.UTC(ano, 10, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
-                                        lista_nov.push([valorEixoX, 10+i, 0, semanaAno, Date.UTC(ano, 10, 0)]);
+                                    for (var i = diaSemana; i <= 7; i++) {
+                                        lista_nov.push([valorEixoX, 10 + i, 0, semanaAno, Date.UTC(ano, 10, 0)]);
                                     }
-                                }  
+                                }
                             }
-                        }
-                        else if (mes == 12) {
+                        } else if (mes == 12) {
 
                             if (semanaAno <= 3) {
                                 var soma = parseInt(ano) + parseInt(1);
                                 semanaAno = semanaAno + " - " + soma;
                             }
 
-                            if(dia == 1){
+                            if (dia == 1) {
                                 valorEixoY = diaSemana;
                             }
 
-                            lista_dez.push([valorEixoX, 10+valorEixoY, valor, semanaAno, Date.UTC(ano, 11, dia)]);
+                            lista_dez.push([valorEixoX, 10 + valorEixoY, valor, semanaAno, Date.UTC(ano, 11, dia)]);
                             lista_dados_consumo.push(valor);
                             lista_dez_boxplot.push(valor);
 
                             if (semanaAno <= 3) {
-                                lista_dados_semanais.push(new Array(semanaAno+"-"+soma, valor));
-                            }
-                            else {
+                                lista_dados_semanais.push(new Array(semanaAno + "-" + soma, valor));
+                            } else {
                                 lista_dados_semanais.push(new Array(semanaAno, valor));
                             }
 
-                            if(dia == 31){
-                                if(diaSemana == 0) {
+                            if (dia == 31) {
+                                if (diaSemana == 0) {
                                     var valorEixo = valorEixoY;
-                                    for (var i=1; i<=6; i++) {
+                                    for (var i = 1; i <= 6; i++) {
                                         valorEixo++;
                                         if (valorEixo == 7) {
                                             valorEixo = 0;
                                         }
-                                        
-                                        lista_dez.push([valorEixoX, 10+valorEixo, 0, semanaAno, Date.UTC(ano, 11, dia)]);
+
+                                        lista_dez.push([valorEixoX, 10 + valorEixo, 0, semanaAno, Date.UTC(ano, 11, dia)]);
                                     }
-                                }
-                                else{
+                                } else {
                                     diaSemana++;
-                                    if(diaSemana==7){
+                                    if (diaSemana == 7) {
                                         diaSemana = 0;
                                         valorEixoX++;
                                     }
 
-                                    for (var i=diaSemana; i<=7; i++) {
-                                        lista_dez.push([valorEixoX, 10+i, 0, semanaAno, Date.UTC(ano, 11, 0)]);
+                                    for (var i = diaSemana; i <= 7; i++) {
+                                        lista_dez.push([valorEixoX, 10 + i, 0, semanaAno, Date.UTC(ano, 11, 0)]);
                                     }
-                                }  
+                                }
                             }
                         }
 
@@ -858,22 +868,21 @@ function loadValuesFromFile(){
                             valorEixoX++;
                             valorEixoY = 0;
                         }
-                        
+
                         valor = 0;
                         contadorTotal = 0;
                         valorEixoY++;
                     }
-                }
-                else {
-                    if ($('#energia option').size() < 20){
+                } else {
+                    if ($('#energia option').size() < 20) {
                         $('#energia').empty();
-                            
-                        if (null == $("#energia").val()){
-                            $('#energia').empty();
-                            $('#energia').append($("<option></option>").attr("value","Média").text("Average")); 
 
-                            for(var i=1; i<=valorJson.length; i++){
-                                $('#energia').append($("<option></option>").attr("value",i).text(valorJson[i-1])); 
+                        if (null == $("#energia").val()) {
+                            $('#energia').empty();
+                            $('#energia').append($("<option></option>").attr("value", "Média").text("Average"));
+
+                            for (var i = 1; i <= valorJson.length; i++) {
+                                $('#energia').append($("<option></option>").attr("value", i).text(valorJson[i - 1]));
                             }
                         }
                     }
@@ -899,7 +908,7 @@ function loadValuesFromFile(){
     return lista_dados;
 }
 
-function carregaDadosCalendario(){
+function carregaDadosCalendario() {
     var lista_dados = loadValuesFromFile();
     calendar_view.series[0].data = lista_dados[0];
     calendar_view.series[1].data = lista_dados[1];
@@ -924,121 +933,110 @@ function carregaDadosCalendario(){
 function salvaHoras(mes, hora, valor) {
     if (mes == 1) {
         lista_jan_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 2) {
+    } else if (mes == 2) {
         lista_fev_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 3) {
+    } else if (mes == 3) {
         lista_mar_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 4) {
+    } else if (mes == 4) {
         lista_abr_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 5) {
+    } else if (mes == 5) {
         lista_mai_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 6) {
+    } else if (mes == 6) {
         lista_jun_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 7) {
+    } else if (mes == 7) {
         lista_jul_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 8) {
+    } else if (mes == 8) {
         lista_ago_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 9) {
+    } else if (mes == 9) {
         lista_set_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 10) {
+    } else if (mes == 10) {
         lista_out_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 11) {
+    } else if (mes == 11) {
         lista_nov_hora_boxplot.push(new Array(hora, valor));
-    }
-    else if (mes == 12) {
+    } else if (mes == 12) {
         lista_dez_hora_boxplot.push(new Array(hora, valor));
     }
 }
 
-function diaDaSemana(date){
-    var weekdays = new Array(0,1,2,3,4,5,6); //0 - "Monday", 1 - "Tuesday", 2 - "Wednesday", 3 - "Thursday", 4 - "Friday", 5 - "Saturday", 6 - "Sunday"
+function diaDaSemana(date) {
+    var weekdays = new Array(0, 1, 2, 3, 4, 5, 6); //0 - "Monday", 1 - "Tuesday", 2 - "Wednesday", 3 - "Thursday", 4 - "Friday", 5 - "Saturday", 6 - "Sunday"
     return weekdays[date.getDay()];
 }
 
 function semanaDoAno(d) {
     // Set to nearest Thursday: current date + 4 - current day number
     // Make Sunday's day number 7
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
     // Get first day of year
-    var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
     // Calculate full weeks to nearest Thursday
-    var week = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+    var week = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
     // Return array of year and week number
     return week;
 }
 
-function ultimoDiaMes(ano, mes){
-    return new Date(ano, mes +1, 0).getDate();
+function ultimoDiaMes(ano, mes) {
+    return new Date(ano, mes + 1, 0).getDate();
 }
 
-function removeTodosValores(){
-    for(var i = lista_jan.length - 1; i >= 0; i--) {
+function removeTodosValores() {
+    for (var i = lista_jan.length - 1; i >= 0; i--) {
         lista_jan.splice(i, 1);
     }
 
-    for(var i = lista_fev.length - 1; i >= 0; i--) {
+    for (var i = lista_fev.length - 1; i >= 0; i--) {
         lista_fev.splice(i, 1);
     }
 
-    for(var i = lista_mar.length - 1; i >= 0; i--) {
+    for (var i = lista_mar.length - 1; i >= 0; i--) {
         lista_mar.splice(i, 1);
     }
 
-    for(var i = lista_abr.length - 1; i >= 0; i--) {
+    for (var i = lista_abr.length - 1; i >= 0; i--) {
         lista_abr.splice(i, 1);
     }
 
-    for(var i = lista_mai.length - 1; i >= 0; i--) {
+    for (var i = lista_mai.length - 1; i >= 0; i--) {
         lista_mai.splice(i, 1);
     }
 
-    for(var i = lista_jun.length - 1; i >= 0; i--) {
+    for (var i = lista_jun.length - 1; i >= 0; i--) {
         lista_jun.splice(i, 1);
     }
 
-    for(var i = lista_jul.length - 1; i >= 0; i--) {
+    for (var i = lista_jul.length - 1; i >= 0; i--) {
         lista_jul.splice(i, 1);
     }
 
-    for(var i = lista_ago.length - 1; i >= 0; i--) {
+    for (var i = lista_ago.length - 1; i >= 0; i--) {
         lista_ago.splice(i, 1);
     }
 
-    for(var i = lista_set.length - 1; i >= 0; i--) {
+    for (var i = lista_set.length - 1; i >= 0; i--) {
         lista_set.splice(i, 1);
     }
 
-    for(var i = lista_out.length - 1; i >= 0; i--) {
+    for (var i = lista_out.length - 1; i >= 0; i--) {
         lista_out.splice(i, 1);
     }
 
-    for(var i = lista_nov.length - 1; i >= 0; i--) {
+    for (var i = lista_nov.length - 1; i >= 0; i--) {
         lista_nov.splice(i, 1);
     }
 
-    for(var i = lista_dez.length - 1; i >= 0; i--) {
+    for (var i = lista_dez.length - 1; i >= 0; i--) {
         lista_dez.splice(i, 1);
     }
 }
 
-function verificaAnoBissexto(ano){
+function verificaAnoBissexto(ano) {
     return ((ano % 4 == 0) && (ano % 100 != 0)) || (ano % 400 == 0);
 }
 
-function retornaValoresSemanais(semanaAno){
+function retornaValoresSemanais(semanaAno) {
     return lista_dados_semanais.filter(
-        function(valores){
-            if(valores[0] == semanaAno){
+        function(valores) {
+            if (valores[0] == semanaAno) {
                 return parseInt(lista_dados_semanais[1]);
             }
         }

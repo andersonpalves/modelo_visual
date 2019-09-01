@@ -76,11 +76,8 @@ $("#modal-daily").click(function(e){
   var idChart = 'idDialog_'+ modalNumber;
   var title = 'Day View - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
   var $dlg = createNewDialog(title, '<div id="container"></div>', 350, 350);
-  var chartWeek = createDialogDaily(idChart, mesSelected, weekSelected[1], listaDados);
+  var chartWeek = createDialogDaily(idChart, mesSelected, weekSelected[1], null);
   
-  abreGraficoDias(idChart, arrayValoresX, arrayValoresMinimosX, arrayValoresMediosX, arrayValoresMaximosX, 
-                  arrayValoresMedianaX, valorDesvioPadraoX, valorVarianciaX, valorErroPadraoX, valorCVX);
-
   Highcharts.chart(chartWeek);
   modalNumber++;
 });
@@ -343,33 +340,7 @@ function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
             fillColor: '#B70B2C'
           },
           visible: false
-        }],
-    plotOptions: {
-      series: {
-        events: {
-          click: function (e) {
-            
-            var data = e.point.series.xAxis.categories[e.point.options.x];
-            
-            if(zoomAberto == true){
-              $("#panel-fullscreen-heatmap").click();
-            }
-  
-            largura_dias = chart_dias.chartWidth;
-            altura_dias = chart_dias.chartHeight;
-            largura_horas = chart_horas.chartWidth;
-            altura_horas = chart_horas.chartHeight;
-  
-            if (e.point.value != null) {
-              abreGraficos(e.point, e, semana_selecionada, data);					
-            
-              $('#graficos').show();
-              $(".grupo").show();
-            }
-          }
-        }
-      }
-    },	
+        }],	
     tooltip: {
       formatter: function () {
         var valor = this.series.xAxis.categories[this.point.x];

@@ -5,9 +5,8 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" type="image/png" href="images/favicon.ico"/>
-    <!-- Dashboard 26/06/2011 - Sunday-->
     <link href="css/keen-dashboards.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" media="all">
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body class="keen-dashboard">

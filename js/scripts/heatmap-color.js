@@ -153,7 +153,7 @@ var heatmapcolor = {
 					altura_horas = chart_horas.chartHeight;
 
 					if (e.point.value != null) {
-						abreGraficos(e.point, e, semana_selecionada, data);					
+						abreGraficos(e.point, data);					
 					
 						$('#graficos').show();
 						$(".grupo").show();
@@ -200,7 +200,7 @@ var heatmapcolor = {
 	}
 }
 
-function abreGraficos(ponto, e, semana_selecionada, data){
+function abreGraficos(ponto, data){
 
 	heatmapcolor.series[0].data = lista_itens;
 
@@ -299,7 +299,7 @@ function abreGraficos(ponto, e, semana_selecionada, data){
 		}
 
 		valorMinimo = Math.min( ...listaMedias),
-		valorMaximo = Math.max( ...listaMedias);
+    	valorMaximo = Math.max( ...listaMedias);
 
 		var objetoMinimo = {
 			"name": z + ":00 horas",
