@@ -17,8 +17,8 @@
             <li>
               <span class="texto">Place: </span>
               <select id="lugar">
-                <!--<option value="restaurante">Restaurant</option>
-                  <option value="super_mercado">Super Market</option>
+                <option value="restaurante">Restaurant</option>
+                 <!-- <option value="super_mercado">Super Market</option>
                   <option value="teste">1140 Energies</option>-->
                 <option value="pjm">PJM</option>
               </select>
@@ -26,13 +26,13 @@
             <li>
               <span class="texto">Year: </span>
               <select id="ano">
-                <!--<option value="2004" selected>2004</option>
-                  <option value="2005" selected>2005</option>
+                <option value="2004" selected>2004</option>
+                <!--  <option value="2005" selected>2005</option>
                   <option value="2006">2006</option>
                   <option value="2016">2016</option> 
                   <option value="2009" selected>2009</option>
                   <option value="2010" selected>2010</option>-->
-                <option value="2011" selected>2011</option>
+                <option value="2011" >2011</option>
                 <option value="2012">2012</option>
                 <option value="2013">2013</option>
                 <option value="2014">2014</option>

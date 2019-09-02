@@ -200,6 +200,11 @@ function abreDados(ano, lugar) {
                 events: {
                     click: function(e) {
                         if ($("#comparison").is(':checked')) {
+                            mesSelected = setZero(new Date(e.point.date).getMonth() + 1);
+                            weekSelected = getWeekNumber(new Date(parseInt(e.point.date)));
+                            daySelected = new Date(e.point.date).getDate() + 1;
+                            dateSelected = $("#ano").val() + '-' + mesSelected + '-' + setZero(daySelected);
+
                             $("#comparisonModal").modal('show');
                         } else {
                             var retorno = getWeekNumber(new Date(parseInt(e.point.x)));
