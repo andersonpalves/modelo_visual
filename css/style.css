@@ -216,3 +216,15 @@ input:checked + .slider:before {
 	color: #eaf5f7;
 	font-weight: bold;
 }
+
+.dialog-blue .ui-dialog-titlebar{
+  background: #357ebd;
+}
+
+.dialog-green .ui-dialog-titlebar{
+  background: #4cae4c;
+}
+
+.dialog-red .ui-dialog-titlebar{
+  background: #d43f3a;
+}

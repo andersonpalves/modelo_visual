@@ -15,7 +15,7 @@ $("#modal-monthly").click(function(e){
 
     var idChart = 'idDialog_'+ modalNumber;
     var title = 'Monthly View - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425)
+    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425, 'dialog-red')
     var chartMonth = createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados);
     
     Highcharts.chart(chartMonth);
@@ -58,7 +58,7 @@ $("#modal-weekly").click(function(e){
 
     var idChart = 'idDialog_'+ modalNumber;
     var title = 'Week View - Week ' + weekSelected[1] + ' - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425)
+    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425, 'dialog-blue')
     var chartWeek = createDialogWeek(idChart, mesSelected, weekSelected[1], listaDados);
 
     carregaHeatmap(chartWeek, listaDados, maxDenseDisplay, true);
@@ -74,23 +74,27 @@ $("#modal-daily").click(function(e){
   var valuesDay = getLoadDatas(dateSelected);
   var idChart = 'idDialog_'+ modalNumber;
   var title = 'Day View - ' + daySelected + '/' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-  var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 470, 370);
+  var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 470, 370, 'dialog-green');
   var chartWeek = createDialogDaily(idChart, mesSelected, $("#ano").val(), valuesDay);
 
   Highcharts.chart(chartWeek);
   modalNumber++;
 });
 
-var createNewDialog = (title, body, height, width) => {
+var createNewDialog = (title, body, height, width, color) => {
   var $newDialog = $('#dialogs .dialog-tmpl').clone();
   $('.dialog-body', $newDialog).html(body);
   $('#dialogs').append($newDialog);
+
+  console.log('classe recebida', color)
+
   $newDialog.dialog({
-      'top' : 110,
-      'title': title,
-      'height': height, //350
-      'width': width,
-      'position': {my: "center",
+      dialogClass : color,
+      top : 110,
+      title: title,
+      height: height, //350
+      width: width,
+      position: {my: "center",
                   at: "center",
                   of: "#dialogs"}
   });

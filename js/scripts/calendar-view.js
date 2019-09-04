@@ -345,6 +345,14 @@ $("#lugar").change(function() {
     $("#rangeValuesDense").attr("max", 0);
     $("#energia").val('Média');
 
+    if ($("#lugar").val() == "restaurante") {
+        $("#ano").val(2004);
+    }
+
+    if ($("#lugar").val() == "pjm") {
+        $("#ano").val(2011);
+    }
+
     abreDadosJson();
     removeTodosValores();
     carregaDadosCalendario($("#energia").val());
