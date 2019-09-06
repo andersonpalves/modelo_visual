@@ -1,29 +1,57 @@
 var modalNumber = 1;
 
-$('#modal-monthly').draggable();
-$('#modal-weekly').draggable();
-$('#modal-daily').draggable();
+$('#modal-calendar-monthly').draggable();
+$('#modal-calendar-weekly').draggable();
+$('#modal-calendar-daily').draggable();
 
-$("#modal-monthly").click(function(e){
-    var dados = getLoadDatasByMonth(mesSelected);
-    var listaDados = []
-    
-    for (var i=0; i<dados.length; i++) {
-        var valores = [dados[i][1], dados[i][2], dados[i][3]];
-        listaDados.push(valores);
-    }
+$('#modal-heatmap-monthly').draggable();
+$('#modal-heatmap-weekly').draggable();
+$('#modal-heatmap-daily').draggable();
+$('#modal-heatmap-hourly').draggable();
 
-    var idChart = 'idDialog_'+ modalNumber;
-    var title = 'Monthly View - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425, 'dialog-red')
-    var chartMonth = createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados);
-    
-    Highcharts.chart(chartMonth);
-    modalNumber++;
+$("#modal-calendario-monthly").click(function(e){
+  openDialogMonthly();
 });
 
-$("#modal-weekly").click(function(e){
+$("#modal-heatmap-monthly").click(function(e){
+  openDialogMonthly();
+});
 
+$("#modal-calendario-weekly").click(function(e){
+  openDialogWeekly();
+});
+
+$("#modal-heatmap-weekly").click(function(e){
+  openDialogWeekly();
+});
+
+$("#modal-calendario-daily").click(function(e){
+  openDialogDaily();
+});
+
+$("#modal-heatmap-daily").click(function(e){
+  openDialogDaily();
+});
+
+function openDialogMonthly() {
+  var dados = getLoadDatasByMonth(mesSelected);
+  var listaDados = []
+  
+  for (var i=0; i<dados.length; i++) {
+      var valores = [dados[i][1], dados[i][2], dados[i][3]];
+      listaDados.push(valores);
+  }
+
+  var idChart = 'idDialog_'+ modalNumber;
+  var title = 'Monthly View - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
+  var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425, 'dialog-red')
+  var chartMonth = createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados);
+  
+  Highcharts.chart(chartMonth);
+  modalNumber++;
+}
+
+function openDialogWeekly() {
   var listaDados = [];
   var lista_heatmap_dialog = [];
 
@@ -67,10 +95,10 @@ $("#modal-weekly").click(function(e){
     modalNumber++;
 
   }, "json");
+}
 
-});
-
-$("#modal-daily").click(function(e){
+function openDialogDaily() {
+  console.log('dateSelected', dateSelected)
   var valuesDay = getLoadDatas(dateSelected);
   var idChart = 'idDialog_'+ modalNumber;
   var title = 'Day View - ' + daySelected + '/' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
@@ -79,14 +107,12 @@ $("#modal-daily").click(function(e){
 
   Highcharts.chart(chartWeek);
   modalNumber++;
-});
+}
 
 var createNewDialog = (title, body, height, width, color) => {
   var $newDialog = $('#dialogs .dialog-tmpl').clone();
   $('.dialog-body', $newDialog).html(body);
   $('#dialogs').append($newDialog);
-
-  console.log('classe recebida', color)
 
   $newDialog.dialog({
       dialogClass : color,
@@ -102,7 +128,6 @@ var createNewDialog = (title, body, height, width, color) => {
 };
 
 function createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados){
-  //$('.ui-widget-header').css('background','#d9534f');
   return {
       chart: {
           renderTo: idChart,
@@ -215,7 +240,6 @@ function createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados){
 }
 
 function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
-  //$('.ui-widget-header').css('background','#357ebd');
   return {
     chart: {
       renderTo: idChart,
@@ -384,7 +408,6 @@ function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
 }
 
 function createDialogDaily(idChart, mes, ano ,listaDadosConsumo){
-  //$('.ui-widget-header').css('background','#5cb85c');
   var limitesLoop = retornaInicioPorMes(mes);
 	var valoresDias = retornaValoresDiaDeSemana(limitesLoop[0], limitesLoop[1]);
   var arrayValoresConsumo = [], arrayValoresConsumoMinimo = [], arrayValoresConsumoMedio = [], 

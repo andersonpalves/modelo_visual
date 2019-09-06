@@ -158,7 +158,7 @@ $(function() {
             useHTML: true,
             formatter: function() {
                 if (this.point.value == 0) return false;
-                var s = Highcharts.dateFormat('<b>%a %e. %B %Y', this.point.date);
+                var s = Highcharts.dateFormat('<b>%e %b, %Y, %A', this.point.date);
                 s += '<br><b>Consumption: ' + this.point.value;
                 return s;
             }
@@ -174,7 +174,7 @@ $(function() {
                             daySelected = new Date(e.point.date).getDate() + 1;
                             dateSelected = $("#ano").val() + '-' + mesSelected + '-' + setZero(daySelected);
 
-                            $("#comparisonModal").modal('show');
+                            $("#calendarComparisonModal").modal('show');
                         } else {
                             var retorno = getWeekNumber(new Date(parseInt(e.point.date)));
                             lista_itens = [];
@@ -570,7 +570,7 @@ function loadValuesFromFile(energiaSelecionada) {
                                 valorEixoY = diaSemana;
                             }
 
-                            lista_abr.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 2, dia)]);
+                            lista_abr.push([valorEixoX, valorEixoY, valor, semanaAno, Date.UTC(ano, 3, dia)]);
                             lista_dados_semanais.push(new Array(semanaAno, valor));
                             lista_dados_consumo.push(valor);
                             lista_abr_boxplot.push(valor);

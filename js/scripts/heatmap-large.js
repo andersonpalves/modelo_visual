@@ -190,7 +190,7 @@ function abreDados(ano, lugar) {
             colsize: 24 * 36e5, // one day
             tooltip: {
                 headerFormat: null,
-                pointFormat: '<b>{point.x:%e %b, %Y, %A} {point.y}:00h: {point.value} Consumption</b>'
+                pointFormat: '<b>{point.x:%e %b, %Y, %A} {point.y}:00h:<br><b>Consumption: {point.value}</b>'
             },
             turboThreshold: Number.MAX_VALUE
         }],
@@ -200,12 +200,13 @@ function abreDados(ano, lugar) {
                 events: {
                     click: function(e) {
                         if ($("#comparison").is(':checked')) {
-                            mesSelected = setZero(new Date(e.point.date).getMonth() + 1);
-                            weekSelected = getWeekNumber(new Date(parseInt(e.point.date)));
-                            daySelected = new Date(e.point.date).getDate() + 1;
+                            mesSelected = setZero(new Date(e.point.x).getMonth() + 1);
+                            weekSelected = getWeekNumber(new Date(parseInt(e.point.x)));
+                            daySelected = new Date(e.point.x).getDate() + 1;
                             dateSelected = $("#ano").val() + '-' + mesSelected + '-' + setZero(daySelected);
 
-                            $("#comparisonModal").modal('show');
+                            console.log('weekSelected', weekSelected);
+                            $("#heatmapComparisonModal").modal('show');
                         } else {
                             var retorno = getWeekNumber(new Date(parseInt(e.point.x)));
                             lista_itens = [];

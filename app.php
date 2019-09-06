@@ -18,21 +18,14 @@
               <span class="texto">Place: </span>
               <select id="lugar">
                 <option value="restaurante">Restaurant</option>
-                 <!-- <option value="super_mercado">Super Market</option>
-                  <option value="teste">1140 Energies</option>-->
-                <option value="pjm">PJM</option>
+                <option value="pjm" selected>PJM</option>
               </select>
             </li>
             <li>
               <span class="texto">Year: </span>
               <select id="ano">
-                <option value="2004" selected>2004</option>
-                <!--  <option value="2005" selected>2005</option>
-                  <option value="2006">2006</option>
-                  <option value="2016">2016</option> 
-                  <option value="2009" selected>2009</option>
-                  <option value="2010" selected>2010</option>-->
-                <option value="2011" >2011</option>
+                <option value="2004">2004</option>
+                <option value="2011" selected>2011</option>
                 <option value="2012">2012</option>
                 <option value="2013">2013</option>
                 <option value="2014">2014</option>
@@ -72,7 +65,7 @@
           </div>
         </div>
 
-        <div id="comparisonModal" class="modal fade" tabindex="-1" align="center" valign="center">
+        <div id="calendarComparisonModal" class="modal fade" tabindex="-1" align="center" valign="center">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -80,9 +73,26 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
               <div class="modal-footer" align="center">
-                <button id="modal-monthly" type="button" class="btn btn-danger" data-dismiss="modal">Monthly</button>
-                <button id="modal-weekly" type="button" class="btn btn-primary" data-dismiss="modal">Weekly</button>
-                <button id="modal-daily"  type="button" class="btn btn-success" data-dismiss="modal">Daily</button>
+                <button id="modal-calendario-monthly" type="button" class="btn btn-danger" data-dismiss="modal">Monthly</button>
+                <button id="modal-calendario-weekly" type="button" class="btn btn-primary" data-dismiss="modal">Weekly</button>
+                <button id="modal-calendario-daily"  type="button" class="btn btn-success" data-dismiss="modal">Daily</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="heatmapComparisonModal" class="modal fade" tabindex="-1" align="center" valign="center">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Select mode visualization</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-footer" align="center">
+                <button id="modal-heatmap-monthly" type="button" class="btn btn-danger" data-dismiss="modal">Monthly</button>
+                <button id="modal-heatmap-weekly" type="button" class="btn btn-primary" data-dismiss="modal">Weekly</button>
+                <button id="modal-heatmap-daily"  type="button" class="btn btn-success" data-dismiss="modal">Daily</button>
+                <button id="modal-heatmap-hourly" type="button" class="btn btn-warning" data-dismiss="modal">Hourly</button>
               </div>
             </div>
           </div>

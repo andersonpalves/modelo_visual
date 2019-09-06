@@ -182,8 +182,13 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-.modal-content {
+#calendarComparisonModal .modal-content {
 	width: 280px;
+	position: 'top';
+}
+
+#heatmapComparisonModal .modal-content {
+	width: 330px;
 	position: 'top';
 }
 
@@ -227,4 +232,10 @@ input:checked + .slider:before {
 
 .dialog-red .ui-dialog-titlebar{
   background: #d43f3a;
+}
+
+.btn-warning{
+  color: #fff;
+  background-color: #ffc107;
+  border-color: #ffc107;
 }
