@@ -106,6 +106,9 @@ $(document).ready(function () {
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
         {
+            console.log('largura_horas', largura_horas);
+            console.log('altura_horas', altura_horas);
+
             $this.children('i').removeClass('glyphicon-resize-small');
             $this.children('i').addClass('glyphicon-resize-full');
             chart_horas.setSize(largura_horas, altura_horas);

@@ -7,14 +7,14 @@ var lista_dias = [];
 var lista_series_historico = [];
 var lista_conteudo_dense = [];
 var lista_itens = [];
-var chart_heatmap_large, chart_heatmap_color, chart_dias, chart_hours, app, chart_relogio_tarde, chart_historico, chart_historico_geral;
+var chart_heatmap_large, chart_heatmap_color, chart_dias, chart_horas, app, chart_relogio_tarde, chart_historico, chart_historico_geral;
 var chart_heatmap_large_init;
-var chart_dias_valores, chart_dias_valores_boxplot, chart_hours_valores, chart_hours_valores_boxplot;
+var chart_dias_valores, chart_dias_valores_boxplot, chart_horas_valores, chart_horas_valores_boxplot;
 var semana_selecionada, lugar_selecionado;
 var heatmap_large, maxDenseDisplay = 0,
     maxHeatmap = 0,
     tamanhoX = 0;
-var largura_dense, altura_dense, largura_heatmap, altura_heatmap, largura_dias, altura_dias, largura_hours, altura_hours;
+var largura_dense, altura_dense, largura_heatmap, altura_heatmap, largura_dias, altura_dias, largura_horas, altura_horas;
 
 var selecaoPorGrupo = false;
 var valoresEletricidade = [0, 1, 2, 3, 4, 5];
@@ -95,8 +95,7 @@ function ajustarTextos() {
     $("#denseTexto").html("Annual / Monthly View");
     $("#heatmapTexto").html("Weekly View");
     $("#diasTexto").html("Day View");
-    $("#hoursTexto").html("Hour View");
-    $("#relogioTexto").html("Clock View");
+    $("#horasTexto").html("Hour View");
     $("#heatmapHistoricoGeralTexto").html("All energy sources - <b>Year selected<b>: " + $("#ano").val());
 }
 
@@ -204,7 +203,7 @@ function abreDados(ano, lugar) {
                             weekSelected = getWeekNumber(new Date(parseInt(e.point.x)));
                             daySelected = new Date(e.point.x).getDate() + 1;
                             dateSelected = $("#ano").val() + '-' + mesSelected + '-' + setZero(daySelected);
-
+                            hourSelected = 
                             console.log('weekSelected', weekSelected);
                             $("#heatmapComparisonModal").modal('show');
                         } else {
@@ -256,11 +255,11 @@ function abreDados(ano, lugar) {
                             $('#heatmapRange').html("<b>0</b>");
                             $('#rangeValuesHeatmap').val(0);
 
-                            carregaGraficoDias(null);
+                            carregaGraficoDias();
                             chart_dias = new Highcharts.Chart(dias);
 
-                            carregaGraficoHoras(null);
-                            chart_hours = new Highcharts.Chart(horas);
+                            carregaGraficoHoras();
+                            chart_horas = new Highcharts.Chart(horas);
 
                             if (zoomAberto == true) {
                                 $("#panel-fullscreen-dense-display").click();
@@ -421,11 +420,11 @@ function abreDados(ano, lugar) {
             largura_heatmap = chart_heatmap_color.chartWidth;
             altura_heatmap = chart_heatmap_color.chartHeight;
 
-            carregaGraficoDias(null);
+            carregaGraficoDias();
             chart_dias = new Highcharts.Chart(dias);
 
-            carregaGraficoHoras(null);
-            chart_hours = new Highcharts.Chart(horas);
+            carregaGraficoHoras();
+            chart_horas = new Highcharts.Chart(horas);
 
             carregarHistorico();
             carregarHistoricoGeral(file);
@@ -790,7 +789,7 @@ function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay, isDialog) {
 
 }
 
-function carregaGraficoDias(valores) {
+function carregaGraficoDias() {
     dias = {
         chart: {
             renderTo: 'area-conjunto-x1',
@@ -942,154 +941,4 @@ function carregaGraficoHoras() {
 					text: null
 			}
 	};
-}
-
-function carregaRelogioManha() {
-    relogio_manha = {
-        chart: {
-            renderTo: 'relogio-manha',
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: null
-        },
-        subtitle: {
-            text: "<b>Consumption between 0 and 11 hours</b>"
-        },
-        tooltip: {
-            pointFormat: '{series.value}<b>{point.value} consumption</b>'
-        },
-        plotOptions: {
-            pie: {
-                startAngle: -14,
-                allowPointSelect: true,
-                cursor: 'pointer',
-                borderWidth: 0.3,
-                borderColor: '#000000',
-                dataLabels: {
-                    enabled: true,
-                    //format: '<b>{point.value}</b>',
-                    distance: -50,
-                    filter: {
-                        operator: '>',
-                        value: 4
-                    }
-                },
-                size: '75%',
-                cursor: 'pointer',
-                data: [null, null, null, null, null, null, null, null, null, null, null]
-            }
-        },
-        series: [{
-            type: 'pie',
-            dataLabels: {
-                verticalAlign: 'top',
-                enabled: true,
-                color: '#000000',
-                connectorWidth: 1,
-                distance: -30,
-                connectorColor: '#000000',
-                formatter: function() {
-                    return this.point.value; //texto dentro da celula
-                }
-            }
-        }, {
-            type: 'pie',
-            dataLabels: {
-                enabled: true,
-                color: '#000000',
-                connectorWidth: 1,
-                distance: 30,
-                connectorColor: '#000000',
-                formatter: function() {
-                    var texto = this.point.name;
-                    return '<b>' + texto.replace("hours", "<br>Hours");
-                }
-            }
-        }],
-        exporting: {
-            enabled: false
-        },
-        credits: {
-            enabled: false
-        }
-    }
-}
-
-function carregaRelogioTarde() {
-    relogio_tarde = {
-        chart: {
-            renderTo: 'relogio-tarde',
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: null
-        },
-        subtitle: {
-            text: "<b>Consumption between 12 and 23 hours</b>"
-        },
-        tooltip: {
-            pointFormat: '{series.value}<b>{point.value} consumption</b>'
-        },
-        plotOptions: {
-            pie: {
-                startAngle: -14,
-                allowPointSelect: true,
-                cursor: 'pointer',
-                borderWidth: 0.3,
-                borderColor: '#000000',
-                dataLabels: {
-                    enabled: true,
-                    //format: '<b>{point.value}</b>',
-                    distance: -50,
-                    filter: {
-                        operator: '>',
-                        value: 4
-                    }
-                },
-                size: '75%',
-                cursor: 'pointer',
-                data: [null, null, null, null, null, null, null, null, null, null, null]
-            }
-        },
-        series: [{
-            type: 'pie',
-            dataLabels: {
-                verticalAlign: 'top',
-                enabled: true,
-                color: '#000000',
-                connectorWidth: 1,
-                distance: -30,
-                connectorColor: '#000000',
-                formatter: function() {
-                    return this.point.value; //texto dentro da celula
-                }
-            }
-        }, {
-            type: 'pie',
-            dataLabels: {
-                enabled: true,
-                color: '#000000',
-                connectorWidth: 1,
-                distance: 30,
-                connectorColor: '#000000',
-                formatter: function() {
-                    var texto = this.point.name;
-                    return '<b>' + texto.replace("hours", "<br>hours");
-                }
-            }
-        }],
-        exporting: {
-            enabled: false
-        },
-        credits: {
-            enabled: false
-        }
-    }
 }

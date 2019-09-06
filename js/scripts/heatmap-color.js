@@ -149,8 +149,8 @@ var heatmapcolor = {
 
 					largura_dias = chart_dias.chartWidth;
 					altura_dias = chart_dias.chartHeight;
-					largura_hours = chart_hours.chartWidth;
-					altura_hours = chart_hours.chartHeight;
+					largura_horas = chart_horas.chartWidth;
+					altura_horas = chart_horas.chartHeight;
 
 					if (e.point.value != null) {
 						abreGraficos(e.point, data);					
@@ -339,7 +339,7 @@ function abreGraficos(ponto, data){
 	var dia =  res[1];
 	
 	$("#diasTexto").html("Day View Selected: <b>" + dia +" </b> - <b>" + dia_semana);
-	$("#hoursTexto").html("Hour View Selected: <b>" + hora + "</b> Hours");
+	$("#horasTexto").html("Hour View Selected: <b>" + hora + "</b> Hours");
 	
 	abreGraficoDias("area-conjunto-x1", arrayValoresX, arrayValoresMinimosX, arrayValoresMediosX, arrayValoresMaximosX, arrayValoresMedianaX, valorDesvioPadraoX,
 	valorVarianciaX, valorErroPadraoX, valorCVX);

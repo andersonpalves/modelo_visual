@@ -33,6 +33,10 @@ $("#modal-heatmap-daily").click(function(e){
   openDialogDaily();
 });
 
+$("#modal-heatmap-hourly").click(function(e){
+  openDialogHourly();
+});
+
 function openDialogMonthly() {
   var dados = getLoadDatasByMonth(mesSelected);
   var listaDados = []
@@ -98,6 +102,17 @@ function openDialogWeekly() {
 }
 
 function openDialogDaily() {
+  var valuesDay = getLoadDatas(dateSelected);
+  var idChart = 'idDialog_'+ modalNumber;
+  var title = 'Day View - ' + daySelected + '/' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
+  var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 470, 370, 'dialog-green');
+  var chartWeek = createDialogDaily(idChart, mesSelected, $("#ano").val(), valuesDay);
+
+  Highcharts.chart(chartWeek);
+  modalNumber++;
+}
+
+function openDialogHourly() {
   console.log('dateSelected', dateSelected)
   var valuesDay = getLoadDatas(dateSelected);
   var idChart = 'idDialog_'+ modalNumber;

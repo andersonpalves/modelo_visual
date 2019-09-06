@@ -45,6 +45,7 @@ var mesSelected = 0;
 var weekSelected = [];
 var daySelected = 0;
 var dateSelected = '';
+var hourSelected = 0;
 
 $(function() {
     $("#calendarTexto").html("Calendar View - Energy selected: " + $('#energia option:selected').text());
@@ -222,9 +223,9 @@ $(function() {
                             $('#heatmapRange').html("<b>0</b>");
                             $('#rangeValuesHeatmap').val(0);
 
-                            carregaGraficoDias(null);
+                            carregaGraficoDias();
                             chart_dias = new Highcharts.Chart(dias);
-                            carregaGraficoHoras(null);
+                            carregaGraficoHoras();
                             chart_horas = new Highcharts.Chart(horas);
 
                             if (zoomAberto == true) {
