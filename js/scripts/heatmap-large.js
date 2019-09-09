@@ -203,8 +203,8 @@ function abreDados(ano, lugar) {
                             weekSelected = getWeekNumber(new Date(parseInt(e.point.x)));
                             daySelected = new Date(e.point.x).getDate() + 1;
                             dateSelected = $("#ano").val() + '-' + mesSelected + '-' + setZero(daySelected);
-                            hourSelected = 
-                            console.log('weekSelected', weekSelected);
+                            hourSelected = e.point.y;
+                            
                             $("#heatmapComparisonModal").modal('show');
                         } else {
                             var retorno = getWeekNumber(new Date(parseInt(e.point.x)));

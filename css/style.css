@@ -234,6 +234,10 @@ input:checked + .slider:before {
   background: #d43f3a;
 }
 
+.dialog-yellow .ui-dialog-titlebar{
+  background: #ffc107;
+}
+
 .btn-warning{
   color: #fff;
   background-color: #ffc107;

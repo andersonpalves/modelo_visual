@@ -113,12 +113,10 @@ function openDialogDaily() {
 }
 
 function openDialogHourly() {
-  console.log('dateSelected', dateSelected)
-  var valuesDay = getLoadDatas(dateSelected);
   var idChart = 'idDialog_'+ modalNumber;
-  var title = 'Day View - ' + daySelected + '/' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-  var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 470, 370, 'dialog-green');
-  var chartWeek = createDialogDaily(idChart, mesSelected, $("#ano").val(), valuesDay);
+  var title = 'Hour View - ' + daySelected + '/' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
+  var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 470, 370, 'dialog-yellow');
+  var chartWeek = createDialogHourly(idChart, mesSelected, $("#ano").val(), hourSelected);
 
   Highcharts.chart(chartWeek);
   modalNumber++;
@@ -554,6 +552,192 @@ function createDialogDaily(idChart, mes, ano ,listaDadosConsumo){
 			series: {
                 allowPointSelect: true
             }
+		},
+		series: [
+			{
+				name: "Consumption",
+				data:  arrayValoresConsumo,
+				color: "#008000",
+				marker: {
+					symbol: 'circle',
+					radius: 6,
+				}
+			},
+			{
+				name: "Min.",
+				data:  arrayValoresConsumoMinimo,
+				color: "#3060cf",
+				marker: {
+					symbol: 'triangle-down',
+					radius: 6
+				},
+				visible: true
+			},
+			{
+				name: "AVG",
+				data:  arrayValoresConsumoMedio,
+				color: "#ffd700",
+				marker: {
+					symbol: 'diamond',
+					radius: 6
+				},
+				visible: true
+			},
+			{
+				name: "Median",
+				data:  arrayValoresConsumoMediana,
+				color: "#FD6A02",
+				marker: {
+					symbol: 'diamond',
+					radius: 6
+				},
+				visible: true
+			},
+			{
+				name: "Max.",
+				data:  arrayValoresConsumoMaximo,
+				color: "#d1473a",
+				marker: {
+					symbol: 'triangle',
+					radius: 6
+				},
+				visible: true
+			}
+    ],
+		navigation: {
+			buttonOptions: {
+				enabled: false
+			}
+		},
+		responsive: {
+			rules: [{
+				condition: {
+					maxWidth: "100%",
+					maxHeight: "100%"
+				}
+			}]
+		},
+		legend: {
+			text:null
+		}
+	}
+}
+
+function createDialogHourly(idChart, mes, ano, horaSelecionada){
+	var arrayValoresConsumo = [], arrayValoresConsumoMinimo = [], arrayValoresConsumoMedio = [], 
+      arrayValoresConsumoMaximo = [], arrayValoresConsumoMediana = [];
+
+  var limitesLoop = retornaInicioPorMes(mes);
+  var valoresY = retornaValoresDiaDeSemanaPorHora(limitesLoop[0], limitesLoop[1], horaSelecionada);
+  var arrayValores = [];
+	var arrayValoresConsumo = [];
+	var totalConsumo = 0;
+	/*VALORES PARA HORAS*/
+	for(var i=0; i<=6; i++){
+		var contador = i + 1;
+    var consumo = heatmap_large.series[0].data[(24 * i) + horaSelecionada][2];
+    arrayValores.push(consumo);
+
+		if (i == 6) {
+			contador = 0;
+		}
+		
+		var objeto = { 
+			"name": i + ":00 hours",
+			"y" : consumo
+		}
+		
+		var listaValoresY = valoresY[contador];
+		
+		var objetoMinimo = { 
+			"name": i + ":00 hours",
+			"y" : Math.min.apply(null, listaValoresY)
+		}
+
+		var objetoMedia = { 
+			"name": i + ":00 hours",
+			"y" : retornaSoma(listaValoresY) / listaValoresY.length
+		}
+		
+		var objetoMaximo = { 
+			"name": i + ":00 hours",
+			"y" : Math.max.apply(null, listaValoresY)
+		}
+		
+		var objetoMediana = { 
+			"name": i + ":00 hours",
+			"y" : mediana(listaValoresY)
+		}
+
+		arrayValoresConsumo.push(objeto);
+		arrayValoresConsumoMinimo.push(objetoMinimo);
+		arrayValoresConsumoMaximo.push(objetoMaximo);
+		arrayValoresConsumoMediana.push(objetoMediana);
+		arrayValoresConsumoMedio.push(objetoMedia);
+		
+	}
+
+	valorDesvioPadrao = round(retornaDesvioPadrao(arrayValores));
+	valorVariancia = round(retornaVariancia(arrayValores));
+	valorErroPadrao = round(retornaErroPadrao(arrayValores, valorDesvioPadrao));
+	valorCV = round((valorDesvioPadrao / (totalConsumo / 7)));
+
+  return {
+		chart: {
+			renderTo: idChart,
+			type: 'line'
+		},
+		title: {
+			text: ''
+		},
+		subtitle: {
+			text: ''
+		},
+		legend: {
+			layout: 'vertical',
+			align: 'left',
+			verticalAlign: 'top',
+			x: 0,
+			y: 23,
+			floating: true,
+			borderWidth: 1,
+			backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+		},
+		xAxis: {
+			categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fry', 'Sat', 'Sun'],
+			title: {
+				text: 'Schedule'
+			},
+		},
+		yAxis: {
+			title: {
+				text: 'Consumption'
+			}
+		},
+		tooltip: {
+			formatter: function () {
+				var text = '<b>'+this.x +':00h ' + this.y + ' Consumption<br>';
+
+				if (this.series.name == "Consumption") {
+					text += '<b>'+ valorVariancia + ' Variance<br>';
+					text += '<b>'+ valorDesvioPadrao + ' Std. Deviation<br>';
+					text += '<b>'+ valorErroPadrao + ' Std. Error<br>';
+					text += '<b>'+ valorCV + ' Cof. Variation<br>';
+				}
+
+				return text;
+			}
+		},
+		credits: {
+			enabled: false
+		},
+		plotOptions: {
+			areaspline: {
+				fillOpacity: 0.5
+			},
+			series: {
+        allowPointSelect: true
+      }
 		},
 		series: [
 			{

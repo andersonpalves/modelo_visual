@@ -204,7 +204,7 @@ function abreGraficos(ponto, data){
 
 	heatmapcolor.series[0].data = lista_itens;
 
-	var arrayValoresX = [], arrayValoresY = [], arrayPieManha = [], arrayPieTarde = [];
+	var arrayValoresX = [], arrayValoresY = [];
 	var arrayValoresMinimosX = [], arrayValoresMediosX = [], arrayValoresMaximosX = [], arrayValoresMedianaX = [];
 	var arrayValoresMinimosY = [], arrayValoresMediosY = [], arrayValoresMaximosY = [], arrayValoresMedianaY = [];
 	var total = ponto.x * 24;
@@ -214,17 +214,18 @@ function abreGraficos(ponto, data){
 	var res = data.split("<br><b>", 2);
 	var dataSelecionada = res[1].split("/");
 	var mes = dataSelecionada[1];
-	var ano = dataSelecionada[2];
 	
-	//var totalDiasPorMes = retornaTotalDiasPorMes(mes, ano);
 	var limitesLoop = retornaInicioPorMes(mes);
 	
 	var valoresX = retornaValoresDiaDeSemana(limitesLoop[0], limitesLoop[1]);
 	var valoresY = retornaValoresDiaDeSemanaPorHora(limitesLoop[0], limitesLoop[1], hora);
+
+	console.log('valoresY', valoresY)
 	
 	var consumoY = [];
 	var totalConsumo = 0;
-	/*VALORES PARA hours*/
+
+	/*VALORES PARA HORAS*/
 	for(var i=0; i<=6; i++){
 		var contador = i + 1;
 		var consumo =  heatmapcolor.series[0].data[(24 * i) + ponto.y][2];
@@ -236,29 +237,29 @@ function abreGraficos(ponto, data){
 		}
 		
 		var objeto = { 
-			"name": i + ":00 hours",
+			"name": i + " Day week",
 			"y" : consumo
 		}
 		
 		var listaValoresY = valoresY[contador];
 		
 		var objetoMinimo = { 
-			"name": i + ":00 hours",
+			"name": i + " Day week",
 			"y" : Math.min.apply(null, listaValoresY)
 		}
 
 		var objetoMedia = { 
-			"name": i + ":00 hours",
+			"name": i + " Day week",
 			"y" : retornaSoma(listaValoresY) / listaValoresY.length
 		}
 		
 		var objetoMaximo = { 
-			"name": i + ":00 hours",
+			"name": i + " Day week",
 			"y" : Math.max.apply(null, listaValoresY)
 		}
 		
 		var objetoMediana = { 
-			"name": i + ":00 hours",
+			"name": i + " Day week",
 			"y" : mediana(listaValoresY)
 		}
 
@@ -277,6 +278,7 @@ function abreGraficos(ponto, data){
 
 	var consumoX = [];
 	var totalConsumo = 0;
+
 	/*VALORES PARA DIAS*/
 	for(var z=0; z<=23; z++){
 		var consumo = heatmapcolor.series[0].data[z+total][2];
@@ -402,6 +404,8 @@ function retornaValoresDiaDeSemanaPorHora(diaInicio, diasMes, hora) {
 		valores.push(consumo);
 		
 		var diaDaSemana = retornaDiaDaSemana(new Date(diaUTC).getUTCDay());
+		console.log('diaInicio', diaInicio)
+		console.log('diasMes', diasMes)
 
 		switch (diaDaSemana) {
 			case "Sunday":
@@ -439,44 +443,4 @@ function retornaValoresDiaDeSemanaPorHora(diaInicio, diasMes, hora) {
 	lista.push(listaSunday, listaMonday, listaTuesday, listaWednesday, listaThursday, listaFriday, listaSaturday);
 	
 	return lista;
-}
-
-function selecionaCorDaFatia(valor){
-	var total = parseInt(maxDenseDisplay)
-	var calculo = (100 * valor) / total;
-	valor = parseInt(calculo);
-	
-	var corRgb;
-	
-	if ((valor >= 0 ) && (valor <= 10 )) {
-		corRgb = "#3060cf";
-	}
-	else if ((valor >= 11 ) && (valor <= 20 )) {
-		corRgb = "#8cb2fe";
-	}
-	else if ((valor >= 21 ) && (valor <= 30 )) {
-		corRgb = "#839ec7";
-	}
-	else if ((valor >= 31 ) && (valor <= 40 )) {
-		corRgb = "#dff0f7";
-	}
-	else if ((valor >= 41 ) && (valor <= 50 )) {
-		corRgb = "#fcf2b6"; 
-	}
-	else if ((valor >= 51 ) && (valor <= 60 )) {
-		corRgb = "#f0ce9c";
-	}
-	else if ((valor >= 61 ) && (valor <= 70 )) {
-		corRgb = "#e2a17b";
-	}
-	else if ((valor >= 71 ) && (valor <= 80 )) {
-		corRgb = "#d4785e";
-	}
-	else if ((valor >= 81 ) && (valor <= 90 )) {
-		corRgb = "#c54b3d";
-	}
-	else if ((valor >= 91 ) && (valor <= 100 )) {
-		corRgb = "#d1473a";
-	}
-	return corRgb;
 }
