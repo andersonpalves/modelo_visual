@@ -207,8 +207,14 @@ function abreDados(ano, lugar) {
                             
                             $("#heatmapComparisonModal").modal('show');
                         } else {
-                            var retorno = getWeekNumber(new Date(parseInt(e.point.x)));
+							var pontoSelecionado = e.point.x;							
+                            var retorno = getWeekNumber(new Date(parseInt(pontoSelecionado)));
                             lista_itens = [];
+
+							if (new Date(pontoSelecionado).getUTCDay() === 1) {
+								retorno[1] += 1;
+							}
+
                             semana_selecionada = retorno[1];
 
                             $.post("datas_semanais.php", {
