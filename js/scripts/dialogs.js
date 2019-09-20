@@ -627,16 +627,20 @@ function createDialogHourly(idChart, mes, ano, horaSelecionada){
 	var arrayValoresConsumo = [], arrayValoresConsumoMinimo = [], arrayValoresConsumoMedio = [], 
       arrayValoresConsumoMaximo = [], arrayValoresConsumoMediana = [];
 
-  var limitesLoop = retornaInicioPorMes(mes);
-  var valoresY = retornaValoresDiaDeSemanaPorHora(limitesLoop[0], limitesLoop[1], horaSelecionada);
-  var arrayValores = [];
+	var limitesLoop = retornaInicioPorMes(mes);
+	var valoresY = retornaValoresDiaDeSemanaPorHora(limitesLoop[0], limitesLoop[1], horaSelecionada);
+	var arrayValores = [];
 	var arrayValoresConsumo = [];
 	var totalConsumo = 0;
-	/*VALORES PARA HORAS*/
+	var celulaSelecionada = heatmap_large.series[0].data[pontoHeatmapLarge.point.index];
+	var diaSemanaCelula = new Date(celulaSelecionada[0]).getUTCDay();
+	var pontoInicioSemana = retornaInicioSemanaHeatmapLarge(pontoHeatmapLarge.point.index, diaSemanaCelula);
+
 	for(var i=0; i<=6; i++){
 		var contador = i + 1;
-    var consumo = heatmap_large.series[0].data[(24 * i) + horaSelecionada][2];
-    arrayValores.push(consumo);
+		var consumo	= heatmap_large.series[0].data[(i*24)+pontoInicioSemana][2];
+		arrayValores.push(consumo);
+		totalConsumo += consumo;
 
 		if (i == 6) {
 			contador = 0;

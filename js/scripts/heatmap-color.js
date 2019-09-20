@@ -219,7 +219,7 @@ function abreGraficos(ponto, data){
 	
 	var valoresX = retornaValoresDiaDeSemana(limitesLoop[0], limitesLoop[1]);
 	var valoresY = retornaValoresDiaDeSemanaPorHora(limitesLoop[0], limitesLoop[1], hora);
-	
+
 	var consumoY = [];
 	var totalConsumo = 0;
 

@@ -80,6 +80,28 @@ function ajustePosicaoHeatmapSerie4(valor) {
   return valor;
 }
 
+function retornaInicioSemanaHeatmapLarge(pontoCelula, diaSemanaCelula){
+	var diff = 24;
+	
+	switch (diaSemanaCelula) {
+		case 0:
+			return pontoCelula - (diff * 6); 
+		case 1:
+			return pontoCelula;
+		case 2:
+			return pontoCelula - (diff * 1);
+		case 3:
+			return pontoCelula - (diff * 2); 
+		case 4:
+			return pontoCelula - (diff * 3); 
+		case 5:
+			return pontoCelula - (diff * 4);
+		case 6:
+			return pontoCelula - (diff * 5);
+	}
+}
+	
+
 function retornaDiaDaSemana(diaUTC) {
   var weekday = [];
   weekday[0] = "Sunday";

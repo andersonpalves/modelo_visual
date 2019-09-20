@@ -24,6 +24,7 @@ var ELETRICIDADE = 1,
     ELETRICIDADE_TEXTO = "Eletricidade",
     GAS_TEXTO = "Gas";
 var anoComboSelecionado = $("#ano").val();
+var pontoHeatmapLarge = 0;
 
 $(function() {
     $('#rangeValuesDense').change(function() {
@@ -198,6 +199,8 @@ function abreDados(ano, lugar) {
             series: {
                 events: {
                     click: function(e) {
+						pontoHeatmapLarge = e;
+						
                         if ($("#comparison").is(':checked')) {
                             mesSelected = setZero(new Date(e.point.x).getMonth() + 1);
                             weekSelected = getWeekNumber(new Date(parseInt(e.point.x)));
@@ -207,7 +210,7 @@ function abreDados(ano, lugar) {
                             
                             $("#heatmapComparisonModal").modal('show');
                         } else {
-							var pontoSelecionado = e.point.x;							
+							var pontoSelecionado = e.point.x;				
                             var retorno = getWeekNumber(new Date(parseInt(pontoSelecionado)));
                             lista_itens = [];
 
