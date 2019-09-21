@@ -34,7 +34,7 @@ $("#modal-heatmap-daily").click(function(e){
 });
 
 $("#modal-heatmap-hourly").click(function(e){
-  openDialogHourly();
+  openDialogHourly(false, null, null);
 });
 
 function openDialogMonthly() {
@@ -56,54 +56,57 @@ function openDialogMonthly() {
 }
 
 function openDialogWeekly() {
-  var listaDados = [];
-  var lista_heatmap_dialog = [];
+	var listaDados = [];
+	var lista_heatmap_dialog = [];
 
-  $.post( "datas_semanais.php", { ano: weekSelected[0], semana: weekSelected[1] }, function( data ) {
-    lista_dias=[];
+	$.post( "datas_semanais.php", { ano: weekSelected[0], semana: weekSelected[1] }, function( data ) {
+		lista_dias=[];
 
-    $.each(data, function (key, val) {
-      lista_dias.push(val);
-      lista_heatmap_dialog.push(getLoadDatas(val));
-    });
+		$.each(data, function (key, val) {
+		  lista_dias.push(val);
+		  lista_heatmap_dialog.push(getLoadDatas(val));
+		});
 
-    for(var i=0; i<=6; i++){
-      for(var j=0; j<=23; j++){
-        var item = [];
-        var valor = 0;
+		for(var i=0; i<=6; i++){
+		  for(var j=0; j<=23; j++){
+			var item = [];
+			var valor = 0;
 
-        if (typeof lista_heatmap_dialog[i][j] === 'undefined') {
-            valor = null
-        }
-        else {
-            valor = lista_heatmap_dialog[i][j][2];
-        }
+			if (typeof lista_heatmap_dialog[i][j] === 'undefined') {
+				valor = null
+			}
+			else {
+				valor = lista_heatmap_dialog[i][j][2];
+			}
 
-        if (valor != null) {
-            valor = parseInt(valor);
-        }
+			if (valor != null) {
+				valor = parseInt(valor);
+			}
 
-        item.push(i, j, valor);
-        listaDados.push(item);
-      }
-    }
+			item.push(i, j, valor);
+			listaDados.push(item);
+		  }
+		}
 
-    var idChart = 'idDialog_'+ modalNumber;
-    var title = 'Week View - Week ' + weekSelected[1] + ' - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-    var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425, 'dialog-blue')
-    var chartWeek = createDialogWeek(idChart, mesSelected, weekSelected[1], listaDados);
+		var idChart = 'idDialog_'+ modalNumber;
+		var title = 'Week View - Week ' + weekSelected[1] + ' - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
+		var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425, 'dialog-blue')
+		var chartWeek = createDialogWeek(idChart, mesSelected, weekSelected[1], listaDados);
 
-    carregaHeatmap(chartWeek, listaDados, maxDenseDisplay, true);
+		carregaHeatmap(chartWeek, listaDados, maxDenseDisplay, true);
 
-    Highcharts.chart(chartWeek);
-    modalNumber++;
+		Highcharts.chart(chartWeek);
+		modalNumber++;
 
-  }, "json");
+	}, "json");
 }
 
 function openDialogDaily() {
   var valuesDay = getLoadDatas(dateSelected);
   var idChart = 'idDialog_'+ modalNumber;
+  var data = dateSelected.split('-');
+  mesSelected = data[1];
+  
   var title = 'Day View - ' + daySelected + '/' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
   var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 470, 370, 'dialog-green');
   var chartWeek = createDialogDaily(idChart, mesSelected, $("#ano").val(), valuesDay);
@@ -112,11 +115,12 @@ function openDialogDaily() {
   modalNumber++;
 }
 
-function openDialogHourly() {
+function openDialogHourly(method, chartClicado, evento) {
   var idChart = 'idDialog_'+ modalNumber;
-  var title = 'Hour View - ' + daySelected + '/' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
+  
+  var title = 'Hour View - ' + hourSelected + 'H - ' +daySelected + '/' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
   var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 470, 370, 'dialog-yellow');
-  var chartWeek = createDialogHourly(idChart, mesSelected, $("#ano").val(), hourSelected);
+  var chartWeek = createDialogHourly(idChart, mesSelected, $("#ano").val(), hourSelected, method, chartClicado, evento);
 
   Highcharts.chart(chartWeek);
   modalNumber++;
@@ -231,6 +235,21 @@ function createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados){
           },
           turboThreshold: Number.MAX_VALUE
       }],
+	  
+	  plotOptions: {
+		series: {
+			events: {
+				click: function (e) {
+					var pontoSelecionado = e.point.x; 
+					weekSelected = getWeekNumber(new Date(parseInt(e.point.x)));
+					if (new Date(pontoSelecionado).getUTCDay() === 1) {
+						weekSelected[1] += 1;
+					}
+					openDialogWeekly();
+				}
+			}
+		}
+	  },
      
       navigation: {
           buttonOptions: {
@@ -380,7 +399,30 @@ function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
             fillColor: '#B70B2C'
           },
           visible: false
-        }],	
+        }],
+	plotOptions: {
+		series: {
+			events: {
+				click: function (e) {
+					var data = e.point.series.xAxis.categories[e.point.options.x];
+					var res = data.split("<br><b>", 2);
+					var dataSelecionada = res[1].split(".");
+					
+					var mes = dataSelecionada[1];
+					var dia = dataSelecionada[0];
+					var ano = $("#ano").val();
+					
+					daySelected = dia;
+					dateSelected =  ano + '-' + mes + '-' + dia;
+					hourSelected = e.point.y;
+					mesSelected = mes;
+
+					openDialogDaily();
+					openDialogHourly(true, idChart, e);
+				}
+			}
+		}
+	},
     tooltip: {
       formatter: function () {
         var valor = this.series.xAxis.categories[this.point.x];
@@ -420,13 +462,12 @@ function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
   }
 }
 
-function createDialogDaily(idChart, mes, ano ,listaDadosConsumo){
-  var limitesLoop = retornaInicioPorMes(mes);
+function createDialogDaily(idChart, mes, ano, listaDadosConsumo){
+	var limitesLoop = retornaInicioPorMes(mes);
 	var valoresDias = retornaValoresDiaDeSemana(limitesLoop[0], limitesLoop[1]);
-  var arrayValoresConsumo = [], arrayValoresConsumoMinimo = [], arrayValoresConsumoMedio = [], 
-      arrayValoresConsumoMaximo = [], arrayValoresConsumoMediana= [];
-  var arrayConsumo = [];
-  var totalConsumo = 0;
+	var arrayValoresConsumo = [], arrayValoresConsumoMinimo = [], arrayValoresConsumoMedio = [], arrayValoresConsumoMaximo = [], arrayValoresConsumoMediana= [];
+	var arrayConsumo = [];
+	var totalConsumo = 0;
 
   for(var i=0; i<=23; i++){
     var consumo = listaDadosConsumo[i];
@@ -623,7 +664,8 @@ function createDialogDaily(idChart, mes, ano ,listaDadosConsumo){
 	}
 }
 
-function createDialogHourly(idChart, mes, ano, horaSelecionada){
+function createDialogHourly(idChart, mes, ano, horaSelecionada, metodo, chartClicado, evento){
+	
 	var arrayValoresConsumo = [], arrayValoresConsumoMinimo = [], arrayValoresConsumoMedio = [], 
       arrayValoresConsumoMaximo = [], arrayValoresConsumoMediana = [];
 
@@ -632,13 +674,32 @@ function createDialogHourly(idChart, mes, ano, horaSelecionada){
 	var arrayValores = [];
 	var arrayValoresConsumo = [];
 	var totalConsumo = 0;
-	var celulaSelecionada = heatmap_large.series[0].data[pontoHeatmapLarge.point.index];
-	var diaSemanaCelula = new Date(celulaSelecionada[0]).getUTCDay();
-	var pontoInicioSemana = retornaInicioSemanaHeatmapLarge(pontoHeatmapLarge.point.index, diaSemanaCelula);
+	var celulaSelecionada;
+
+	if (metodo == false) {
+		celulaSelecionada = heatmap_large.series[0].data[pontoHeatmapLarge.point.index];
+		var diaSemanaCelula = new Date(celulaSelecionada[0]).getUTCDay();
+		var pontoInicioSemana = retornaInicioSemanaHeatmapLarge(pontoHeatmapLarge.point.index, diaSemanaCelula);
+	}
+	else {
+		var chartOrigem = $("#"+chartClicado).highcharts();
+		celulaSelecionada = chartOrigem.series[0];
+	}
 
 	for(var i=0; i<=6; i++){
 		var contador = i + 1;
-		var consumo	= heatmap_large.series[0].data[(i*24)+pontoInicioSemana][2];
+		var consumo = 0;
+
+		if (metodo == false) {
+			consumo	= heatmap_large.series[0].data[(i*24)+pontoInicioSemana][2];
+		}
+		else{
+			console.log('celulaSelecionada', celulaSelecionada.data)
+			//console.log('evento.point.y', evento.point.y)
+			consumo = celulaSelecionada.data[(i*24)+evento.point.y].value;
+			console.log('consumo', consumo)
+		}
+		
 		arrayValores.push(consumo);
 		totalConsumo += consumo;
 

@@ -175,6 +175,10 @@ $(function() {
                             daySelected = new Date(e.point.date).getDate() + 1;
                             dateSelected = $("#ano").val() + '-' + mesSelected + '-' + setZero(daySelected);
 
+							if (new Date(e.point.date).getUTCDay() === 1) {
+								weekSelected[1] += 1;
+							}
+
                             $("#calendarComparisonModal").modal('show');
                         } else {
                             var retorno = getWeekNumber(new Date(parseInt(e.point.date)));

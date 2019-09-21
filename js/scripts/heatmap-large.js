@@ -200,17 +200,24 @@ function abreDados(ano, lugar) {
                 events: {
                     click: function(e) {
 						pontoHeatmapLarge = e;
+						var pontoSelecionado = e.point.x;
 						
                         if ($("#comparison").is(':checked')) {
-                            mesSelected = setZero(new Date(e.point.x).getMonth() + 1);
-                            weekSelected = getWeekNumber(new Date(parseInt(e.point.x)));
-                            daySelected = new Date(e.point.x).getDate() + 1;
+                            mesSelected = setZero(new Date(pontoSelecionado).getMonth() + 1);
+                            weekSelected = getWeekNumber(new Date(parseInt(pontoSelecionado)));
+                            daySelected = new Date(pontoSelecionado).getDate() + 1;
                             dateSelected = $("#ano").val() + '-' + mesSelected + '-' + setZero(daySelected);
                             hourSelected = e.point.y;
-                            
+							
+							console.log('pontoSelecionado', pontoSelecionado, 'mesSelected', mesSelected, 'daySelected', daySelected, 'dateSelected', dateSelected, 'hourSelected', hourSelected);
+					
+							
+							if (new Date(pontoSelecionado).getUTCDay() === 1) {
+								weekSelected[1] += 1;
+							}
+							
                             $("#heatmapComparisonModal").modal('show');
-                        } else {
-							var pontoSelecionado = e.point.x;				
+                        } else {	
                             var retorno = getWeekNumber(new Date(parseInt(pontoSelecionado)));
                             lista_itens = [];
 
