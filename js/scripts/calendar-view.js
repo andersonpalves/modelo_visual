@@ -170,9 +170,12 @@ $(function() {
                 events: {
                     click: function(e) {
                         if ($("#comparison").is(':checked')) {
-                            mesSelected = setZero(new Date(e.point.date).getMonth() + 1);
+							daySelected = new Date(e.point.date + (24 * 60 * 60 * 1000));
+							month = daySelected.getMonth()
+							daySelected = daySelected.getDate();
+                            mesSelected = setZero(month+1);
                             weekSelected = getWeekNumber(new Date(parseInt(e.point.date)));
-                            daySelected = new Date(e.point.date).getDate() + 1;
+                            
                             dateSelected = $("#ano").val() + '-' + mesSelected + '-' + setZero(daySelected);
 
 							if (new Date(e.point.date).getUTCDay() === 1) {

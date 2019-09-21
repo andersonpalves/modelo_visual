@@ -132,7 +132,7 @@ function retornaNomePorMes(mes) {
       case "07":
           return "Jul";
       case "08":
-          return "Agu";
+          return "Aug";
       case "09":
           return "Set";
       case "10":

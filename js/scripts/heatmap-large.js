@@ -203,15 +203,18 @@ function abreDados(ano, lugar) {
 						var pontoSelecionado = e.point.x;
 						
                         if ($("#comparison").is(':checked')) {
-                            mesSelected = setZero(new Date(pontoSelecionado).getMonth() + 1);
+							daySelected = new Date(pontoSelecionado + (24 * 60 * 60 * 1000));
+							month = daySelected.getMonth()
+							daySelected = daySelected.getDate();
+                            mesSelected = setZero(month+1);
                             weekSelected = getWeekNumber(new Date(parseInt(pontoSelecionado)));
-                            daySelected = new Date(pontoSelecionado).getDate() + 1;
+                            
                             dateSelected = $("#ano").val() + '-' + mesSelected + '-' + setZero(daySelected);
+
+							
+							
                             hourSelected = e.point.y;
-							
-							console.log('pontoSelecionado', pontoSelecionado, 'mesSelected', mesSelected, 'daySelected', daySelected, 'dateSelected', dateSelected, 'hourSelected', hourSelected);
-					
-							
+
 							if (new Date(pontoSelecionado).getUTCDay() === 1) {
 								weekSelected[1] += 1;
 							}

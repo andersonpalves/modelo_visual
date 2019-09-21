@@ -102,6 +102,7 @@ function openDialogWeekly() {
 }
 
 function openDialogDaily() {
+	console.log('dateSelected', dateSelected)
   var valuesDay = getLoadDatas(dateSelected);
   var idChart = 'idDialog_'+ modalNumber;
   var data = dateSelected.split('-');
@@ -463,6 +464,7 @@ function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
 }
 
 function createDialogDaily(idChart, mes, ano, listaDadosConsumo){
+	console.log('listaDadosConsumo', listaDadosConsumo)
 	var limitesLoop = retornaInicioPorMes(mes);
 	var valoresDias = retornaValoresDiaDeSemana(limitesLoop[0], limitesLoop[1]);
 	var arrayValoresConsumo = [], arrayValoresConsumoMinimo = [], arrayValoresConsumoMedio = [], arrayValoresConsumoMaximo = [], arrayValoresConsumoMediana= [];
@@ -694,10 +696,7 @@ function createDialogHourly(idChart, mes, ano, horaSelecionada, metodo, chartCli
 			consumo	= heatmap_large.series[0].data[(i*24)+pontoInicioSemana][2];
 		}
 		else{
-			console.log('celulaSelecionada', celulaSelecionada.data)
-			//console.log('evento.point.y', evento.point.y)
 			consumo = celulaSelecionada.data[(i*24)+evento.point.y].value;
-			console.log('consumo', consumo)
 		}
 		
 		arrayValores.push(consumo);
