@@ -51,6 +51,9 @@ def login():
     df = pd.DataFrame()
     df.insert(loc=0, column='index', value=meses_array)
     df.insert(loc=1, column='values', value=valores)
+    df_rl = pd.DataFrame()
+    df_rl.insert(loc=0, column='index', value=meses_array)
+    df_rl.insert(loc=1, column='values', value=valores)
 
     start = datetime.datetime.strptime(ano_inicio_parameter, '%Y-%m-%d')
     date_list = [start + relativedelta(months=x) for x in range(0, tamanho_lista)]
@@ -174,14 +177,16 @@ def login():
         dados_prophet.append(int(lista_prophet_ano_seguinte.get(indice)))
 	
 	# Regressao linear
-    #modelo_rl = LinearRegression(normalize=True)
-    #X = dfp[0:qtde_meses_predicao]
-    #y = dfp[qtde_meses_predicao:]
-    #X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, random_state=1, test_size=0.2)
-    #modelo_rl.fit(X_treino,y_treino)
-    #dados_rl = modelo_rl.predict(X_teste)[:12]
+    modelo_rl = LinearRegression(normalize=True)
+    print('df_rl', df_rl.columns)
+    X = dfp[0:qtde_meses_predicao]
+    y = dfp[qtde_meses_predicao:]
+    X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, random_state=1, test_size=0.2)
+    print('x', X_treino, 'y', y_treino)
+    modelo_rl.fit(X_treino,y_treino)
+    dados_rl = modelo_rl.predict(X_teste)[:12]
 
-    #print('dados_rl', dados_rl)
+    print('dados_rl', dados_rl)
     return jsonify(
         sa_predict=dados_predicao_sarima,
         sa=dados_sarima,
