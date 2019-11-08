@@ -178,15 +178,14 @@ def login():
 	
 	# Regressao linear
     modelo_rl = LinearRegression(normalize=True)
-    print('df_rl', df_rl.columns)
-    X = dfp[0:qtde_meses_predicao]
-    y = dfp[qtde_meses_predicao:]
+    X = dfp.index.factorize()[0].reshape(-1,1)
+    y = dfp.y
     X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, random_state=1, test_size=0.2)
-    print('x', X_treino, 'y', y_treino)
+    print('X_treino', X_treino, 'y_treino', y_treino)
     modelo_rl.fit(X_treino,y_treino)
     dados_rl = modelo_rl.predict(X_teste)[:12]
 
-    print('dados_rl', dados_rl)
+    print('dados_rl =>', dados_rl)
     return jsonify(
         sa_predict=dados_predicao_sarima,
         sa=dados_sarima,
