@@ -27,6 +27,8 @@ var anoComboSelecionado = $("#ano").val();
 var pontoHeatmapLarge = 0;
 
 $(function() {
+	$("#meteorologia").show();
+	
     $('#rangeValuesDense').change(function() {
         if (tamanhoX == 0) {
             tamanhoX = chart_heatmap_large.chartWidth;
@@ -72,10 +74,6 @@ $(function() {
 function abreDadosJson() {
     lista_dados_semanais = [];
     lista_dados_consumo = [];
-
-    if ($("#lugar").val() == "teste") {
-        $("#ano").val(2016);
-    }
 
     abreDados($("#ano").val(), $("#lugar").val());
 }
@@ -219,6 +217,7 @@ function abreDados(ano, lugar) {
 								weekSelected[1] += 1;
 							}
 							
+							$("#origemDialog").val("consumo");
                             $("#heatmapComparisonModal").modal('show');
                         } else {	
                             var retorno = getWeekNumber(new Date(parseInt(pontoSelecionado)));
@@ -431,7 +430,7 @@ function abreDados(ano, lugar) {
                 tracoHtml = "- ";
             }
 
-            $("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + "</br>");
+            $("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + " Megawatts</br>");
             $("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
             $("#rangeValuesDense").attr("max", parseInt(maxDenseDisplay));
 

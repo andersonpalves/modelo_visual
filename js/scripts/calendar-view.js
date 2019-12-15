@@ -46,10 +46,12 @@ var weekSelected = [];
 var daySelected = 0;
 var dateSelected = '';
 var hourSelected = 0;
+var energiaSelecionada = '';
 
 $(function() {
     $("#calendarTexto").html("Calendar View - Energy selected: " + $('#energia option:selected').text());
     $("#boxplotTexto").html("Monthly Consumption - Energy selected: " + $('#energia option:selected').text());
+	
     calendar_view = {
         chart: {
             renderTo: 'calendar_view',
@@ -182,6 +184,7 @@ $(function() {
 								weekSelected[1] += 1;
 							}
 
+							$("#origemDialog").val("consumo");
                             $("#calendarComparisonModal").modal('show');
                         } else {
                             var retorno = getWeekNumber(new Date(parseInt(e.point.date)));
@@ -342,6 +345,7 @@ $(function() {
     atualizaBoxPlot();
 });
 
+
 function rolarTela(aid) {
     var aTag = $("a[name='" + aid + "']");
     $('html,body').animate({
@@ -365,20 +369,19 @@ $("#lugar").change(function() {
     removeTodosValores();
     carregaDadosCalendario($("#energia").val());
     atualizaBoxPlot();
+	verificaComboDadosMeteriologicos();
 });
 
 $("#ano").change(function() {
     $('#denseRange').html("<b>0<b>");
     $("#energia").val('Média');
     $("#rangeValuesDense").attr("max", 0);
-
-    
+	
     abreDadosJson();
     removeTodosValores();
     carregaDadosCalendario($("#energia").val());
     atualizaBoxPlot();
-
-    $("#energia").val(energiaSelecionada);
+	verificaComboDadosMeteriologicos();
 });
 
 $("#energia").change(function() {
@@ -388,7 +391,7 @@ $("#energia").change(function() {
     removeTodosValores();
     carregaDadosCalendario($("#energia").val());
     atualizaBoxPlot();
-    ;
+	verificaComboDadosMeteriologicos();
 });
 
 function loadValuesFromFile(energiaSelecionada) {
@@ -416,6 +419,7 @@ function loadValuesFromFile(energiaSelecionada) {
                     if (typeof energiaSelecionada === "undefined" ) {
                         energiaSelecionada = $("#energia").val()
                     }
+					
                     $("#energia").val(energiaSelecionada);
                     var data = valorJson[0];
                     var diaSplit = data.split("-");

@@ -44,6 +44,28 @@ $(document).ready(function () {
         $(this).closest('.panel').toggleClass('panel-fullscreen');		
     });
 	
+	$("#panel-fullscreen-dense-display-meteriologico").click(function (e) {
+        e.preventDefault();
+        
+        var $this = $(this);
+    
+        if ($this.children('i').hasClass('glyphicon-resize-full'))
+        {
+            $this.children('i').removeClass('glyphicon-resize-full');
+            $this.children('i').addClass('glyphicon-resize-small');
+            chart_heatmap_meteriologicos.setSize(largura_dense, altura_dense + 1);
+            zoomAberto = true;
+        }
+        else if ($this.children('i').hasClass('glyphicon-resize-small'))
+        {
+            $this.children('i').removeClass('glyphicon-resize-small');
+            $this.children('i').addClass('glyphicon-resize-full');
+            chart_heatmap_meteriologicos.setSize(largura_dense, altura_dense);
+            zoomAberto = false;
+        }
+        $(this).closest('.panel').toggleClass('panel-fullscreen');		
+    });
+	
 	$("#panel-fullscreen-heatmap").click(function (e) {
         e.preventDefault();
         

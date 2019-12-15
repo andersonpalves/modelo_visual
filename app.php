@@ -25,9 +25,9 @@
               <span class="texto">Year: </span>
               <select id="ano">
                 <option value="2004">2004</option>
-                <option value="2011" selected>2011</option>
+                <option value="2011">2011</option>
                 <option value="2012">2012</option>
-                <option value="2013">2013</option>
+                <option value="2013" selected>2013</option>
                 <option value="2014">2014</option>
                 <option value="2015">2015</option>
                 <option value="2016">2016</option>
@@ -97,7 +97,9 @@
             </div>
           </div>
         </div>
-
+		
+		<input type="hidden" value="" id="origemDialog">
+		<input type="hidden" value="" id="tipoMeteriologia">
         <div class="col-sm-12 chart-container">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -107,7 +109,7 @@
               </ul>
             </div>
             <div class="panel-body">
-							<div id="calendar_view" style="height: 500px; margin: 0 auto"></div>
+				<div id="calendar_view" style="height: 500px; margin: 0 auto"></div>
             </div>
           </div>
         </div>
@@ -119,7 +121,56 @@
             <div class="panel-heading">
               <h2 class="panel-title"><span id="denseTexto"></span></h2>
               <ul class="list-inline panel-actions">
-                <li><a href="#" id="panel-fullscreen-dense-display" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
+                <li>
+					<select id="dadosMeteorologicos">
+						<option value="-" selected>Select option</option>
+						<option value="humidity">Humidity</option>
+						<option value="pressure">Pressure</option>
+						<option value="temperature">Temperature</option>
+						<option value="wind">Wind</option>
+					</select>
+					<select id="cidadeMeteorologicos">
+						<option value="-" selected>Select city</option>
+						<option value="0">Vancouver</option>
+						<option value="1">Portland</option>
+						<option value="2">San Francisco</option>
+						<option value="3">Seattle</option>
+						<option value="4">Los Angeles</option>
+						<option value="5">San Diego</option>
+						<option value="6">Las Vegas</option>
+						<option value="7">Phoenix</option>
+						<option value="8">Albuquerque</option>
+						<option value="9">Denver</option>
+						<option value="10">San Antonio</option>
+						<option value="11">Dallas</option>
+						<option value="12">Houston</option>
+						<option value="13">Kansas City</option>
+						<option value="14">Minneapolis</option>
+						<option value="15">Saint Louis</option>
+						<option value="16">Chicago</option>
+						<option value="17">Nashville</option>
+						<option value="18">Indianapolis</option>
+						<option value="19">Atlanta</option>
+						<option value="20">Detroit</option>
+						<option value="21">Jacksonville</option>
+						<option value="22">Charlotte</option>
+						<option value="23">Miami</option>
+						<option value="24">Pittsburgh</option>
+						<option value="25">Toronto</option>
+						<option value="26">Philadelphia</option>
+						<option value="27">New York</option>
+						<option value="28">Montreal</option>
+						<option value="29">Boston</option>
+						<option value="30">Beersheba</option>
+						<option value="30">Tel Aviv District</option>
+						<option value="31">Eilat</option>
+						<option value="32">Haifa</option>
+						<option value="33">Nahariyya</option>
+						<option value="34">Jerusalem</option>
+					</select>
+					<button id="carregarDadosMeteorologicos" class="btn btn-primary btn-sm">Load data</button>
+					<a href="#" id="panel-fullscreen-dense-display" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a>
+				</li>
               </ul>
             </div>
             <div class="panel-body">
@@ -128,6 +179,22 @@
                 <input id="rangeValuesDense" type="range" value="0" name="points" min="0">
                 <span>Values equal or grater than: </span><span id="denseRange"><b>0</b></span>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+	  
+	  <div class="row" id="meteorologia"> <a name="link_meteorologia"></a>
+        <div class="col-sm-12 chart-container">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title"><span id="denseMeteriologicoTexto"></span></h2>
+              <ul class="list-inline panel-actions">
+                <li><a href="#" id="panel-fullscreen-dense-display-meteriologico" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a></li>
+              </ul>
+            </div>
+            <div class="panel-body">
+              <div id="ht_large_dados_meteriologicos"></div>
             </div>
           </div>
         </div>
@@ -291,9 +358,10 @@
     <script src="js/highchart/jquery-ui.js"></script>
     <script src="js/scripts/funcoes.js"></script>
     <script src="js/scripts/historico.js"></script>
-		<script src="js/scripts/historico-geral.js"></script>
-		<script src="js/scripts/calendar-view.js"></script>
+	<script src="js/scripts/historico-geral.js"></script>
+	<script src="js/scripts/calendar-view.js"></script>
     <script src="js/scripts/heatmap-large.js"></script>
+	<script src="js/scripts/dados-meteriologicos.js"></script>
     <script src="js/scripts/heatmap-color.js"></script>
     <script src="js/scripts/panel-full.js"></script>
     <script src="js/scripts/config.js"></script>

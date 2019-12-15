@@ -38,21 +38,32 @@ $("#modal-heatmap-hourly").click(function(e){
 });
 
 function openDialogMonthly() {
-  var dados = getLoadDatasByMonth(mesSelected);
-  var listaDados = []
-  
-  for (var i=0; i<dados.length; i++) {
-      var valores = [dados[i][1], dados[i][2], dados[i][3]];
-      listaDados.push(valores);
-  }
+	var dados = getLoadDatasByMonth(mesSelected);
+	var listaDados = []
 
-  var idChart = 'idDialog_'+ modalNumber;
-  var title = 'Monthly View - ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val();
-  var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425, 'dialog-red')
-  var chartMonth = createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados);
-  
-  Highcharts.chart(chartMonth);
-  modalNumber++;
+	for (var i=0; i<dados.length; i++) {
+	  var valores = [dados[i][1], dados[i][2], dados[i][3]];
+	  listaDados.push(valores);
+	}
+	
+	var max = 0;
+	var idChart = 'idDialog_'+ modalNumber;
+	var title = '';
+
+	if ($("#origemDialog").val() == "consumo" ) {
+		max = maxDenseDisplay;
+		title = 'Monthly View ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val() + " - Max Cons: " + max + 'MW';
+	}
+	else {
+		max = maxDenseDisplayDadosMeteriologicos;
+		title = 'Monthly View ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val() + " - " + primeiraLetraGrande($("#tipoMeteriologia").val()) + ' - Max Cons: ' + max + unidades_medida[$("#tipoMeteriologia").val()];
+	}
+
+	var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425, 'dialog-red')
+	var chartMonth = createDialogMonthly(idChart, mesSelected, max, listaDados);
+
+	Highcharts.chart(chartMonth);
+	modalNumber++;
 }
 
 function openDialogWeekly() {

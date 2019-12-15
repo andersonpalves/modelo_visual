@@ -23,14 +23,25 @@ function getLoadDatas(code) {
 }
 
 function getLoadDatasByMonth(month) {
-
-  return lista_global_mensal.filter(
-      function(lista_global_mensal) {
-          if (lista_global_mensal[0] == month) {
-              return lista_global_mensal;
-          }
-      }
-  );
+	
+	if ($("#origemDialog").val() == "consumo" ) {
+		return lista_global_mensal.filter(
+		  function(lista_global_mensal) {
+			  if (lista_global_mensal[0] == month) {
+				  return lista_global_mensal;
+			  }
+		  }
+		);
+	}
+	else {
+		return lista_global_mensal_meteriologicos.filter(
+		  function(lista_global_mensal_meteriologicos) {
+			  if (lista_global_mensal_meteriologicos[0] == month) {
+				  return lista_global_mensal_meteriologicos;
+			  }
+		  }
+		);
+	}
 }
 
 function getEstadoInicial(data, hora) {
@@ -386,4 +397,8 @@ function setZero(mes) {
     mes = '0' + mes;
   }
   return mes;
+}
+
+function primeiraLetraGrande(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
