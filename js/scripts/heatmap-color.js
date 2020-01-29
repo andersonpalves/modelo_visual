@@ -216,6 +216,7 @@ function abreGraficos(ponto, data){
 	var mes = dataSelecionada[1];
 	
 	var limitesLoop = retornaInicioPorMes(mes);
+	console.log('limitesLoop', limitesLoop)
 	
 	var valoresX = retornaValoresDiaDeSemana(limitesLoop[0], limitesLoop[1]);
 	var valoresY = retornaValoresDiaDeSemanaPorHora(limitesLoop[0], limitesLoop[1], hora);
@@ -398,8 +399,7 @@ function retornaValoresDiaDeSemanaPorHora(diaInicio, diasMes, hora) {
 
 	for(i=diaInicio; i<=diasMes; i++){	
 		var diaUTC = heatmap_large.series[0].data[(i*24)][0];
-		var horaDoDia = heatmap_large.series[0].data[(i*24)][1];
-		var consumo	= heatmap_large.series[0].data[(i*24+hora)][2];
+		var consumo	= heatmap_large.series[0].data[(i*24+hora)-1][2];
 		var valores = [];
 		valores.push(consumo);
 		

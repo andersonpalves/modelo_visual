@@ -51,16 +51,20 @@ function openDialogMonthly() {
 	var title = '';
 
 	if ($("#origemDialog").val() == "consumo" ) {
+		minimo = 0;
+		console.log("minimo aki",minimo);
 		max = maxDenseDisplay;
 		title = 'Monthly View ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val() + " - Max Cons: " + max + 'MW';
 	}
 	else {
+		minimo = minDenseDisplayDadosMeteriologicos;
+		console.log("minimo",minimo);
 		max = maxDenseDisplayDadosMeteriologicos;
 		title = 'Monthly View ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val() + " - " + primeiraLetraGrande($("#tipoMeteriologia").val()) + ' - Max Cons: ' + max + unidades_medida[$("#tipoMeteriologia").val()];
 	}
 
-	var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 425, 425, 'dialog-red')
-	var chartMonth = createDialogMonthly(idChart, mesSelected, max, listaDados);
+	var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 430, 470, 'dialog-red')
+	var chartMonth = createDialogMonthly(idChart, mesSelected, minimo, max, listaDados);
 
 	Highcharts.chart(chartMonth);
 	modalNumber++;
@@ -156,7 +160,7 @@ var createNewDialog = (title, body, height, width, color) => {
   return $newDialog;
 };
 
-function createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados){
+function createDialogMonthly(idChart, mesSelected, minimo, maxDenseDisplay, listaDados){
   return {
       chart: {
           renderTo: idChart,
@@ -226,7 +230,7 @@ function createDialogMonthly(idChart, mesSelected, maxDenseDisplay, listaDados){
               [0.9, '#c4463a'],
               [1, '#c4463a']
           ],
-          min: 0,
+          min: minimo,
           max: maxDenseDisplay,
           startOnTick: false,
           endOnTick: false,

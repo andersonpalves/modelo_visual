@@ -175,17 +175,7 @@ def login():
 
     for indice in range(tamanho_lista, tamanho_lista + 12):
         dados_prophet.append(int(lista_prophet_ano_seguinte.get(indice)))
-	
-	# Regressao linear
-    modelo_rl = LinearRegression(normalize=True)
-    X = dfp.index.factorize()[0].reshape(-1,1)
-    y = dfp.y
-    X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, random_state=1, test_size=0.2)
-    print('X_treino', X_treino, 'y_treino', y_treino)
-    modelo_rl.fit(X_treino,y_treino)
-    dados_rl = modelo_rl.predict(X_teste)[:12]
 
-    print('dados_rl =>', dados_rl)
     return jsonify(
         sa_predict=dados_predicao_sarima,
         sa=dados_sarima,

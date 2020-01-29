@@ -48,8 +48,6 @@ function abreDadosMeteriologicos() {
 	var opcao = $("#dadosMeteorologicos").val();
 	var cidade = $("#cidadeMeteorologicos").val();
 	var file = anoSelecionado + "_" + opcao + ".json";
-	
-	console.log('file carregado', file)
 
     heatmap_meteriologico = {
         chart: {
@@ -191,6 +189,7 @@ function abreDadosMeteriologicos() {
     $.ajax({
         url: "datasets/" + file,
         success: function(data) {
+			minDenseDisplayDadosMeteriologicos = 0;
             maxDenseDisplayDadosMeteriologicos = 0;
 
             lista_datas_meteriologicos = [];
@@ -202,6 +201,10 @@ function abreDadosMeteriologicos() {
 					var valor = val[2][cidade];
 					
 					//console.log("key", key, "valor", valor);
+					
+					if (valor < minDenseDisplayDadosMeteriologicos) {
+						minDenseDisplayDadosMeteriologicos = valor;
+					}
 
 					if (valor > maxDenseDisplayDadosMeteriologicos) {
 						maxDenseDisplayDadosMeteriologicos = valor;
@@ -222,6 +225,7 @@ function abreDadosMeteriologicos() {
             });
 			
 			heatmap_meteriologico.series[0].data = lista_global_meteriologicos;
+			heatmap_meteriologico.colorAxis.min = minDenseDisplayDadosMeteriologicos;
             heatmap_meteriologico.colorAxis.max = maxDenseDisplayDadosMeteriologicos;
 
             chart_heatmap_meteriologicos = new Highcharts.Chart(heatmap_meteriologico);

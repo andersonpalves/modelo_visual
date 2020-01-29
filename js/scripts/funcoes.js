@@ -226,6 +226,48 @@ function retornaInicioPorMes(mes) {
   }
 }
 
+function retornaInicioPorMes2(mes) {
+  var lista = [];
+  switch (String(mes)) {
+      case "01":
+          lista.push(0, 30);
+          return lista;
+      case "02":
+          lista.push(31, 58);
+          return lista;
+      case "03":
+          lista.push(59, 89);
+          return lista;
+      case "04":
+          lista.push(90, 119);
+          return lista;
+      case "05":
+          lista.push(120, 150);
+          return lista;
+      case "06":
+          lista.push(151, 180);
+          return lista;
+      case "07":
+          lista.push(181, 211);
+          return lista;
+      case "08":
+          lista.push(212, 242);
+          return lista;
+      case "09":
+          lista.push(243, 272);
+          return lista;
+      case "10":
+          lista.push(273, 303);
+          return lista;
+      case "11":
+          lista.push(304, 333);
+          return lista;
+      case "12":
+          lista.push(334, 364);
+          return lista;
+  }
+}
+
 function evitaUndefined(lista, diaDaSemana, hora) {
   if (typeof lista[diaDaSemana] === 'undefined') {
       lista[diaDaSemana] = [];
