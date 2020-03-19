@@ -19,6 +19,7 @@
               <select id="lugar">
                 <option value="restaurante">Restaurant</option>
                 <option value="pjm" selected>PJM</option>
+				<option value="datavis">DataVis</option>
               </select>
             </li>
             <li>
@@ -40,7 +41,7 @@
             <li>
               <span class="texto">Comparison: </span>
               <label class="switch">
-                <input type="checkbox" id="comparison" checked>
+                <input type="checkbox" id="comparison">
                 <span class="slider round"></span>
               </label>
             </li>
@@ -69,13 +70,13 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Select mode visualization</h5>
+                <h5 class="modal-title">Select visualization mode</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
               <div class="modal-footer" align="center">
-                <button id="modal-calendario-monthly" type="button" class="btn btn-danger" data-dismiss="modal">Monthly</button>
-                <button id="modal-calendario-weekly" type="button" class="btn btn-primary" data-dismiss="modal">Weekly</button>
-                <button id="modal-calendario-daily"  type="button" class="btn btn-success" data-dismiss="modal">Daily</button>
+                <button id="modal-calendario-monthly" type="button" class="btn btn-danger" data-dismiss="modal">Month</button>
+                <button id="modal-calendario-weekly" type="button" class="btn btn-primary" data-dismiss="modal">Week</button>
+                <button id="modal-calendario-daily"  type="button" class="btn btn-success" data-dismiss="modal">Day</button>
               </div>
             </div>
           </div>
@@ -85,14 +86,14 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Select mode visualization</h5>
+                <h5 class="modal-title">Select visualization mode</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
               <div class="modal-footer" align="center">
-                <button id="modal-heatmap-monthly" type="button" class="btn btn-danger" data-dismiss="modal">Monthly</button>
-                <button id="modal-heatmap-weekly" type="button" class="btn btn-primary" data-dismiss="modal">Weekly</button>
-                <button id="modal-heatmap-daily"  type="button" class="btn btn-success" data-dismiss="modal">Daily</button>
-                <button id="modal-heatmap-hourly" type="button" class="btn btn-warning" data-dismiss="modal">Hourly</button>
+                <button id="modal-heatmap-monthly" type="button" class="btn btn-danger" data-dismiss="modal">Month</button>
+                <button id="modal-heatmap-weekly" type="button" class="btn btn-primary" data-dismiss="modal">Week</button>
+                <button id="modal-heatmap-daily"  type="button" class="btn btn-success" data-dismiss="modal">Day</button>
+                <button id="modal-heatmap-hourly" type="button" class="btn btn-warning" data-dismiss="modal">Hour</button>
               </div>
             </div>
           </div>

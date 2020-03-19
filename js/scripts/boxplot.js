@@ -126,6 +126,54 @@ function atualizaBoxPlotPorHora(horaSelecionada){
         parseInt(Quartile_75(new Array(Math.min(...lista), Math.max(...lista)))),
         Math.max(...lista)
     ];
+	
+	if (janeiro[2] <= janeiro[1] || janeiro[2] >= janeiro[3]) {
+		janeiro[2] = (janeiro[1] + janeiro[3]) / 2;
+	}
+	
+	if (fevereiro[2] <= fevereiro[1] || fevereiro[2] >= fevereiro[3]) {
+		fevereiro[2] = (fevereiro[1] + fevereiro[3]) / 2;
+	}
+	
+	if (marco[2] <= marco[1] || marco[2] >= marco[3]) {
+		marco[2] = (marco[1] + marco[3]) / 2;
+	}
+	
+	if (abril[2] <= abril[1] || abril[2] >= abril[3]) {
+		abril[2] = (abril[1] + abril[3]) / 2;
+	}
+	
+	if (maio[2] <= maio[1] || maio[2] >= maio[3]) {
+		maio[2] = (maio[1] + maio[3]) / 2;
+	}
+	
+	if (junho[2] <= junho[1] || junho[2] >= junho[3]) {
+		junho[2] = (junho[1] + junho[3]) / 2;
+	}
+	
+	if (julho[2] <= julho[1] || julho[2] >= julho[3]) {
+		julho[2] = (julho[1] + julho[3]) / 2;
+	}
+	
+	if (agosto[2] <= agosto[1] || agosto[2] >= agosto[3]) {
+		agosto[2] = (agosto[1] + agosto[3]) / 2;
+	}
+	
+	if (setembro[2] <= setembro[1] || setembro[2] >= setembro[3]) {
+		setembro[2] = (setembro[1] + setembro[3]) / 2;
+	}
+	
+	if (outubro[2] <= outubro[1] || outubro[2] >= outubro[3]) {
+		outubro[2] = (outubro[1] + outubro[3]) / 2;
+	}
+	
+	if (novembro[2] <= novembro[1] || novembro[2] >= novembro[3]) {
+		novembro[2] = (novembro[1] + novembro[3]) / 2;
+	}
+	
+	if (dezembro[2] <= dezembro[1] || dezembro[2] >= dezembro[3]) {
+		dezembro[2] = (dezembro[1] + dezembro[3]) / 2;
+	}
 
     lista_valores_boxplot.push(janeiro);
     lista_valores_boxplot.push(fevereiro);
@@ -331,6 +379,54 @@ function carregaDadosBoxplot(){
         parseInt(Quartile_75(new Array(Math.min(...lista_dez_boxplot), Math.max(...lista_dez_boxplot)))),
         Math.max(...lista_dez_boxplot)
     ];
+	
+	if (janeiro[2] <= janeiro[1] || janeiro[2] >= janeiro[3]) {
+		janeiro[2] = (janeiro[1] + janeiro[3]) / 2;
+	}
+	
+	if (fevereiro[2] <= fevereiro[1] || fevereiro[2] >= fevereiro[3]) {
+		fevereiro[2] = (fevereiro[1] + fevereiro[3]) / 2;
+	}
+	
+	if (marco[2] <= marco[1] || marco[2] >= marco[3]) {
+		marco[2] = (marco[1] + marco[3]) / 2;
+	}
+	
+	if (abril[2] <= abril[1] || abril[2] >= abril[3]) {
+		abril[2] = (abril[1] + abril[3]) / 2;
+	}
+	
+	if (maio[2] <= maio[1] || maio[2] >= maio[3]) {
+		maio[2] = (maio[1] + maio[3]) / 2;
+	}
+	
+	if (junho[2] <= junho[1] || junho[2] >= junho[3]) {
+		junho[2] = (junho[1] + junho[3]) / 2;
+	}
+	
+	if (julho[2] <= julho[1] || julho[2] >= julho[3]) {
+		julho[2] = (julho[1] + julho[3]) / 2;
+	}
+	
+	if (agosto[2] <= agosto[1] || agosto[2] >= agosto[3]) {
+		agosto[2] = (agosto[1] + agosto[3]) / 2;
+	}
+	
+	if (setembro[2] <= setembro[1] || setembro[2] >= setembro[3]) {
+		setembro[2] = (setembro[1] + setembro[3]) / 2;
+	}
+	
+	if (outubro[2] <= outubro[1] || outubro[2] >= outubro[3]) {
+		outubro[2] = (outubro[1] + outubro[3]) / 2;
+	}
+	
+	if (novembro[2] <= novembro[1] || novembro[2] >= novembro[3]) {
+		novembro[2] = (novembro[1] + novembro[3]) / 2;
+	}
+	
+	if (dezembro[2] <= dezembro[1] || dezembro[2] >= dezembro[3]) {
+		dezembro[2] = (dezembro[1] + dezembro[3]) / 2;
+	}
 
     retorno.push(janeiro);
     retorno.push(fevereiro);

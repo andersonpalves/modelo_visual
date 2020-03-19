@@ -50,11 +50,12 @@ var energiaSelecionada = '';
 
 $(function() {
     $("#calendarTexto").html("Calendar View - Energy selected: " + $('#energia option:selected').text());
-    $("#boxplotTexto").html("Monthly Consumption - Energy selected: " + $('#energia option:selected').text());
+    $("#boxplotTexto").html("Month Consumption - Energy selected: " + $('#energia option:selected').text());
 	
     calendar_view = {
         chart: {
             renderTo: 'calendar_view',
+			zoomType: 'xy',
             type: 'heatmap',
             plotBorderWidth: 0,
             marginTop: 50,
@@ -421,12 +422,14 @@ function loadValuesFromFile(energiaSelecionada) {
                     }
 					
                     $("#energia").val(energiaSelecionada);
+					
                     var data = valorJson[0];
                     var diaSplit = data.split("-");
                     var dia = parseInt(diaSplit[2]);
                     var mes = parseInt(diaSplit[1]);
                     var hora = valorJson[1];
                     var valorHora = 0;
+					
                     if (energiaSelecionada == "Média") {
                         for (var z = 0; z <= valorJson[2].length - 1; z++) {
                             contadorTotal += parseInt(valorJson[2][z]);
@@ -435,7 +438,8 @@ function loadValuesFromFile(energiaSelecionada) {
                         valor = contadorTotal / valorJson[2].length;
                         valorHora = valorHora / valorJson[2].length;
                     } else {
-                        valor = valorJson[2][energiaSelecionada - 1];
+						contadorTotal += parseInt(valorJson[2][energiaSelecionada-1]);
+                        valor = contadorTotal;
                         valorHora = valorJson[2][energiaSelecionada - 1];
                     }
 
@@ -951,8 +955,8 @@ function carregaDadosCalendario(energiaSelecionada) {
 
     largura_calendario = chart_calendar_view.chartWidth;
     altura_calendario = chart_calendar_view.chartHeight;
-    $("#calendarTexto").html("Calendar View - Energy selected: " + $('#energia').val() + " - Max consumption: <b>" + Math.max(...lista_dados_consumo));
-    $("#boxplotTexto").html("Monthly Consumption - Energy selected: <b>" + $('#energia').val() + "</b>");
+    $("#calendarTexto").html("Calendar View - Energy selected: <b>" + $('#energia option:selected').text() + "</b> - Max consumption: <b>" + Math.max(...lista_dados_consumo));
+    $("#boxplotTexto").html("Month Consumption - Energy selected: <b>" + $('#energia option:selected').text() + "</b>");
 }
 
 function salvaHoras(mes, hora, valor) {

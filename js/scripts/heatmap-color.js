@@ -79,7 +79,7 @@ var heatmapcolor = {
 			},
 			{
 				type: 'scatter',
-				name: 'Lowest<br>Consump.<br>Daily',
+				name: 'Lowest<br>Consump.<br>Day',
 				color: '#00008B',
 				data: [],
 				marker: {
@@ -93,7 +93,7 @@ var heatmapcolor = {
 			},
 			{
 				type: 'scatter',
-				name: 'Highest<br>Consump.<br>Daily',
+				name: 'Highest<br>Consump.<br>Day',
 				color: '#CC0000',
 				data: [],
 				marker: {
@@ -216,12 +216,9 @@ function abreGraficos(ponto, data){
 	var mes = dataSelecionada[1];
 	
 	var limitesLoop = retornaInicioPorMes(mes);
-	console.log('limitesLoop', limitesLoop)
 	
 	var valoresX = retornaValoresDiaDeSemana(limitesLoop[0], limitesLoop[1]);
 	var valoresY = retornaValoresDiaDeSemanaPorHora(limitesLoop[0], limitesLoop[1], hora);
-	
-	console.log('valoresY', valoresY)
 
 	var consumoY = [];
 	var totalConsumo = 0;

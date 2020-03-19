@@ -54,13 +54,12 @@ function openDialogMonthly() {
 		minimo = 0;
 		console.log("minimo aki",minimo);
 		max = maxDenseDisplay;
-		title = 'Monthly View ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val() + " - Max Cons: " + max + 'MW';
+		title = 'Month View ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val() + " - Max Cons: " + max + 'MW';
 	}
 	else {
 		minimo = minDenseDisplayDadosMeteriologicos;
-		console.log("minimo",minimo);
 		max = maxDenseDisplayDadosMeteriologicos;
-		title = 'Monthly View ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val() + " - " + primeiraLetraGrande($("#tipoMeteriologia").val()) + ' - Max Cons: ' + max + unidades_medida[$("#tipoMeteriologia").val()];
+		title = 'Month View ' + retornaNomePorMes(mesSelected) + '/' +$("#ano").val() + " - " + primeiraLetraGrande($("#tipoMeteriologia").val()) + ' - Max Cons: ' + max + ' ' + unidades_medida[$("#tipoMeteriologia").val()];
 	}
 
 	var $dlg = createNewDialog(title, "<div id='"+idChart+"'></div>", 430, 470, 'dialog-red')
@@ -360,7 +359,7 @@ function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
         },
         {
           type: 'scatter',
-          name: 'Lowest Daily',
+          name: 'Lowest Day',
           color: '#00008B',
           data: [],
           marker: {
@@ -374,7 +373,7 @@ function createDialogWeek(idChart, mesSelected, weekSelected, listaDados){
         },
         {
           type: 'scatter',
-          name: 'Highest Daily',
+          name: 'Highest Day',
           color: '#CC0000',
           data: [],
           marker: {

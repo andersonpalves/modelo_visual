@@ -25,6 +25,17 @@ function abreGraficoHoras(grafico, pontos, pontosMinimos, pontosMaximos, pontosM
 
 function criaGraficoHoras(pontos, pontosMinimos, pontosMedios, pontosMaximos, pontosMediana, valorDesvioPadrao, 
 	valorVariancia, valorErroPadrao, valorCV, tipoGrafico, booleanPolar){
+		
+		console.log("pontos", pontos);
+		
+		for (i=0; i<=6; i++) {
+			if (pontos[i].y <= pontosMinimos[i].y || pontos[i].y >= pontosMaximos[i].y) {
+				pontos[i].y = (pontosMinimos[i].y + pontosMaximos[i].y) / 2;
+			}
+		}
+		
+		console.log("pontos1", pontos);
+		
 		return chart_horas_valores = {
 				chart: {
 					renderTo: 'area-conjunto-y1',

@@ -230,7 +230,7 @@ function abreDadosMeteriologicos() {
 
             chart_heatmap_meteriologicos = new Highcharts.Chart(heatmap_meteriologico);
 			
-			$("#denseMeteriologicoTexto").html("Annual / Monthly View - Data selected <b>" + primeiraLetraGrande(opcao) + "</b> Max consumption: <b>" + parseInt(maxDenseDisplayDadosMeteriologicos) + " " + unidades_medida[opcao]);
+			$("#denseMeteriologicoTexto").html("Annual / Month View - Data selected <b>" + primeiraLetraGrande(opcao) + "</b> Max consumption: <b>" + parseInt(maxDenseDisplayDadosMeteriologicos) + " " + unidades_medida[opcao]);
 			$('#meteorologia').show();
 			rolarTela("link_meteorologia");
         },

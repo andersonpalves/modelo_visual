@@ -91,8 +91,8 @@ function verificaGrupoPorEnergia(valor) {
 }
 
 function ajustarTextos() {
-    $("#denseTexto").html("Annual / Monthly View");
-    $("#heatmapTexto").html("Weekly View");
+    $("#denseTexto").html("Annual / Month View");
+    $("#heatmapTexto").html("Week View");
     $("#diasTexto").html("Day View");
     $("#horasTexto").html("Hour View");
     $("#heatmapHistoricoGeralTexto").html("All energy sources - <b>Year selected<b>: " + $("#ano").val());
@@ -430,8 +430,8 @@ function abreDados(ano, lugar) {
                 tracoHtml = "- ";
             }
 
-            $("#denseTexto").html("Annual / Monthly View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + " Megawatts</br>");
-            $("#heatmapHistoricoTexto").html("Monthly History " + tracoHtml + textoHtml);
+            $("#denseTexto").html("Annual / Month View " + tracoHtml + textoHtml + " - Max consumption: <b>" + parseInt(maxDenseDisplay) + " Megawatts</br>");
+            $("#heatmapHistoricoTexto").html("Month History " + tracoHtml + textoHtml);
             $("#rangeValuesDense").attr("max", parseInt(maxDenseDisplay));
 
             chart_heatmap_color = new Highcharts.Chart(heatmapcolor);
@@ -475,7 +475,7 @@ function carregaHeatmap(heatmapcolor, lista_itens, maxDenseDisplay, isDialog) {
         dataInicioSemana = formatarData(lista_dias[0]);
         dataFimSemana = formatarData(lista_dias[6]);
 
-        $("#heatmapTexto").html("Weekly View - Week selected: <b>" + semana_selecionada + "</b> - Start: <b>" + dataInicioSemana + "</b> - End: <b>" + dataFimSemana + "</b>");
+        $("#heatmapTexto").html("Week View - Week selected: <b>" + semana_selecionada + "</b> - Start: <b>" + dataInicioSemana + "</b> - End: <b>" + dataFimSemana + "</b>");
     } else {
         heatmapcolor.xAxis.categories = ['Mon<br><b>' + formatarDiaMes(lista_dias[0]),
             'Tue<br><b>' + formatarDiaMes(lista_dias[1]),
